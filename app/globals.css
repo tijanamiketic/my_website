@@ -385,6 +385,7 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
   80%, 100% { box-shadow: 0 0 0 8px transparent }
 }
 .hero h1 { font-size: clamp(3rem, 9vw, 6.4rem); font-weight: 800; letter-spacing: -.055em; line-height: .95 }
+.hero-name { font-family: var(--font-roboto-slab), Georgia, serif; font-weight: 500 }
 .hero h1 .serif { font-weight: 400; letter-spacing: -.03em; display: block; font-size: .92em; line-height: 1.05 }
 .tagline { margin-top: 1.4rem; font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--ink-2); max-width: 44ch }
 .tagline strong { color: var(--ink); font-weight: 600 }
@@ -418,33 +419,10 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
 .cutout img { width: 100%; height: auto; filter: drop-shadow(0 10px 22px rgba(30, 30, 70, .18)) }
 .motion-on .cutout img { will-change: transform }
 .halo { position: absolute; inset: 20% 0 -4% 0; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--lavender) 60%, transparent), transparent 65%); filter: blur(40px); transform: translateZ(-90px); z-index: -1 }
-.float { position: absolute; display: flex; align-items: center; gap: .6rem; padding: .65rem .9rem; border-radius: 18px; font-size: .8rem; line-height: 1.25; background: var(--glass-strong); white-space: nowrap }
-.float b { display: block; font-size: .92rem }
-.float small { color: var(--muted); font-size: inherit }
-.float .ic { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; flex: none; font-family: var(--mono); font-size: .8rem; font-weight: 500; color: #1b1c22 }
-/* Badge positions are chosen to keep clear of the face (upper centre) and crossed hands (lower right). */
-.f1 { top: 13%; left: -12%; transform: translateZ(90px) }
-.f1 .ic { background: linear-gradient(135deg, var(--sky), var(--periwinkle)) }
-.f2 { top: 34%; right: -8%; transform: translateZ(120px) }
-.f2 .ic { background: linear-gradient(135deg, var(--blush), var(--lavender)) }
-.f3 { bottom: 12%; left: -4%; transform: translateZ(60px) }
-.f3 .ic { background: linear-gradient(135deg, var(--silver), var(--sky)) }
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr }
   .portrait-stage { order: -1 }
   .portrait { width: min(78%, 360px) }
-  /* Badges are wide relative to the smaller portrait: keep them at shoulder height,
-     below the face, and the right one above the crossed hands. */
-  .f1 { top: 50%; left: -12% }
-  .f2 { top: 39%; right: -12% }
-}
-@media (max-width: 420px) {
-  .float { font-size: .72rem; padding: .5rem .7rem; gap: .45rem }
-  .float b { font-size: .8rem }
-  .float .ic { width: 28px; height: 28px }
-  .f1 { top: 52%; left: -10% }
-  .f2 { top: 40%; right: -10% }
-  .f3 { display: none }
 }
 
 /* ============ ABOUT ============ */

@@ -10,26 +10,17 @@ export const profile: Profile = {
   firstName: "Tijana",
   lastName: "Miketić",
   brand: "T. Miketić",
-  role: { sr: "AI razvoj i edukacija", en: "AI Developer & Educator" },
+  role: { sr: "AI Specijalista i Edukator", en: "AI Specialist & Educator" },
   tagline: {
-    sr: "Pravim praktične AI proizvode i učim **12.000+ polaznika** kako da dizajniraju, pišu promptove i lansiraju rešenja sa jezičkim modelima.",
-    en: "I build practical AI products and teach **12,000+ learners** how to design, prompt and ship with language models.",
+    sr: "Pravim praktične AI proizvode, svakodnevno istražujem svet veštačke inteligencije i delim znanje, savete i iskustva koja zaista možeš da primeniš.",
+    en: "I build practical AI products, explore the world of AI every day, and share knowledge, tips and lessons you can actually put to use.",
   },
-  status: { sr: "Primam prijave za radionice u Q4 2026", en: "Booking workshops for Q4 2026" },
+  status: { sr: "Primam prijave za konsultacije", en: "Now booking consultations" },
   email: "hello@yourdomain.com", // TODO: your real address
   location: { sr: "Beograd, Srbija", en: "Belgrade, Serbia" },
   // Overridden by the NEXT_PUBLIC_SKOOL_URL env var if set.
   skoolUrl: "https://www.skool.com/your-community", // TODO
-  stats: [
-    { value: "12k+", label: { sr: "polaznika", en: "learners taught" } },
-    { value: "40+", label: { sr: "isporučenih AI projekata", en: "AI projects shipped" } },
-    { value: "9", label: { sr: "kurseva i obuka", en: "courses & trainings" } },
-  ],
-  badges: [
-    { glyph: "AI", title: { sr: "Agents 101", en: "Agents 101" }, subtitle: { sr: "Nova grupa · 8. okt", en: "New cohort · Oct 8" } },
-    { glyph: "▶", title: { sr: "4,9 / 5", en: "4.9 / 5" }, subtitle: { sr: "prosečna ocena kurseva", en: "avg. course rating" } },
-    { glyph: "★", title: { sr: "Nedeljno", en: "Weekly" }, subtitle: { sr: "pregled AI vesti", en: "AI news digest" } },
-  ],
+  stats: [{ value: "9", label: { sr: "kurseva i obuka", en: "courses & trainings" } }],
   bio: {
     quote: {
       sr: "„Najbolji način da razumeš AI je da danas napraviš nešto malo uz njega.“",

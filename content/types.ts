@@ -23,8 +23,6 @@ export type Profile = {
   location: Text;
   skoolUrl: string;
   stats: { value: string; label: Text }[];
-  /** The three floating glass badges around the hero portrait. */
-  badges: [Badge, Badge, Badge];
   bio: { quote: Text; paragraphs: Text[] };
   pillars: { icon: "code" | "cap" | "spark"; title: Text; text: Text }[];
   /** `title` is the newsletter's name and is not translated. */
@@ -32,8 +30,6 @@ export type Profile = {
   /** Used for SEO / JSON-LD. */
   seo: { description: Text; keywords: Text[] };
 };
-
-export type Badge = { glyph: string; title: Text; subtitle: Text };
 
 export type Project = {
   /** Product name: not translated. */

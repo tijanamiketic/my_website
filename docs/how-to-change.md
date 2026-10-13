@@ -42,7 +42,7 @@ Text that visitors read has a Serbian and an English value side by side: `title:
 
 | What | File |
 | --- | --- |
-| Name, role, tagline, status pill, stats, hero badges, bio, pillars, email, newsletter text, SEO description | `content/profile.ts` |
+| Name, role, tagline, status pill, stats, bio, pillars, email, newsletter text, SEO description | `content/profile.ts` |
 | Social links | `content/socials.ts` |
 | Projects carousel | `content/projects.ts` |
 | Interviews and press (`featured: true` highlights one) | `content/interviews.ts` |

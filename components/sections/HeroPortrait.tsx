@@ -3,9 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import portrait from "@/public/images/portrait.png";
-import { profile } from "@/content/profile";
 import { fullName } from "@/lib/config";
-import { localize } from "@/lib/i18n";
 import { useI18n } from "../I18nProvider";
 
 /**
@@ -15,7 +13,7 @@ import { useI18n } from "../I18nProvider";
  * rAF loop that only ticks while the hero is on screen.
  */
 export default function HeroPortrait() {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
   const portraitRef = useRef<HTMLDivElement>(null);
   const imgWrapRef = useRef<HTMLDivElement>(null);
 
@@ -78,7 +76,6 @@ export default function HeroPortrait() {
     };
   }, []);
 
-  const [b1, b2, b3] = localize(profile.badges, locale);
   return (
     <div className="portrait-stage">
       <div className="portrait" ref={portraitRef}>
@@ -100,15 +97,6 @@ export default function HeroPortrait() {
             />
           </div>
         </div>
-        {[b1, b2, b3].map((b, i) => (
-          <div key={b.title} className={`float glass f${i + 1}`} aria-hidden="true">
-            <span className="ic">{b.glyph}</span>
-            <span>
-              <b>{b.title}</b>
-              <small>{b.subtitle}</small>
-            </span>
-          </div>
-        ))}
       </div>
     </div>
   );
