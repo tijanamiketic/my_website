@@ -1,13 +1,16 @@
-import { courses } from "@/content/courses";
+import { courses as courseSource } from "@/content/courses";
+import type { Dictionary } from "@/content/i18n";
 import type { Course } from "@/content/types";
 import { SKOOL_URL } from "@/lib/config";
+import { formatPrice, localize, type Locale, type Localized } from "@/lib/i18n";
+import { getI18n } from "@/lib/i18n/server";
 import { iconGradient } from "@/lib/cover";
 import { ArrowRight } from "../icons";
 import { SectionHead } from "../ui";
 
-function CourseCard({ c, i }: { c: Course; i: number }) {
+function CourseCard({ c, i, locale, t }: { c: Localized<Course>; i: number; locale: Locale; t: Dictionary }) {
   const premium = c.tier === "premium";
-  const price = premium ? `€${c.price}` : "Free";
+  const price = premium ? formatPrice(c.price ?? 0, locale) : t.courses.free;
   return (
     <article className={`course glass${premium ? " premium" : ""}`} data-reveal data-tilt data-stagger={i}>
       <div className="top">
@@ -21,9 +24,9 @@ function CourseCard({ c, i }: { c: Course; i: number }) {
         <p style={{ marginTop: ".4rem" }}>{c.description}</p>
       </div>
       <dl className="specs">
-        <div><dt>Level</dt><dd>{c.level}</dd></div>
-        <div><dt>Length</dt><dd>{c.duration}</dd></div>
-        <div><dt>Price</dt><dd>{price}</dd></div>
+        <div><dt>{t.courses.level}</dt><dd>{c.level}</dd></div>
+        <div><dt>{t.courses.length}</dt><dd>{c.duration}</dd></div>
+        <div><dt>{t.courses.price}</dt><dd>{price}</dd></div>
       </dl>
       <a
         className={`btn ${premium ? "btn-primary" : "btn-glass"}`}
@@ -31,26 +34,28 @@ function CourseCard({ c, i }: { c: Course; i: number }) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        {premium ? "Enroll on Skool" : "Start free on Skool"} <ArrowRight />
-        <span className="sr-only">: {c.title} (opens in a new tab)</span>
+        {premium ? t.courses.enroll : t.courses.startFree} <ArrowRight />
+        <span className="sr-only">: {c.title} {t.common.newTab}</span>
       </a>
     </article>
   );
 }
 
-export default function Courses() {
+export default async function Courses() {
+  const { locale, t } = await getI18n();
+  const courses = localize(courseSource, locale);
   const groups = [
-    { title: "Free", sub: "Start here, no card needed", items: courses.filter((c) => c.tier === "free") },
-    { title: "Premium", sub: "Deep dives with feedback and certificates", items: courses.filter((c) => c.tier === "premium") },
+    { ...t.courses.groups.free, items: courses.filter((c) => c.tier === "free") },
+    { ...t.courses.groups.premium, items: courses.filter((c) => c.tier === "premium") },
   ];
   return (
     <section id="courses" className="section wrap" aria-labelledby="courses-title">
       <SectionHead
         id="courses-title"
-        eyebrow="Courses & Trainings"
-        title="Learn it"
-        accent="properly"
-        lede="Every course lives in my Skool community — lessons, live Q&As and a place to share what you build."
+        eyebrow={t.courses.eyebrow}
+        title={t.courses.title}
+        accent={t.courses.accent}
+        lede={t.courses.lede}
       />
       <div className="course-groups">
         {groups.map((g) => (
@@ -61,7 +66,7 @@ export default function Courses() {
             </div>
             <div className="course-grid">
               {g.items.map((c, i) => (
-                <CourseCard key={c.title} c={c} i={i} />
+                <CourseCard key={c.title} c={c} i={i} locale={locale} t={t} />
               ))}
             </div>
           </div>

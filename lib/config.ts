@@ -12,16 +12,7 @@ export const SITE_URL = (
  */
 export const SKOOL_URL = process.env.NEXT_PUBLIC_SKOOL_URL || profile.skoolUrl;
 
-export const NAV = [
-  { id: "about", label: "About" },
-  { id: "projects", label: "Projects" },
-  { id: "blog", label: "Blog" },
-  { id: "interviews", label: "Interviews" },
-  { id: "news", label: "AI News" },
-  { id: "courses", label: "Courses" },
-  { id: "resources", label: "Resources" },
-  { id: "events", label: "Events" },
-  { id: "contact", label: "Contact" },
-] as const;
+/** Home-page sections linked in the navigation, in order. Labels: `nav.sections` in content/i18n. */
+export const NAV = ["about", "projects", "blog", "interviews", "news", "courses", "resources", "events", "contact"] as const;
 
 export const fullName = `${profile.firstName} ${profile.lastName}`;

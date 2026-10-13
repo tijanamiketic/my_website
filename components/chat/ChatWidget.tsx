@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useI18n } from "../I18nProvider";
 import { ChatBubble, Close } from "../icons";
 
 // The chat window (and its portrait, history, streaming code) is loaded lazily.
@@ -9,6 +10,7 @@ const ChatWindow = dynamic(() => import("./ChatWindow"), { ssr: false });
 
 /** Floating gradient chat bubble. Preloads the window when the browser is idle or on first interaction. */
 export default function ChatWidget() {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [load, setLoad] = useState(false);
   const fabRef = useRef<HTMLButtonElement>(null);
@@ -34,7 +36,7 @@ export default function ChatWidget() {
         ref={fabRef}
         type="button"
         className="chat-fab"
-        aria-label={open ? "Close chat" : "Open chat with the site assistant"}
+        aria-label={open ? t.chat.closeFab : t.chat.openFab}
         aria-expanded={open}
         aria-controls="chat-window"
         onPointerEnter={() => setLoad(true)}

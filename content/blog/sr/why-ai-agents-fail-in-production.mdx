@@ -1,0 +1,40 @@
+---
+title: "Zašto većina AI agenata zakaže u produkciji — i 5 provera koje to rešavaju"
+date: "2026-09-18"
+readingTime: 12
+excerpt: "Posle desetak agenata za klijente, problem nikad nije bio model, već stanje, alati i nedostatak zaštite. Evo moje kontrolne liste."
+glyph: "▲"
+featured: true
+---
+
+> Probni tekst — zameni ga svojim.
+
+Posle desetak agenata isporučenih klijentima u poslednje dve godine, jedna stvar je postala neprijatno jasna: **model gotovo nikad nije bio razlog zbog kog agent ne radi.** Problemi su živeli u dosadnim delovima — stanju, alatima i nedostatku zaštitnih mehanizama.
+
+## 1. Neka stanje bude eksplicitno
+
+Većina agenata svoju „memoriju“ čuva implicitno, u listi poruka koja stalno raste. To radi na demou, a raspada se već druge nedelje. Zapiši šta agent mora da zapamti između koraka i čuvaj to u strukturisanom objektu koji možeš da pregledaš.
+
+## 2. Tretiraj alate kao javne API-je
+
+Svakom alatu treba jasno ime, precizna šema i **korisne poruke o greškama**. Kad alat zakaže, agent čita grešku — zato poruke o greškama piši za model, a ne za log fajl.
+
+```ts
+return { error: "Ne postoji kupac sa tom imejl adresom. Zamoli korisnika da potvrdi adresu." };
+```
+
+## 3. Ograniči svaku petlju
+
+Ograniči broj iteracija, tokene i ukupno vreme. Agent koji može da se vrti u nedogled pre ili kasnije i hoće.
+
+## 4. Evaluiraj na pravim transkriptima
+
+Dvadeset pravih razgovora vredi više od dvesta sintetičkih. Čuvaj ih u tabeli, pokreni ih ponovo posle svake izmene prompta i pogledaj razlike.
+
+## 5. Osmisli šta se dešava kad nešto pođe naopako
+
+Odluči šta se dešava kad se agent zaglavi: predaje posao čoveku, postavlja pitanje za pojašnjenje ili staje uz kratak rezime. „Pokušavaj dalje“ nije strategija.
+
+---
+
+Nijedna od ovih provera nije glamurozna. Sve su jeftinije od incidenta.

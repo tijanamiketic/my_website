@@ -1,15 +1,18 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useI18n } from "../I18nProvider";
 
 export default function CopyEmail({ email }: { email: string }) {
-  const [label, setLabel] = useState("Copy");
+  const { t } = useI18n();
+  const [state, setState] = useState<"idle" | "copied" | "selected">("idle");
+  const label = state === "copied" ? t.contact.copied : state === "selected" ? t.contact.selected : t.contact.copy;
   const textRef = useRef<HTMLAnchorElement>(null);
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(email);
-      setLabel("Copied");
+      setState("copied");
     } catch {
       // Clipboard blocked: select the text so the user can copy it manually.
       const range = document.createRange();
@@ -17,9 +20,9 @@ export default function CopyEmail({ email }: { email: string }) {
       const sel = getSelection();
       sel?.removeAllRanges();
       sel?.addRange(range);
-      setLabel("Selected — press Ctrl/⌘+C");
+      setState("selected");
     }
-    setTimeout(() => setLabel("Copy"), 2200);
+    setTimeout(() => setState("idle"), 2200);
   };
 
   return (
@@ -27,11 +30,11 @@ export default function CopyEmail({ email }: { email: string }) {
       <a className="email" href={`mailto:${email}`} ref={textRef}>
         {email}
       </a>
-      <button className="btn btn-glass btn-sm" type="button" onClick={copy} aria-label={label === "Copy" ? "Copy email address" : label}>
+      <button className="btn btn-glass btn-sm" type="button" onClick={copy} aria-label={state === "idle" ? t.contact.copyAria : label}>
         {label}
       </button>
       <span className="sr-only" aria-live="polite">
-        {label === "Copied" ? "Email address copied to clipboard" : ""}
+        {state === "copied" ? t.contact.copiedAnnounce : ""}
       </span>
     </div>
   );

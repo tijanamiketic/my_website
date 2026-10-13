@@ -1,5 +1,7 @@
 /**
- * Blog posts live as MDX files in /content/blog/<slug>.mdx with frontmatter:
+ * Blog posts live as MDX files, one folder per language, with the same file name
+ * (slug) in each: /content/blog/sr/<slug>.mdx and /content/blog/en/<slug>.mdx.
+ * A post missing in one language is shown in the other, with a notice. Frontmatter:
  *
  * ---
  * title: "Post title"

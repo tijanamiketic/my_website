@@ -5,12 +5,18 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
 import { NAV, SKOOL_URL } from "@/lib/config";
+import { localePath, stripLocale } from "@/lib/i18n";
+import { useI18n } from "./I18nProvider";
+import LanguageSwitch from "./LanguageSwitch";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Nav() {
-  const pathname = usePathname();
+  const { locale, t } = useI18n();
+  // stripLocale: the server renders "/sr" for the Serbian home page, the browser shows "/".
+  const pathname = stripLocale(usePathname());
   const onHome = pathname === "/";
-  const prefix = onHome ? "" : "/";
+  const home = localePath(locale, "/");
+  const prefix = onHome ? "" : home;
   const [active, setActive] = useState<string>("home");
   const [open, setOpen] = useState(false);
   const shellRef = useRef<HTMLDivElement>(null);
@@ -25,7 +31,7 @@ export default function Nav() {
       },
       { rootMargin: "-45% 0px -50% 0px" },
     );
-    for (const id of ["home", ...NAV.map((n) => n.id)]) {
+    for (const id of ["home", ...NAV]) {
       const el = document.getElementById(id);
       if (el) io.observe(el);
     }
@@ -84,30 +90,31 @@ export default function Nav() {
 
   return (
     <div className="nav-shell wrap" ref={shellRef}>
-      <nav className="nav glass" aria-label="Main">
-        <Link href={onHome ? "#home" : "/"} className="brand">
+      <nav className="nav glass" aria-label={t.nav.label}>
+        <Link href={onHome ? "#home" : home} className="brand">
           <span className="brand-mark" aria-hidden="true" />
           <span>{profile.brand}</span>
         </Link>
         <ul className="nav-links">
-          {NAV.map((n) => (
-            <li key={n.id}>
-              <a href={`${prefix}#${n.id}`} aria-current={current(n.id)}>
-                {n.label}
+          {NAV.map((id) => (
+            <li key={id}>
+              <a href={`${prefix}#${id}`} aria-current={current(id)}>
+                {t.nav.sections[id]}
               </a>
             </li>
           ))}
         </ul>
         <div className="nav-actions">
+          <LanguageSwitch />
           <ThemeToggle />
           <a className="btn btn-primary btn-sm nav-cta" href={SKOOL_URL} target="_blank" rel="noopener noreferrer">
-            Join courses
+            {t.nav.join}
           </a>
           <button
             ref={burgerRef}
             type="button"
             className="icon-btn burger"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen((o) => !o)}
@@ -120,14 +127,14 @@ export default function Nav() {
         </div>
       </nav>
       <div id="mobile-menu" className={`mobile-menu glass${open ? " open" : ""}`} aria-hidden={!open}>
-        {NAV.map((n) => (
-          <a key={n.id} className="item" href={`${prefix}#${n.id}`} aria-current={current(n.id)} onClick={() => setOpen(false)}>
-            {n.label}
+        {NAV.map((id) => (
+          <a key={id} className="item" href={`${prefix}#${id}`} aria-current={current(id)} onClick={() => setOpen(false)}>
+            {t.nav.sections[id]}
             <span aria-hidden="true" className="text-muted">›</span>
           </a>
         ))}
         <a className="btn btn-primary" href={SKOOL_URL} target="_blank" rel="noopener noreferrer">
-          Join courses on Skool
+          {t.nav.joinMobile}
         </a>
       </div>
     </div>

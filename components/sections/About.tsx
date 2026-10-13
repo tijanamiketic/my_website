@@ -1,14 +1,18 @@
 import Image from "next/image";
 import portrait from "@/public/images/portrait.png";
-import { profile } from "@/content/profile";
+import { profile as profileSource } from "@/content/profile";
 import { fullName } from "@/lib/config";
+import { localize } from "@/lib/i18n";
+import { getI18n } from "@/lib/i18n/server";
 import { PillarIcon } from "../icons";
 import { SectionHead } from "../ui";
 
-export default function About() {
+export default async function About() {
+  const { locale, t } = await getI18n();
+  const profile = localize(profileSource, locale);
   return (
     <section id="about" className="section wrap" aria-labelledby="about-title">
-      <SectionHead id="about-title" eyebrow="About" title="Making AI" accent="make sense" />
+      <SectionHead id="about-title" eyebrow={t.about.eyebrow} title={t.about.title} accent={t.about.accent} />
       <div className="about-grid">
         <article className="bio glass" data-reveal data-tilt style={{ "--dir": -1 } as React.CSSProperties}>
           <blockquote className="quote">{profile.bio.quote}</blockquote>

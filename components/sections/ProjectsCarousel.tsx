@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { Project } from "@/content/types";
+import type { Localized } from "@/lib/i18n";
+import { useI18n } from "../I18nProvider";
 import { ArrowLeft, ArrowRight, Pause, Play } from "../icons";
 import { Cover } from "../ui";
 
@@ -10,22 +12,23 @@ const DECAY = 0.04; // fraction of momentum left after 1s
 const K = -Math.log(DECAY); // so a velocity v glides v / K px in total
 const noopSubscribe = () => () => {};
 
-function ProjectCard({ p, clone }: { p: Project; clone?: boolean }) {
+function ProjectCard({ p, clone }: { p: Localized<Project>; clone?: boolean }) {
+  const { t } = useI18n();
   return (
     <article className="project glass" data-tilt aria-hidden={clone || undefined} inert={clone || undefined}>
       <Cover title={p.title} image={p.image} glyph={p.glyph} sizes="370px" />
       <div className="body">
         <h3>{p.title}</h3>
         <p>{p.description}</p>
-        <ul className="chips" aria-label="Tech stack">
+        <ul className="chips" aria-label={t.projects.techStack}>
           {p.tags.map((t) => (
             <li key={t} className="chip">{t}</li>
           ))}
         </ul>
         <div className="row">
           <span className="mono year">{p.year}</span>
-          <a className="link-arrow" href={p.url} aria-label={`View project: ${p.title}`}>
-            View project <ArrowRight />
+          <a className="link-arrow" href={p.url} aria-label={t.projects.viewAria(p.title)}>
+            {t.projects.view} <ArrowRight />
           </a>
         </div>
       </div>
@@ -39,7 +42,8 @@ function ProjectCard({ p, clone }: { p: Project; clone?: boolean }) {
  * - Mouse drag / touch swipe with momentum; arrow keys and prev/next buttons glide by one card.
  * - prefers-reduced-motion: no autoplay, falls back to a native swipeable row with scroll-snap.
  */
-export default function ProjectsCarousel({ projects }: { projects: Project[] }) {
+export default function ProjectsCarousel({ projects }: { projects: Localized<Project>[] }) {
+  const { t } = useI18n();
   const vpRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [reduced, setReduced] = useState(false);
@@ -224,16 +228,16 @@ export default function ProjectsCarousel({ projects }: { projects: Project[] }) 
   }, [reduced, hydrated]);
 
   return (
-    <div role="region" aria-roledescription="carousel" aria-label="Projects">
+    <div role="region" aria-roledescription="carousel" aria-label={t.projects.carousel}>
       {!reduced && (
         <div className="wrap marquee-ctrl" style={{ justifyContent: "flex-end", marginBottom: "-.5rem" }}>
-          <button type="button" className="icon-btn" aria-label="Previous project" onClick={() => nudgeRef.current(-1)}>
+          <button type="button" className="icon-btn" aria-label={t.projects.previous} onClick={() => nudgeRef.current(-1)}>
             <ArrowLeft />
           </button>
-          <button type="button" className="icon-btn" aria-label={userPaused ? "Play carousel" : "Pause carousel"} aria-pressed={userPaused} onClick={() => setUserPaused((p) => !p)}>
+          <button type="button" className="icon-btn" aria-label={userPaused ? t.projects.play : t.projects.pause} aria-pressed={userPaused} onClick={() => setUserPaused((p) => !p)}>
             {userPaused ? <Play /> : <Pause />}
           </button>
-          <button type="button" className="icon-btn" aria-label="Next project" onClick={() => nudgeRef.current(1)}>
+          <button type="button" className="icon-btn" aria-label={t.projects.next} onClick={() => nudgeRef.current(1)}>
             <ArrowRight />
           </button>
         </div>

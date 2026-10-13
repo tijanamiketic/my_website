@@ -1,6 +1,8 @@
 "use server";
 
 import { headers } from "next/headers";
+import { dictionaries } from "@/content/i18n";
+import { toLocale } from "@/lib/i18n";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export type NewsletterState = { status: "idle" | "ok" | "error"; message: string };
@@ -8,16 +10,19 @@ export type NewsletterState = { status: "idle" | "ok" | "error"; message: string
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export async function subscribe(_prev: NewsletterState, form: FormData): Promise<NewsletterState> {
+  // Server Actions can't read the [lang] route segment, so the form sends the page language.
+  const t = dictionaries[toLocale(form.get("locale"))].newsletter;
+
   // Honeypot: real users never fill this hidden field.
-  if (String(form.get("company") ?? "")) return { status: "ok", message: "Thanks!" };
+  if (String(form.get("company") ?? "")) return { status: "ok", message: t.thanks };
 
   const email = String(form.get("email") ?? "").trim().toLowerCase();
   if (!EMAIL_RE.test(email) || email.length > 254) {
-    return { status: "error", message: "Enter a valid email address, like name@example.com." };
+    return { status: "error", message: t.invalid };
   }
 
   const limit = rateLimit(`nl:${clientKey(await headers())}`, 5, 10 * 60_000);
-  if (!limit.ok) return { status: "error", message: "Too many attempts — please try again in a few minutes." };
+  if (!limit.ok) return { status: "error", message: t.tooMany };
 
   const webhook = process.env.NEWSLETTER_WEBHOOK_URL;
   if (!webhook) {
@@ -30,7 +35,7 @@ export async function subscribe(_prev: NewsletterState, form: FormData): Promise
     //     body: JSON.stringify({ email_address: email }),
     //   });
     console.info("[newsletter] NEWSLETTER_WEBHOOK_URL not set — demo mode, nothing was sent for", email);
-    return { status: "ok", message: `You're on the list — check ${email} for the welcome email. (Demo mode: nothing was sent.)` };
+    return { status: "ok", message: `${t.ok(email)} ${t.demo}` };
   }
 
   try {
@@ -44,9 +49,9 @@ export async function subscribe(_prev: NewsletterState, form: FormData): Promise
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return { status: "ok", message: `You're on the list — check ${email} for the welcome email.` };
+    return { status: "ok", message: t.ok(email) };
   } catch (err) {
     console.error("[newsletter] subscribe failed:", err);
-    return { status: "error", message: "Something went wrong on our side. Please try again later." };
+    return { status: "error", message: t.failed };
   }
 }

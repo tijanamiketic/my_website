@@ -1,4 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { dictionaries, type Dictionary } from "@/content/i18n";
+import { toLocale } from "@/lib/i18n";
 import { buildSystemPrompt } from "@/lib/chat-context";
 import { mockReply } from "@/lib/mock-chat";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
@@ -14,23 +16,23 @@ const SUPPORTS_FALLBACK = /^claude-(opus-5|fable-5)/.test(MODEL);
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-function parseBody(body: unknown): ChatMessage[] | string {
+function parseBody(body: unknown, t: Dictionary["chat"]): ChatMessage[] | string {
   const raw = (body as { messages?: unknown })?.messages;
-  if (!Array.isArray(raw) || raw.length === 0) return "No messages.";
+  if (!Array.isArray(raw) || raw.length === 0) return t.invalidRequest;
   const messages = raw.slice(-MAX_MESSAGES).map((m) => ({
     role: (m as ChatMessage)?.role,
     content: typeof (m as ChatMessage)?.content === "string" ? (m as ChatMessage).content.trim() : "",
   }));
-  if (messages.some((m) => (m.role !== "user" && m.role !== "assistant") || !m.content)) return "Invalid message format.";
-  if (messages.some((m) => m.role === "user" && m.content.length > MAX_CHARS)) return `Messages are limited to ${MAX_CHARS} characters.`;
-  if (messages.reduce((n, m) => n + m.content.length, 0) > MAX_TOTAL_CHARS) return "Conversation is too long — please start a new chat.";
+  if (messages.some((m) => (m.role !== "user" && m.role !== "assistant") || !m.content)) return t.invalidRequest;
+  if (messages.some((m) => m.role === "user" && m.content.length > MAX_CHARS)) return t.tooLong(MAX_CHARS);
+  if (messages.reduce((n, m) => n + m.content.length, 0) > MAX_TOTAL_CHARS) return t.conversationTooLong;
   // The API needs the conversation to start with a user turn and end with one.
   while (messages.length && messages[0].role !== "user") messages.shift();
-  if (messages.at(-1)?.role !== "user") return "The last message must come from the user.";
+  if (messages.at(-1)?.role !== "user") return t.invalidRequest;
   return messages as ChatMessage[];
 }
 
-function textStream(produce: (write: (s: string) => void) => Promise<void>, mode: "ai" | "mock") {
+function textStream(produce: (write: (s: string) => void) => Promise<void>, mode: "ai" | "mock", t: Dictionary["chat"]) {
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -38,7 +40,7 @@ function textStream(produce: (write: (s: string) => void) => Promise<void>, mode
         await produce((s) => controller.enqueue(encoder.encode(s)));
       } catch (err) {
         console.error("[chat] stream error:", err);
-        controller.enqueue(encoder.encode("\n\nSorry — I lost the connection. Please try again in a moment."));
+        controller.enqueue(encoder.encode(`\n\n${t.lostConnection}`));
       } finally {
         controller.close();
       }
@@ -59,31 +61,34 @@ async function streamMock(text: string, write: (s: string) => void) {
 }
 
 export async function POST(req: Request) {
+  // Route Handlers can't read the [lang] route segment, so the widget sends ?lang=.
+  const locale = toLocale(new URL(req.url).searchParams.get("lang"));
+  const t = dictionaries[locale].chat;
   const ip = clientKey(req.headers);
   const burst = rateLimit(`chat-burst:${ip}`, 5, 10_000);
   const hourly = rateLimit(`chat:${ip}`, 40, 60 * 60_000);
   if (!burst.ok || !hourly.ok) {
     const retryAfter = Math.max(burst.retryAfter, hourly.retryAfter);
-    return Response.json({ error: "You're sending messages too quickly. Please wait a moment." }, { status: 429, headers: { "Retry-After": String(retryAfter) } });
+    return Response.json({ error: t.tooFast }, { status: 429, headers: { "Retry-After": String(retryAfter) } });
   }
 
   let body: unknown;
   try {
     body = await req.json();
   } catch {
-    return Response.json({ error: "Invalid JSON." }, { status: 400 });
+    return Response.json({ error: t.invalidRequest }, { status: 400 });
   }
-  const messages = parseBody(body);
+  const messages = parseBody(body, t);
   if (typeof messages === "string") return Response.json({ error: messages }, { status: 400 });
   const question = messages.at(-1)!.content;
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    const answer = await mockReply(question);
-    return textStream((write) => streamMock(answer, write), "mock");
+    const answer = await mockReply(question, locale);
+    return textStream((write) => streamMock(answer, write), "mock", t);
   }
 
   const client = new Anthropic();
-  const system = await buildSystemPrompt();
+  const system = await buildSystemPrompt(locale);
 
   return textStream(async (write) => {
     let wrote = false;
@@ -109,9 +114,9 @@ export async function POST(req: Request) {
       }
       const final = await stream.finalMessage();
       if (final.stop_reason === "refusal" && !wrote) {
-        write(`I can't help with that one, but I'm happy to answer questions about courses, events or resources.`);
+        write(t.refusal);
       } else if (!wrote) {
-        write(await mockReply(question));
+        write(await mockReply(question, locale));
       }
     } catch (err) {
       if (req.signal.aborted) return;
@@ -120,7 +125,7 @@ export async function POST(req: Request) {
       else if (err instanceof Anthropic.AuthenticationError) console.error("[chat] invalid ANTHROPIC_API_KEY");
       else if (err instanceof Anthropic.APIError) console.error(`[chat] Anthropic API error ${err.status}:`, err.message);
       else throw err;
-      write(wrote ? "\n\n(Connection interrupted — please ask again.)" : await mockReply(question));
+      write(wrote ? `\n\n${t.interrupted}` : await mockReply(question, locale));
     }
-  }, "ai");
+  }, "ai", t);
 }

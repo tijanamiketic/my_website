@@ -1,10 +1,14 @@
-import { profile } from "@/content/profile";
+import { profile as profileSource } from "@/content/profile";
 import { SKOOL_URL } from "@/lib/config";
 import { splitBold } from "@/lib/format";
+import { localize } from "@/lib/i18n";
+import { getI18n } from "@/lib/i18n/server";
 import { ArrowRight } from "../icons";
 import HeroPortrait from "./HeroPortrait";
 
-export default function Hero() {
+export default async function Hero() {
+  const { locale, t } = await getI18n();
+  const profile = localize(profileSource, locale);
   return (
     <section id="home" className="hero wrap" aria-labelledby="hero-title">
       <div className="hero-grid">
@@ -24,10 +28,10 @@ export default function Hero() {
           </p>
           <div className="cta-row">
             <a className="btn btn-primary" href="#projects">
-              View Projects <ArrowRight />
+              {t.hero.viewProjects} <ArrowRight />
             </a>
             <a className="btn btn-glass" href={SKOOL_URL} target="_blank" rel="noopener noreferrer">
-              Join My Courses
+              {t.hero.joinCourses}
             </a>
           </div>
           <dl className="hero-meta">

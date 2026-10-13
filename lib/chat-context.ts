@@ -1,44 +1,60 @@
 import "server-only";
-import { profile } from "@/content/profile";
-import { courses } from "@/content/courses";
-import { events } from "@/content/events";
-import { interviews } from "@/content/interviews";
-import { resources } from "@/content/resources";
-import { projects } from "@/content/projects";
+import { profile as profileSource } from "@/content/profile";
+import { courses as courseSource } from "@/content/courses";
+import { events as eventSource } from "@/content/events";
+import { interviews as interviewSource } from "@/content/interviews";
+import { resources as resourceSource } from "@/content/resources";
+import { projects as projectSource } from "@/content/projects";
 import { socials } from "@/content/socials";
+import { dictionaries } from "@/content/i18n";
 import { getAllPosts } from "./blog";
 import { upcomingEvents } from "./events";
 import { SITE_URL, SKOOL_URL, fullName } from "./config";
 import { formatDate } from "./format";
+import { formatPrice, localePath, localize, type Locale } from "./i18n";
 
 /** Placeholder links ("#") in the content files are replaced with a hint. */
 const link = (url: string, fallback: string) => (url && url !== "#" ? url : fallback);
 
-/** Everything the assistant (AI or mock) may say comes from /content, so answers stay current. */
-export async function getChatKnowledge() {
+/** Everything the assistant (AI or mock) may say comes from /content, in the page language, so answers stay current. */
+export async function getChatKnowledge(locale: Locale) {
   return {
-    upcoming: await upcomingEvents(events),
-    posts: getAllPosts(),
+    profile: localize(profileSource, locale),
+    courses: localize(courseSource, locale),
+    upcoming: localize(await upcomingEvents(eventSource), locale),
+    interviews: localize(interviewSource, locale),
+    resources: localize(resourceSource, locale),
+    projects: localize(projectSource, locale),
+    posts: getAllPosts(locale),
+    postUrl: (slug: string) => `${SITE_URL}${localePath(locale, `/blog/${slug}`)}`,
   };
 }
 
+const REPLY_LANGUAGE: Record<Locale, string> = {
+  sr: "The visitor is reading the Serbian version of the site. Reply in Serbian, Latin script, unless the visitor writes in another language; then reply in their language.",
+  en: "The visitor is reading the English version of the site. Reply in English unless the visitor writes in another language; then reply in their language.",
+};
+
 /**
- * System prompt for the Claude-powered assistant, built from the content files.
- * Kept byte-stable between requests (no timestamps) so prompt caching hits.
+ * System prompt for the Claude-powered assistant, built from the content files in the page language.
+ * Kept byte-stable between requests (no timestamps) so prompt caching hits: one cached prompt per language.
  */
-export async function buildSystemPrompt(): Promise<string> {
-  const { upcoming, posts } = await getChatKnowledge();
+export async function buildSystemPrompt(locale: Locale): Promise<string> {
+  const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl } = await getChatKnowledge(locale);
+  const t = dictionaries[locale];
   const lines: string[] = [];
   const add = (s = "") => lines.push(s);
 
-  add(`You are the friendly website assistant for ${fullName}, ${profile.role}, on their personal site (${SITE_URL}).`);
+  add(`You are the friendly website assistant for ${fullName}, ${profile.role}, on their personal site (${SITE_URL}${localePath(locale, "/")}).`);
   add(`Visitors are potential students, workshop clients, journalists and fellow builders. Help them find courses, events, resources, interviews and ways to get in touch.`);
   add();
   add(`How to answer:`);
   add(`- Keep replies short: 1–4 sentences or a compact list. Plain text only — no markdown headings, tables or bold. Bare URLs are fine; the chat widget makes them clickable.`);
   add(`- Answer only from the facts below. If something isn't covered (e.g. personal details, availability on a specific date, discounts), say you don't know and suggest emailing ${profile.email}.`);
   add(`- Never invent courses, prices, dates, outlets or links.`);
-  add(`- Speak about ${profile.firstName} in the third person. Match the visitor's language if they write in another language.`);
+  add(`- Speak about ${profile.firstName} in the third person.`);
+  add(`- ${REPLY_LANGUAGE[locale]}`);
+  add(`- When you mention a part of the site, use its name as visitors see it: ${Object.values(t.nav.sections).join(", ")}.`);
   add(`- Politely decline unrelated tasks (homework, coding help, general chat) and steer back to what's on this site.`);
   add();
   add(`<profile>`);
@@ -52,29 +68,29 @@ export async function buildSystemPrompt(): Promise<string> {
   add(`Contact email: ${profile.email}`);
   add(`Skool community (all courses live here): ${SKOOL_URL}`);
   add(`Socials: ${socials.map((s) => `${s.name} ${s.url}`).join("; ")}`);
-  add(`Newsletter: "${profile.newsletter.title}" — ${profile.newsletter.text} Sign up in the Contact section of the site.`);
+  add(`Newsletter: "${profile.newsletter.title}" — ${profile.newsletter.text} Sign-up form: ${t.nav.sections.contact} section.`);
   add(`</profile>`);
   add();
   add(`<courses>`);
   for (const c of courses) {
-    add(`- ${c.title} | ${c.tier === "free" ? "Free" : `Premium, €${c.price}`} | ${c.level} | ${c.duration} | ${c.description} | ${c.url ?? SKOOL_URL}`);
+    add(`- ${c.title} | ${c.tier === "free" ? t.courses.free : `Premium, ${formatPrice(c.price ?? 0, locale)}`} | ${c.level} | ${c.duration} | ${c.description} | ${c.url ?? SKOOL_URL}`);
   }
   add(`</courses>`);
   add();
   add(`<upcoming_events timezone="CET">`);
   if (upcoming.length === 0) add(`(none scheduled right now)`);
   for (const e of upcoming) {
-    add(`- ${e.title} | ${formatDate(e.date)} ${e.time} CET | ${e.mode} · ${e.location} | ${e.seats ? `${e.seats} seats left` : "open to all"} | ${e.description} | register: ${link(e.url, "the Register button in the Events section")}`);
+    add(`- ${e.title} | ${formatDate(e.date, locale)} ${e.time} CET | ${t.events.mode[e.mode]} · ${e.location} | ${e.seats ? t.events.seatsLeft(e.seats) : t.events.openToAll} | ${e.description} | register: ${link(e.url, `the ${t.events.register} button in the ${t.nav.sections.events} section`)}`);
   }
   add(`</upcoming_events>`);
   add();
   add(`<interviews_and_press>`);
-  for (const i of interviews) add(`- "${i.title}" — ${i.outlet} (${i.format}, ${i.duration}, ${formatDate(i.date)}) ${link(i.url, "")}`);
+  for (const i of interviews) add(`- "${i.title}" — ${i.outlet} (${t.interviews.format[i.format]}, ${i.duration}, ${formatDate(i.date, locale)}) ${link(i.url, "")}`);
   add(`</interviews_and_press>`);
   add();
   add(`<free_resources>`);
-  for (const r of resources) add(`- ${r.title} | ${r.type} · ${r.category} · ${r.size} | ${r.description}`);
-  add(`Visitors can search and open all resources in the Resources section of the site.`);
+  for (const r of resources) add(`- ${r.title} | ${t.resources.type[r.type]} · ${r.category} · ${r.size} | ${r.description}`);
+  add(`Visitors can search and open all resources in the ${t.nav.sections.resources} section of the site.`);
   add(`</free_resources>`);
   add();
   add(`<projects>`);
@@ -82,7 +98,7 @@ export async function buildSystemPrompt(): Promise<string> {
   add(`</projects>`);
   add();
   add(`<blog_posts>`);
-  for (const p of posts) add(`- "${p.title}" (${formatDate(p.date)}, ${p.readingTime} min) ${SITE_URL}/blog/${p.slug}`);
+  for (const p of posts) add(`- "${p.title}" (${formatDate(p.date, locale)}, ${p.readingTime} min) ${postUrl(p.slug)}`);
   add(`</blog_posts>`);
   return lines.join("\n");
 }

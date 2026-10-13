@@ -1,13 +1,15 @@
 import Image from "next/image";
 import portrait from "@/public/images/portrait.png";
-import { interviews } from "@/content/interviews";
+import { interviews as interviewSource } from "@/content/interviews";
 import { formatDate } from "@/lib/format";
+import { localize } from "@/lib/i18n";
+import { getI18n } from "@/lib/i18n/server";
 import { Cover, SectionHead } from "../ui";
 import InterviewList from "./InterviewList";
 
-const VERB = { Article: "Read feature", Video: "Watch interview", Podcast: "Listen now", Radio: "Listen now" } as const;
-
-export default function Interviews() {
+export default async function Interviews() {
+  const { locale, t } = await getI18n();
+  const interviews = localize(interviewSource, locale);
   const featured = interviews.find((i) => i.featured) ?? interviews[0];
   const rest = interviews.filter((i) => i !== featured);
   const outlets = [...new Set(interviews.map((i) => i.outlet))];
@@ -16,10 +18,10 @@ export default function Interviews() {
     <section id="interviews" className="section wrap" aria-labelledby="interviews-title">
       <SectionHead
         id="interviews-title"
-        eyebrow="Interviews & Press"
-        title="In"
-        accent="conversation"
-        lede="Podcasts, video interviews and features where I talk about AI, education and building in public."
+        eyebrow={t.interviews.eyebrow}
+        title={t.interviews.title}
+        accent={t.interviews.accent}
+        lede={t.interviews.lede}
       />
       <div className="iv-grid">
         <article className="iv-feature glass" data-reveal data-tilt style={{ "--dir": -1 } as React.CSSProperties}>
@@ -33,12 +35,12 @@ export default function Interviews() {
               </>
             )}
             <span className="chip iv-outlet">
-              {featured.format} · {featured.outlet}
+              {t.interviews.format[featured.format]} · {featured.outlet}
             </span>
             <a className="play" href={featured.url} target="_blank" rel="noopener noreferrer">
               <i aria-hidden="true">▶</i>
-              {VERB[featured.format]} · {featured.duration}
-              <span className="sr-only">: {featured.title} (opens in a new tab)</span>
+              {t.interviews.verb[featured.format]} · {featured.duration}
+              <span className="sr-only">: {featured.title} {t.common.newTab}</span>
             </a>
           </div>
           <div className="body">
@@ -47,7 +49,7 @@ export default function Interviews() {
             <div className="iv-meta">
               <span className="chip">{featured.outlet}</span>
               <span className="chip mono">
-                <time dateTime={featured.date}>{formatDate(featured.date)}</time>
+                <time dateTime={featured.date}>{formatDate(featured.date, locale)}</time>
               </span>
             </div>
           </div>
@@ -55,8 +57,8 @@ export default function Interviews() {
         <InterviewList items={rest} />
       </div>
       <div className="press" data-reveal>
-        <span className="mono">AS FEATURED IN</span>
-        <ul aria-label="Outlets">
+        <span className="mono">{t.interviews.featuredIn}</span>
+        <ul aria-label={t.interviews.outlets}>
           {outlets.map((o) => (
             <li key={o}>{o}</li>
           ))}

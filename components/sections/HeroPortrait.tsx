@@ -5,6 +5,8 @@ import { useEffect, useRef } from "react";
 import portrait from "@/public/images/portrait.png";
 import { profile } from "@/content/profile";
 import { fullName } from "@/lib/config";
+import { localize } from "@/lib/i18n";
+import { useI18n } from "../I18nProvider";
 
 /**
  * Transparent portrait in front of a frosted-glass arch. The head rises above
@@ -13,6 +15,7 @@ import { fullName } from "@/lib/config";
  * rAF loop that only ticks while the hero is on screen.
  */
 export default function HeroPortrait() {
+  const { locale, t } = useI18n();
   const portraitRef = useRef<HTMLDivElement>(null);
   const imgWrapRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +78,7 @@ export default function HeroPortrait() {
     };
   }, []);
 
-  const [b1, b2, b3] = profile.badges;
+  const [b1, b2, b3] = localize(profile.badges, locale);
   return (
     <div className="portrait-stage">
       <div className="portrait" ref={portraitRef}>
@@ -88,7 +91,7 @@ export default function HeroPortrait() {
           <div ref={imgWrapRef}>
             <Image
               src={portrait}
-              alt={`Portrait of ${fullName}`}
+              alt={t.hero.portraitAlt(fullName)}
               sizes="(max-width: 860px) 78vw, 470px"
               quality={85}
               preload

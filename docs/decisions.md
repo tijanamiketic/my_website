@@ -4,6 +4,21 @@ Newest first. Entries are never rewritten. If a decision changes, add a new entr
 
 The entries dated 2026-10-10 were recorded when the documentation was created. They describe decisions already visible in the project; the actual decision dates are earlier.
 
+## 2026-10-14: Serbian by default, English as a second language
+**Decision:** The site is published in Serbian and English. Serbian is the default and lives at `/` with no prefix (`/blog/<slug>`); English lives under `/en` (`/en/blog/<slug>`). `/sr/...` redirects to the unprefixed URL. Every visitor who opens `/` gets Serbian: the browser language is not detected and the last choice is not remembered. The SR | EN switch in the navigation links to the same page and section in the other language.
+**Why:** The owner wants Serbian to be what every visitor sees first, with English one click away. Separate URLs per language let search engines index both versions and make every link predictable. Rejected: a cookie or client-side toggle (one URL showing two languages cannot be indexed and breaks static rendering); redirecting by browser language (visitors and search engines would get different pages for the same URL).
+**Consequences:** All routes live under `app/[lang]`; `proxy.ts` maps unprefixed URLs to `sr`. Both languages are prerendered. Adding a language is a code change (see "Translations" in [how-to-change.md](how-to-change.md)). Rules come from the owner's Translation Standard.
+
+## 2026-10-14: How Serbian is written
+**Decision:** Serbian in Latin script (`sr-Latn`), ekavian, informal address ("ti"). Product names, brand names, the newsletter name ("The Sunday Prompt"), outlet names and tech tags are not translated. AI-news headlines stay in their original language (English) and are marked `lang="en"`. Text about the owner avoids grammatical gender (e.g. the role is "AI razvoj i edukacija", not a gendered job title), because the owner's preferred forms have not been confirmed. Translations were drafted by AI. TODO: confirm with owner (script, "ti" vs "vi", gendered forms) and have a fluent speaker review them before launch.
+**Why:** Latin script matches the existing Serbian keywords in the chat fallback and the owner's name spelling. Informal "ti" fits the friendly, hands-on voice of the English site.
+**Consequences:** Switching to Cyrillic or "vi" means editing `content/i18n/sr.ts`, the `sr` values in `content/*.ts` and `content/blog/sr/`, plus `localeInfo` in `lib/i18n/index.ts` for Cyrillic.
+
+## 2026-10-14: Translations stored next to the facts, in typed files
+**Decision:** Interface text lives in one dictionary per language (`content/i18n/sr.ts` is the source; `en.ts` must have the same keys, checked by TypeScript). Content fields that visitors read are `{ sr, en }` pairs in the existing `content/*.ts` files; prices, dates, URLs and names stay single values. Blog posts are one MDX file per language with the same slug (`content/blog/sr/`, `content/blog/en/`). A post missing in one language is shown in the other with a notice, and its canonical URL points to the original. No i18n library.
+**Why:** Keeps "one fact, one place": a price or date can't differ between languages. TypeScript fails the build on a missing key or translation. The site is small enough that a library (next-intl etc.) would add more than it saves. Rejected: separate content files per language (facts would be duplicated).
+**Consequences:** Every new visible string or content field needs both languages in the same change. Client Components read the language through `useI18n()`; Server Components through `getI18n()`; the newsletter action and chat API receive it explicitly (form field, `?lang=`).
+
 ## 2026-10-10: Design ported from a single-file prototype
 **Decision:** The look (glassmorphism, pastel palette, Inter / Instrument Serif / JetBrains Mono, 3D scroll reveals) comes from `reference/portfolio.html`, a standalone HTML demo. It is kept in the repository for reference but is not used by the site.
 **Why:** TODO: confirm with owner.

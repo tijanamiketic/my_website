@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "./I18nProvider";
 import { Moon, Sun } from "./icons";
 
 function isDark() {
@@ -13,6 +14,7 @@ function isDark() {
  * Both icons are rendered and CSS shows the right one, so SSR markup never mismatches.
  */
 export default function ThemeToggle() {
+  const { t } = useI18n();
   const toggle = () => {
     const next = isDark() ? "light" : "dark";
     document.documentElement.dataset.theme = next;
@@ -21,7 +23,7 @@ export default function ThemeToggle() {
     } catch {}
   };
   return (
-    <button type="button" className="icon-btn theme-btn" onClick={toggle} aria-label="Toggle light or dark mode" title="Toggle theme">
+    <button type="button" className="icon-btn theme-btn" onClick={toggle} aria-label={t.theme.toggle} title={t.theme.title}>
       <Moon className="i-moon" />
       <Sun className="i-sun" />
     </button>

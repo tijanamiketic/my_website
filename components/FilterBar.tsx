@@ -1,6 +1,6 @@
 "use client";
 
-/** Pill toggle group. Each button is a toggle (aria-pressed); keyboard: Tab + Enter/Space. */
+/** Pill toggle group. Each button is a toggle (aria-pressed); keyboard: Tab + Enter/Space. Options are { value, label }. */
 export default function FilterBar({
   label,
   options,
@@ -8,15 +8,15 @@ export default function FilterBar({
   onChange,
 }: {
   label: string;
-  options: string[];
+  options: { value: string; label: string }[];
   value: string;
   onChange: (v: string) => void;
 }) {
   return (
     <div className="filter" role="group" aria-label={label}>
       {options.map((o) => (
-        <button key={o} type="button" aria-pressed={o === value} onClick={() => onChange(o)}>
-          {o}
+        <button key={o.value} type="button" aria-pressed={o.value === value} onClick={() => onChange(o.value)}>
+          {o.label}
         </button>
       ))}
     </div>

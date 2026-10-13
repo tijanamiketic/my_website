@@ -2,6 +2,8 @@
 
 The personal website of Tijana Miketić, AI developer and educator. It is for potential students, workshop clients, journalists and other builders. It shows projects, blog posts, interviews, a live AI-news feed, courses (hosted on Skool), free resources, upcoming events and a newsletter sign-up, and has a chat assistant that answers questions about all of these.
 
+The site is in Serbian (Latin script) by default, at `/`, with an English version at `/en`. Visitors switch with the SR | EN control in the navigation.
+
 Built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4 and MDX. The chat assistant uses Claude.
 
 ## Requirements

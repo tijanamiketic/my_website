@@ -322,6 +322,22 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
   :root:not([data-theme="light"]) .theme-btn .i-sun { display: block }
   :root:not([data-theme="light"]) .theme-btn .i-moon { display: none }
 }
+/* Language switch: "SR | EN" segmented pill. On narrow screens only the other language shows. */
+.lang-switch {
+  display: flex; align-items: center; gap: 2px; height: 42px; padding: 3px; border-radius: 999px;
+  border: 1px solid var(--glass-border); background: var(--glass);
+}
+.lang-switch a {
+  display: grid; place-items: center; height: 100%; min-width: 34px; padding: 0 .5rem; border-radius: 999px;
+  font-size: .76rem; font-weight: 650; letter-spacing: .04em; color: var(--muted); transition: color .2s, background .2s;
+}
+.lang-switch a:hover { color: var(--ink) }
+.lang-switch a[aria-current="true"] { color: var(--ink); background: var(--glass-strong); box-shadow: inset 0 0 0 1px var(--glass-border) }
+@media (max-width: 480px) {
+  .lang-switch { width: 42px; padding: 0; justify-content: center }
+  .lang-switch a { width: 100%; min-width: 0; padding: 0 }
+  .lang-switch a[aria-current="true"] { display: none }
+}
 .burger { display: none }
 .mobile-menu { display: none }
 .burger .l1, .burger .l2 { transition: transform .3s cubic-bezier(.2, .8, .2, 1); transform-origin: center }
@@ -716,6 +732,7 @@ footer.foot { display: flex; justify-content: space-between; gap: 1rem; flex-wra
 /* ============ BLOG POST PAGE ============ */
 .article { max-width: 760px; margin-inline: auto; padding: clamp(24px, 5vw, 56px) }
 .article-cover { margin-block: 1.6rem 2rem }
+.notice { margin-top: 1.2rem; padding: .8rem 1rem; border-radius: var(--r-sm); background: var(--chip); color: var(--ink-2); font-size: .95rem }
 .prose { font-size: 1.06rem; color: var(--ink-2); line-height: 1.75 }
 .prose > * + * { margin-top: 1.1em }
 .prose h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 700; color: var(--ink); margin-top: 2em; letter-spacing: -.03em }

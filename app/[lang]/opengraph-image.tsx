@@ -1,18 +1,20 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { profile } from "@/content/profile";
+import { profile as profileSource } from "@/content/profile";
 import { fullName } from "@/lib/config";
+import { localize, toLocale } from "@/lib/i18n";
 
-export const alt = `${fullName} — ${profile.role}`;
+export const alt = fullName;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const portrait = await readFile(join(process.cwd(), "public/images/portrait.png"));
 const portraitSrc = `data:image/png;base64,${portrait.toString("base64")}`;
 
-/** Social share card, generated at build time from your profile + portrait. */
-export default function OgImage() {
+/** Social share card per language, generated on request from your profile + portrait. */
+export default async function OgImage({ params }: { params: Promise<{ lang: string }> }) {
+  const profile = localize(profileSource, toLocale((await params).lang));
   return new ImageResponse(
     (
       <div

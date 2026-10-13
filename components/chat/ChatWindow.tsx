@@ -3,18 +3,15 @@
 import Image from "next/image";
 import { Fragment, useEffect, useRef, useState } from "react";
 import portrait from "@/public/images/portrait.png";
-import { profile } from "@/content/profile";
+import { useI18n } from "../I18nProvider";
 import { ArrowRight, Close } from "../icons";
 
 type Msg = { role: "user" | "assistant"; content: string; error?: boolean };
 
-const QUICK = ["Free courses", "Next event", "Interviews", "Course prices", "Latest article", "How to contact?"];
 const MAX_CHARS = 1000;
-const STORAGE_KEY = "chat-history-v1";
-const GREETING: Msg = {
-  role: "assistant",
-  content: `Hi 👋 I'm ${profile.firstName}'s assistant. Ask me about courses, events, interviews or resources.`,
-};
+// The greeting is not stored: it is drawn in the page language, so the conversation
+// carries over when the visitor switches language.
+const STORAGE_KEY = "chat-history-v2";
 
 /** Turn bare URLs and email addresses into links; everything else stays plain text (no HTML injection). */
 function Linkified({ text }: { text: string }) {
@@ -41,7 +38,7 @@ function loadHistory(): Msg[] {
     const saved = sessionStorage.getItem(STORAGE_KEY);
     if (saved) return JSON.parse(saved) as Msg[];
   } catch {}
-  return [GREETING];
+  return [];
 }
 
 /**
@@ -49,6 +46,7 @@ function loadHistory(): Msg[] {
  * never delays the first paint. History is kept per browser tab in sessionStorage.
  */
 export default function ChatWindow({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { locale, t } = useI18n();
   const [messages, setMessages] = useState<Msg[]>(loadHistory);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -91,14 +89,14 @@ export default function ChatWindow({ open, onClose }: { open: boolean; onClose: 
     setWaiting(true);
 
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch(`/api/chat?lang=${locale}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: history.slice(-20).map(({ role, content }) => ({ role, content })) }),
       });
       if (!res.ok || !res.body) {
         const err = (await res.json().catch(() => null)) as { error?: string } | null;
-        throw new Error(err?.error || "I couldn't reach the assistant just now. Please try again in a moment.");
+        throw new Error(err?.error || t.chat.unreachable);
       }
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -111,7 +109,7 @@ export default function ChatWindow({ open, onClose }: { open: boolean; onClose: 
         setWaiting(false);
         setMessages((m) => [...m.slice(0, -1), { role: "assistant", content: reply }]);
       }
-      if (!reply.trim()) setMessages((m) => [...m.slice(0, -1), { role: "assistant", content: "Sorry, I didn't catch that — could you rephrase?", error: true }]);
+      if (!reply.trim()) setMessages((m) => [...m.slice(0, -1), { role: "assistant", content: t.chat.rephrase, error: true }]);
     } catch (e) {
       setMessages((m) => [...m.filter((x) => x.content !== "" || x.role !== "assistant"), { role: "assistant", content: (e as Error).message, error: true }]);
     } finally {
@@ -125,16 +123,16 @@ export default function ChatWindow({ open, onClose }: { open: boolean; onClose: 
         <div className="chat-head">
           <Image src={portrait} alt="" width={38} height={38} sizes="38px" />
           <div>
-            <b id="chat-title">Ask {profile.brand}</b>
+            <b id="chat-title">{t.chat.title}</b>
             <small>
               <i aria-hidden="true" />
-              Assistant · usually instant
+              {t.chat.subtitle}
             </small>
           </div>
           <button
             type="button"
             className="icon-btn"
-            aria-label="Close chat"
+            aria-label={t.chat.close}
             onClick={onClose}
           >
             <Close />
@@ -142,16 +140,20 @@ export default function ChatWindow({ open, onClose }: { open: boolean; onClose: 
         </div>
 
         <div className="msgs" ref={listRef} role="log" aria-live="polite" aria-busy={busy}>
+          <div className="msg bot">
+            <span className="sr-only">{t.chat.assistant}</span>
+            {t.chat.greeting}
+          </div>
           {messages.map((m, i) =>
             m.role === "assistant" && m.content === "" ? null : (
               <div key={i} className={`msg ${m.role === "user" ? "me" : "bot"}${m.error ? " err" : ""}`}>
-                <span className="sr-only">{m.role === "user" ? "You: " : "Assistant: "}</span>
+                <span className="sr-only">{m.role === "user" ? t.chat.you : t.chat.assistant}</span>
                 {m.role === "assistant" ? <Linkified text={m.content} /> : m.content}
               </div>
             ),
           )}
           {waiting && (
-            <div className="msg bot" style={{ padding: 0 }} aria-label="Assistant is typing">
+            <div className="msg bot" style={{ padding: 0 }} aria-label={t.chat.typing}>
               <span className="typing" aria-hidden="true">
                 <i />
                 <i />
@@ -161,8 +163,8 @@ export default function ChatWindow({ open, onClose }: { open: boolean; onClose: 
           )}
         </div>
 
-        <div className="quick" role="group" aria-label="Suggested questions">
-          {QUICK.map((q) => (
+        <div className="quick" role="group" aria-label={t.chat.suggested}>
+          {t.chat.quick.map((q) => (
             <button key={q} type="button" onClick={() => ask(q)} disabled={busy}>
               {q}
             </button>
@@ -177,19 +179,19 @@ export default function ChatWindow({ open, onClose }: { open: boolean; onClose: 
           }}
         >
           <label htmlFor="chat-input" className="sr-only">
-            Message
+            {t.chat.message}
           </label>
           <input
             id="chat-input"
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about courses, events…"
+            placeholder={t.chat.placeholder}
             autoComplete="off"
             maxLength={MAX_CHARS}
             enterKeyHint="send"
           />
-          <button type="submit" aria-label="Send message" disabled={busy || !input.trim()}>
+          <button type="submit" aria-label={t.chat.send} disabled={busy || !input.trim()}>
             <ArrowRight />
           </button>
         </form>

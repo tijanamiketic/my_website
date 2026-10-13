@@ -1,35 +1,44 @@
+import type { Text } from "@/lib/i18n";
+
 /**
  * Shared content types. Every file in /content is typed against these, so
  * TypeScript will tell you if a field is missing or misspelled.
+ *
+ * Fields typed `Text` are shown to visitors and need one value per language:
+ * { sr: "…", en: "…" }. Names, URLs, dates, prices and other facts are stored once.
  */
+
+export type { Text };
 
 export type Profile = {
   firstName: string;
   lastName: string;
   /** Shown in the navbar brand and browser tab. */
   brand: string;
-  role: string;
+  role: Text;
   /** Hero tagline. Wrap a phrase in **double asterisks** to make it bold. */
-  tagline: string;
-  status: string;
+  tagline: Text;
+  status: Text;
   email: string;
-  location: string;
+  location: Text;
   skoolUrl: string;
-  stats: { value: string; label: string }[];
+  stats: { value: string; label: Text }[];
   /** The three floating glass badges around the hero portrait. */
   badges: [Badge, Badge, Badge];
-  bio: { quote: string; paragraphs: string[] };
-  pillars: { icon: "code" | "cap" | "spark"; title: string; text: string }[];
-  newsletter: { title: string; text: string; perks: string[] };
+  bio: { quote: Text; paragraphs: Text[] };
+  pillars: { icon: "code" | "cap" | "spark"; title: Text; text: Text }[];
+  /** `title` is the newsletter's name and is not translated. */
+  newsletter: { title: string; text: Text; perks: Text[] };
   /** Used for SEO / JSON-LD. */
-  seo: { description: string; keywords: string[] };
+  seo: { description: Text; keywords: Text[] };
 };
 
-export type Badge = { glyph: string; title: string; subtitle: string };
+export type Badge = { glyph: string; title: Text; subtitle: Text };
 
 export type Project = {
+  /** Product name: not translated. */
   title: string;
-  description: string;
+  description: Text;
   tags: string[];
   year: string;
   url: string;
@@ -42,26 +51,27 @@ export type Project = {
 export type InterviewFormat = "Podcast" | "Video" | "Article" | "Radio";
 
 export type Interview = {
-  title: string;
+  title: Text;
   outlet: string;
+  /** Shown translated, via the `interviews.format` labels in content/i18n. */
   format: InterviewFormat;
   /** ISO date, e.g. "2026-09-12". */
   date: string;
-  duration: string;
+  duration: Text;
   url: string;
-  quote?: string;
+  quote?: Text;
   featured?: boolean;
   image?: string;
 };
 
 export type Course = {
-  title: string;
+  title: Text;
   tier: "free" | "premium";
-  level: string;
-  duration: string;
+  level: Text;
+  duration: Text;
   /** Price in EUR. Ignored for free courses. */
   price?: number;
-  description: string;
+  description: Text;
   glyph: string;
   /** Optional deep link; defaults to the Skool community URL. */
   url?: string;
@@ -70,26 +80,28 @@ export type Course = {
 export type ResourceType = "PDF" | "Template" | "Checklist" | "Notebook" | "Guide";
 
 export type Resource = {
-  title: string;
+  title: Text;
+  /** Shown translated, via the `resources.type` labels in content/i18n. */
   type: ResourceType;
-  category: string;
-  size: string;
+  category: Text;
+  size: Text;
   /** ISO date. */
   updated: string;
-  description: string;
+  description: Text;
   /** File in /public/resources (e.g. "/resources/prompt-patterns.pdf") or an external URL. */
   url: string;
 };
 
 export type EventItem = {
-  title: string;
+  title: Text;
   /** ISO date, e.g. "2026-10-22". */
   date: string;
   /** Local time range in CET, e.g. "18:00–19:30". */
   time: string;
+  /** Shown translated, via the `events.mode` labels in content/i18n. */
   mode: "Online" | "In person";
-  location: string;
-  description: string;
+  location: Text;
+  description: Text;
   /** Seats left; null = open / unlimited. */
   seats: number | null;
   url: string;
@@ -105,6 +117,7 @@ export type Social = {
 export type NewsTopic = "Research" | "Policy" | "Industry" | "Open source" | "Education";
 export type NewsRegion = "Global" | "Europe" | "Americas" | "Asia" | "Africa";
 
+/** Headlines come from third-party feeds and stay in their original language. */
 export type NewsItem = {
   source: string;
   region: NewsRegion;
