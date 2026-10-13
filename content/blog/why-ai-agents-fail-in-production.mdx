@@ -1,0 +1,40 @@
+---
+title: "Why most AI agents fail in production — and the 5 checks that fix it"
+date: "2026-09-18"
+readingTime: 12
+excerpt: "After shipping a dozen agents for clients, the failures were never the model. They were state, tools and missing guardrails. Here's my checklist."
+glyph: "▲"
+featured: true
+---
+
+> Placeholder article — replace with your own writing.
+
+After shipping a dozen agents for clients over the last two years, I noticed something uncomfortable: **the model was almost never the reason an agent failed.** The failures lived in the boring parts — state, tools, and the lack of guardrails.
+
+## 1. Make state explicit
+
+Most agents keep their "memory" implicitly in a growing message list. That works in a demo and collapses in week two. Write down what the agent must remember between steps and store it in a structured object you can inspect.
+
+## 2. Treat tools like public APIs
+
+Every tool needs a clear name, a tight schema and **useful error messages**. When a tool fails, the agent reads the error — so write errors for the model, not for a log file.
+
+```ts
+return { error: "No customer with that email. Ask the user to confirm the address." };
+```
+
+## 3. Budget every loop
+
+Cap iterations, tokens and wall-clock time. An agent that can loop forever eventually will.
+
+## 4. Evaluate on real transcripts
+
+Twenty real conversations beat two hundred synthetic ones. Keep them in a spreadsheet, re-run them on every prompt change, and look at the diffs.
+
+## 5. Design the failure path
+
+Decide what happens when the agent gets stuck: hand off to a human, ask a clarifying question, or stop with a summary. "Keep trying" is not a strategy.
+
+---
+
+None of these checks are glamorous. All of them are cheaper than an incident.

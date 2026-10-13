@@ -1,0 +1,24 @@
+---
+title: "RAG in 2026: what changed, what didn't"
+date: "2026-08-21"
+readingTime: 9
+excerpt: "Longer context windows didn't kill retrieval. They changed where it matters."
+glyph: "⊕"
+---
+
+> Placeholder article — replace with your own writing.
+
+Every few months someone declares retrieval-augmented generation dead because context windows got bigger. Context did get bigger — and RAG changed shape rather than disappearing.
+
+## What changed
+
+- **Chunking matters less.** With a million tokens available, you can retrieve whole documents instead of 500-token fragments.
+- **Reranking matters more.** The bottleneck moved from "fit it in" to "put the right thing first".
+
+## What didn't
+
+- **Freshness.** Your data still changes after training.
+- **Citations.** Users still need to see where an answer came from.
+- **Cost.** Sending everything on every request is still expensive.
+
+The best systems I see today retrieve generously, rerank carefully and cite everything.
