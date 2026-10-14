@@ -1,6 +1,11 @@
 # Changelog
 
+## 2026-10-15
+- Changed: The About heading reads "AI koji rešava probleme" / "AI that solves problems", and the bio has new text in both languages. The quote, signature and Build / Teach / Share cards are unchanged.
+
 ## 2026-10-14
+- Changed: The navigation logo and the social share image show "Tijana Miketić" instead of "T. Miketić".
+- Fixed: Navigation links no longer wrap onto two lines (e.g. "AI News" on `/en`) and stay vertically aligned. Link spacing is slightly tighter, and the menu button now appears at 1220px and narrower (was 1180px).
 - Changed: The name in the hero uses Roboto Slab 500. The role under it keeps Instrument Serif italic.
 - Changed: Hero shows the full name, the new role ("AI Specijalista i Edukator" / "AI Specialist & Educator"), a new short description and the status "Primam prijave za konsultacije" / "Now booking consultations".
 - Removed: The three floating cards around the hero photo and the "12k+" and "40+" stats. The hero now shows one stat: 9 courses & trainings.

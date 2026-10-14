@@ -53,7 +53,7 @@ export const sr = {
   about: {
     eyebrow: "O meni",
     title: "AI koji",
-    accent: "ima smisla",
+    accent: "rešava probleme",
   },
   projects: {
     eyebrow: "Projekti",

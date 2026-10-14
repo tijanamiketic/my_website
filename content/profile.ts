@@ -9,7 +9,7 @@ import type { Profile } from "./types";
 export const profile: Profile = {
   firstName: "Tijana",
   lastName: "Miketić",
-  brand: "T. Miketić",
+  brand: "Tijana Miketić",
   role: { sr: "AI Specijalista i Edukator", en: "AI Specialist & Educator" },
   tagline: {
     sr: "Pravim praktične AI proizvode, svakodnevno istražujem svet veštačke inteligencije i delim znanje, savete i iskustva koja zaista možeš da primeniš.",
@@ -28,12 +28,12 @@ export const profile: Profile = {
     },
     paragraphs: [
       {
-        sr: "Razvijam softver i predajem, na preseku jezičkih modela i učenja. Poslednjih šest godina pravim AI alate za startape i škole, a kroz moje obuke prošle su hiljade ljudi — inženjeri, dizajneri, nastavnici, osnivači — koji danas te alate koriste sa samopouzdanjem.",
-        en: "I'm a developer and educator working at the intersection of language models and learning. For the past six years I've built AI tools for startups and schools, and taught thousands of people — engineers, designers, teachers, founders — how to use them with confidence.",
+        sr: "Već nekoliko godina istražujem veštačku inteligenciju i njenu primenu u praksi. Uočavam procese koji mogu da se automatizuju, razvijam AI alate i svakodnevno učim, a ono što naučim delim sa drugima. Probleme rešavam nekoliko koraka unapred: i one koji već postoje, i one koji tek mogu da nastanu.",
+        en: "For several years I’ve been researching artificial intelligence and how to apply it in practice. I spot processes that can be automated, build AI tools, and learn every day, then share what I learn with others. I solve problems a few steps ahead: the ones that already exist, and the ones that haven’t appeared yet.",
       },
       {
-        sr: "Moji kursevi su praktični i imaju jasan stav: manje pomodnih reči, više prototipova koji rade. Kad ne predajem, pišem o onome što naučim u produkciji i vodim sesije uživo za svoju zajednicu.",
-        en: "My courses are hands-on and opinionated: fewer buzzwords, more working prototypes. When I'm not teaching, I'm writing about what I learn in production and running live sessions for my community.",
+        sr: "Moji kursevi nisu klasična škola. To je lično i primenljivo znanje, nastalo na mom putu od nule do onoga što danas radim.",
+        en: "My courses aren’t a traditional school. They’re personal, practical knowledge, built on my own journey from zero to what I do today.",
       },
     ],
   },

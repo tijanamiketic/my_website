@@ -48,8 +48,8 @@ export const en: Dictionary = {
   },
   about: {
     eyebrow: "About",
-    title: "Making AI",
-    accent: "make sense",
+    title: "AI that",
+    accent: "solves problems",
   },
   projects: {
     eyebrow: "Projects",
