@@ -83,7 +83,7 @@ export const sr = {
     eyebrow: "Intervjui i mediji",
     title: "U",
     accent: "razgovoru",
-    lede: "Podkasti, video intervjui i članci u kojima pričam o AI-ju, obrazovanju i radu u javnosti.",
+    lede: "Razgovori i tekstovi u kojima delim svoje iskustvo sa veštačkom inteligencijom.",
     verb: { Article: "Pročitaj", Video: "Pogledaj intervju", Podcast: "Poslušaj", Radio: "Poslušaj" } satisfies Record<InterviewFormat, string>,
     format: { Podcast: "Podkast", Video: "Video", Article: "Članak", Radio: "Radio" } satisfies Record<InterviewFormat, string>,
     featuredIn: "GOSTOVANJA",

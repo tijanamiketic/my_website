@@ -79,7 +79,7 @@ export const en: Dictionary = {
     eyebrow: "Interviews & Press",
     title: "In",
     accent: "conversation",
-    lede: "Podcasts, video interviews and features where I talk about AI, education and building in public.",
+    lede: "Conversations and articles where I share my experience with AI.",
     verb: { Article: "Read", Video: "Watch interview", Podcast: "Listen now", Radio: "Listen now" },
     format: { Podcast: "Podcast", Video: "Video", Article: "Article", Radio: "Radio" },
     featuredIn: "AS FEATURED IN",
