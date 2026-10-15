@@ -19,6 +19,7 @@ Why it is written this way:
 - **Strict "only from the facts" rules:** the assistant speaks for a real person, so a made-up price or date is worse than "I don't know".
 - **Byte-stable:** the prompt contains no timestamps or random values, so Anthropic prompt caching can reuse it across visitors (`cache_control: ephemeral`). There is one cached prompt per language. The list of upcoming events only changes when the hourly cache in `lib/events.ts` refreshes.
 - **Facts in the page language:** prices, dates and blog links in the prompt match what the visitor sees on the page, so the assistant quotes them the same way.
+- **Courses are "coming soon":** the `<courses>` block has no prices or links, and a rule tells the assistant to suggest booking a consultation by email for anything about courses or working together. The fallback responder does the same.
 - **Social profiles without a link** (`content/socials.ts`) are listed as "coming soon" with no URL, so the assistant never links to an empty profile.
 - **Placeholder links (`"#"`)** are replaced with hints like "the Register button in the Events section", so the assistant never gives out a dead link.
 

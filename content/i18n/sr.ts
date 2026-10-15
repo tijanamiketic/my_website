@@ -27,8 +27,7 @@ export const sr = {
       events: "Događaji",
       contact: "Kontakt",
     },
-    join: "Pridruži se",
-    joinMobile: "Pridruži se kursevima na Skoolu",
+    contactMe: "Kontaktiraj me",
     openMenu: "Otvori meni",
     closeMenu: "Zatvori meni",
   },
@@ -47,7 +46,7 @@ export const sr = {
   },
   hero: {
     viewProjects: "Pogledaj projekte",
-    joinCourses: "Pridruži se kursevima",
+    bookConsultation: "Zakaži konsultacije",
     portraitAlt: (name: string) => `Portret: ${name}`,
   },
   about: {
@@ -180,7 +179,7 @@ export const sr = {
     assistant: "Asistent: ",
     typing: "Asistent kuca",
     suggested: "Predložena pitanja",
-    quick: ["Besplatni kursevi", "Sledeći događaj", "Intervjui", "Cene kurseva", "Najnoviji tekst", "Kako do kontakta?"],
+    quick: ["Kursevi", "Sledeći događaj", "Intervjui", "Konsultacije", "Najnoviji tekst", "Kako do kontakta?"],
     message: "Poruka",
     placeholder: "Pitaj o kursevima, događajima…",
     send: "Pošalji poruku",

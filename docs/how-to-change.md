@@ -148,6 +148,17 @@ In code: Server Components call `await getI18n()` (`@/lib/i18n/server`); Client 
 5. Add the language to `REPLY_LANGUAGE` in `lib/chat-context.ts` and its answers in `lib/mock-chat.ts`.
 6. Record the decision in [decisions.md](decisions.md).
 
+### Switch the buttons back to Skool (when courses open)
+
+While courses are "coming soon", nothing links to Skool: the nav button ("Kontaktiraj me" / "Contact me") and the hero button ("Zakaži konsultacije" / "Book a consultation") scroll to `#contact`. `SKOOL_URL` stays in `lib/config.ts` for later. To switch back:
+
+1. Set the real community link: `NEXT_PUBLIC_SKOOL_URL` in Vercel, or `skoolUrl` in `content/profile.ts`.
+2. `components/Nav.tsx`: import `SKOOL_URL` from `@/lib/config` and give both buttons (`.nav-cta` and the one at the end of the mobile menu) `href={SKOOL_URL} target="_blank" rel="noopener noreferrer"`. Remove the mobile button's `onClick`. Change the text in `nav.contactMe` in `content/i18n/sr.ts` and `en.ts`, or add new keys. The old texts were "Pridruži se" / "Join courses" (desktop) and "Pridruži se kursevima na Skoolu" / "Join courses on Skool" (mobile menu).
+3. `components/sections/Hero.tsx`: same for the `btn-glass` button. The old text (`hero.bookConsultation` today) was "Pridruži se kursevima" / "Join My Courses".
+4. Course cards: restore the price badge and the enroll button in `components/sections/Courses.tsx` (the version before commit `5f17463` in Git history).
+5. Chat assistant: in `lib/chat-context.ts` put prices and `c.url ?? SKOOL_URL` back in the `<courses>` block and remove the "coming soon" rules; in `lib/mock-chat.ts` rewrite the `free`, `price` and `course` replies in both languages.
+6. Check the nav at 1440px in both languages: a longer button text can push the links onto two lines.
+
 ### Add or remove an AI-news feed
 
 Edit `newsSources` in `content/news-sources.ts`. Set `aiOnly: true` on general tech feeds to keep only AI headlines. Topics are assigned from headline keywords in `topicRules`. The feed is cached for 1 hour. If every feed fails, the `mockNews` items are shown.

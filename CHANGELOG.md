@@ -1,6 +1,9 @@
 # Changelog
 
 ## 2026-10-16
+- Changed: The navigation button (desktop and mobile menu) reads "Kontaktiraj me" / "Contact me" and the hero's second button reads "Zakaži konsultacije" / "Book a consultation". Both scroll to Contact instead of opening Skool.
+- Changed: The chat assistant describes the courses as coming soon, with no prices or Skool links, and suggests booking a consultation by email. Its quick replies "Besplatni kursevi" / "Free courses" and "Cene kurseva" / "Course prices" are now "Kursevi" / "Courses" and "Konsultacije" / "Book a consultation".
+- Removed: The Skool link on the "Masterclass: AI agenti" event.
 - Changed: The contact email is tijanamiketic.raz@gmail.com everywhere (Contact section, copy button, search data and chat assistant).
 - Changed: LinkedIn in Contact links to Tijana's real profile. YouTube, GitHub and Skool are greyed out with an "Uskoro" / "Coming soon" label and are not links yet.
 - Removed: Instagram from the social links.

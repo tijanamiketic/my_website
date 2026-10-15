@@ -4,6 +4,11 @@ Newest first. Entries are never rewritten. If a decision changes, add a new entr
 
 The entries dated 2026-10-10 were recorded when the documentation was created. They describe decisions already visible in the project; the actual decision dates are earlier.
 
+## 2026-10-16: Nothing links to Skool until courses open
+**Decision:** No button or chat reply links to Skool while the courses are "coming soon" and the Skool URL is a placeholder. The nav button reads "Kontaktiraj me" / "Contact me" and the hero's second button reads "Zakaži konsultacije" / "Book a consultation"; both scroll to the Contact section. The chat assistant describes courses as coming soon, with no prices or links, and suggests booking a consultation by email. This puts "Courses hosted on Skool" (2026-10-10) on hold; `SKOOL_URL` stays in `lib/config.ts`.
+**Why:** Owner's decision: a button must not lead to a placeholder page.
+**Consequences:** Switching back is a code change in several files, listed under "Switch the buttons back to Skool" in [how-to-change.md](how-to-change.md).
+
 ## 2026-10-16: No newsletter; unfinished social profiles shown as "coming soon"
 **Decision:** The newsletter sign-up is removed from the site, with its server action, texts and the `NEWSLETTER_WEBHOOK_URL` / `NEWSLETTER_API_KEY` variables. This replaces "Newsletter through a generic webhook" (2026-10-10) and the newsletter part of "In-memory rate limiting" (2026-10-10), and the newsletter name is no longer in the "not translated" list in "How Serbian is written". The contact email is tijanamiketic.raz@gmail.com. Instagram is removed from the social links. YouTube, GitHub and Skool are shown greyed out as "coming soon", with no link, until their profiles exist. Only LinkedIn links out.
 **Why:** Owner's request: there is no newsletter yet, and the placeholder profiles pointed to generic home pages.

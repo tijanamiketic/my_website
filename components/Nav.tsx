@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { profile } from "@/content/profile";
-import { NAV, SKOOL_URL } from "@/lib/config";
+import { NAV } from "@/lib/config";
 import { localePath, stripLocale } from "@/lib/i18n";
 import { useI18n } from "./I18nProvider";
 import LanguageSwitch from "./LanguageSwitch";
@@ -107,8 +107,8 @@ export default function Nav() {
         <div className="nav-actions">
           <LanguageSwitch />
           <ThemeToggle />
-          <a className="btn btn-primary btn-sm nav-cta" href={SKOOL_URL} target="_blank" rel="noopener noreferrer">
-            {t.nav.join}
+          <a className="btn btn-primary btn-sm nav-cta" href={`${prefix}#contact`}>
+            {t.nav.contactMe}
           </a>
           <button
             ref={burgerRef}
@@ -133,8 +133,8 @@ export default function Nav() {
             <span aria-hidden="true" className="text-muted">›</span>
           </a>
         ))}
-        <a className="btn btn-primary" href={SKOOL_URL} target="_blank" rel="noopener noreferrer">
-          {t.nav.joinMobile}
+        <a className="btn btn-primary" href={`${prefix}#contact`} onClick={() => setOpen(false)}>
+          {t.nav.contactMe}
         </a>
       </div>
     </div>

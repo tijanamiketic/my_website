@@ -1,8 +1,8 @@
 import type { Course } from "./types";
 
 /**
- * MOCK courses — replace with your real catalogue. Every button links to the
- * Skool community (profile.skoolUrl / SKOOL_URL) unless a course sets `url`.
+ * MOCK courses — replace with your real catalogue. All courses are shown as
+ * "coming soon" for now, with no price, button or link (see docs/how-to-change.md).
  */
 export const courses: Course[] = [
   {

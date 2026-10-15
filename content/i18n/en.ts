@@ -23,8 +23,7 @@ export const en: Dictionary = {
       events: "Events",
       contact: "Contact",
     },
-    join: "Join courses",
-    joinMobile: "Join courses on Skool",
+    contactMe: "Contact me",
     openMenu: "Open menu",
     closeMenu: "Close menu",
   },
@@ -43,7 +42,7 @@ export const en: Dictionary = {
   },
   hero: {
     viewProjects: "View Projects",
-    joinCourses: "Join My Courses",
+    bookConsultation: "Book a consultation",
     portraitAlt: (name) => `Portrait of ${name}`,
   },
   about: {
@@ -176,7 +175,7 @@ export const en: Dictionary = {
     assistant: "Assistant: ",
     typing: "Assistant is typing",
     suggested: "Suggested questions",
-    quick: ["Free courses", "Next event", "Interviews", "Course prices", "Latest article", "How to contact?"],
+    quick: ["Courses", "Next event", "Interviews", "Book a consultation", "Latest article", "How to contact?"],
     message: "Message",
     placeholder: "Ask about courses, events…",
     send: "Send message",

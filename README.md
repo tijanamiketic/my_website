@@ -1,6 +1,6 @@
 # Tijana Miketić — personal website
 
-The personal website of Tijana Miketić, AI developer and educator. It is for potential students, workshop clients, journalists and other builders. It shows projects, blog posts, interviews, a live AI-news feed, courses (hosted on Skool), free resources, upcoming events and contact details, and has a chat assistant that answers questions about all of these.
+The personal website of Tijana Miketić, AI developer and educator. It is for potential students, workshop clients, journalists and other builders. It shows projects, blog posts, interviews, a live AI-news feed, courses (coming soon, to be hosted on Skool), free resources, upcoming events and contact details, and has a chat assistant that answers questions about all of these.
 
 The site is in Serbian (Latin script) by default, at `/`, with an English version at `/en`. Visitors switch with the SR | EN control in the navigation.
 
@@ -25,7 +25,7 @@ All are optional. Set them in `.env.local` for local work, and in Vercel → Pro
 | Variable | Purpose | Without it |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Public URL used for canonical links, sitemap and Open Graph | Vercel's production domain, or `http://localhost:3000` |
-| `NEXT_PUBLIC_SKOOL_URL` | Skool community link used by every "Join / Enroll" button | `profile.skoolUrl` in `content/profile.ts` |
+| `NEXT_PUBLIC_SKOOL_URL` | Skool community link. Not used right now: courses are "coming soon" and no button links to Skool | `profile.skoolUrl` in `content/profile.ts` |
 | `ANTHROPIC_API_KEY` | Turns on the Claude-powered chat assistant | A built-in keyword responder answers instead |
 | `ANTHROPIC_MODEL` | Chat model override | `claude-opus-5` |
 

@@ -32,7 +32,7 @@ export const events: EventItem[] = [
     location: { sr: "Zoom", en: "Zoom" },
     description: { sr: "Uvodna sesija Masterclass-a o agentima. Prvi sat je otvoren za sve.", en: "Opening session of the Agents Masterclass. Open to everyone for the first hour." },
     seats: 48,
-    url: "https://www.skool.com/your-community",
+    url: "#",
   },
   {
     title: { sr: "AI Builders Meetup — zimsko izdanje", en: "AI Builders Meetup — Winter Edition" },

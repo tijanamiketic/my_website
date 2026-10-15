@@ -1,6 +1,6 @@
 import { Roboto_Slab } from "next/font/google";
 import { profile as profileSource } from "@/content/profile";
-import { fullName, SKOOL_URL } from "@/lib/config";
+import { fullName } from "@/lib/config";
 import { splitBold } from "@/lib/format";
 import { localize } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
@@ -34,8 +34,8 @@ export default async function Hero() {
             <a className="btn btn-primary" href="#projects">
               {t.hero.viewProjects} <ArrowRight />
             </a>
-            <a className="btn btn-glass" href={SKOOL_URL} target="_blank" rel="noopener noreferrer">
-              {t.hero.joinCourses}
+            <a className="btn btn-glass" href="#contact">
+              {t.hero.bookConsultation}
             </a>
           </div>
           <dl className="hero-meta">

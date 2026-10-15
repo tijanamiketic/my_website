@@ -2,9 +2,9 @@ import "server-only";
 import { socials } from "@/content/socials";
 import { dictionaries } from "@/content/i18n";
 import { getChatKnowledge } from "./chat-context";
-import { SKOOL_URL, fullName } from "./config";
+import { fullName } from "./config";
 import { formatDate } from "./format";
-import { formatPrice, type Locale } from "./i18n";
+import type { Locale } from "./i18n";
 
 /** Placeholder links ("#") in the content files shouldn't be shown to visitors. */
 const realUrl = (u?: string) => !!u && u !== "#";
@@ -22,7 +22,7 @@ const INTENTS: { intent: Intent; k: RegExp }[] = [
   { intent: "blog", k: /(blog|article|post|write|writing|read|tekst|član|clan)/ },
   { intent: "resource", k: /(resource|pdf|template|guide|download|doc|checklist|notebook|resurs|šablon|sablon|vodič|vodic|preuz)/ },
   { intent: "project", k: /(project|built|portfolio|work|app|projek|aplikacij)/ },
-  { intent: "contact", k: /(contact|email|mail|hire|collab|speak|reach|book|kontakt|imejl|mejl|saradnj|angaž|angaz)/ },
+  { intent: "contact", k: /(contact|email|mail|hire|collab|speak|reach|book|consult|kontakt|konsult|imejl|mejl|saradnj|angaž|angaz)/ },
   { intent: "about", k: /(who|about|background|experience|bio|ko je|biografij|iskustv)/ },
 ];
 
@@ -35,8 +35,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
   const k = await getChatKnowledge(locale);
   const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl } = k;
   const d = dictionaries[locale];
-  const free = courses.filter((c) => c.tier === "free");
-  const premium = courses.filter((c) => c.tier === "premium");
+  const courseList = courses.map((c) => c.title).join(", ");
   const name = profile.firstName;
   const s = d.nav.sections;
   const liveSocials = socials.filter((x) => x.url).map((x) => x.name).join(", ");
@@ -45,9 +44,9 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
 
   const sr: Record<Intent | "fallback", () => string> = {
     greet: () => `Zdravo! Mogu da ti kažem nešto o kursevima, predstojećim događajima, intervjuima, besplatnim resursima ili kako da stupiš u kontakt. Šta te zanima?`,
-    free: () => `Besplatni kursevi: ${free.map((c) => `${c.title} (${c.duration}, ${c.level})`).join("; ")}. Svi su u Skool zajednici: ${SKOOL_URL}`,
-    price: () => `Premium kursevi: ${premium.map((c) => `${c.title} — ${formatPrice(c.price ?? 0, locale)} (${c.duration})`).join("; ")}. Svaki uključuje pitanja i odgovore uživo i povratne informacije. Upis je na Skoolu: ${SKOOL_URL}`,
-    course: () => `Tek počinješ sa AI-jem? Kreni od kursa „${free[0]?.title}“ — besplatan je. Za dublje znanje, glavni kurs je „${premium[0]?.title}“. Sve je na Skoolu: ${SKOOL_URL}`,
+    free: () => sr.course(),
+    price: () => sr.course(),
+    course: () => `Kursevi još nisu otvoreni, uskoro stižu: ${courseList}. Cene i upis još nisu objavljeni. Za kurseve, obuke ili saradnju zakaži konsultacije putem imejla: ${profile.email}`,
     event: () => {
       const e = upcoming[0];
       if (!e) return `Trenutno nema zakazanih događaja. Navrati ponovo uskoro ili piši na ${profile.email}.`;
@@ -61,16 +60,16 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     blog: () => `Najnoviji tekst: „${posts[0]?.title}“ (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `Broj besplatnih resursa u biblioteci: ${resources.length}. Probaj „${resources[0].title}“, a pretraga u odeljku ${s.resources} filtrira po temi.`,
     project: () => `Neki od skorašnjih projekata: ${projects.slice(0, 3).map((p) => p.title).join(", ")}. Svi su u odeljku ${s.projects}.`,
-    contact: () => `Najbolje je putem imejla: ${profile.email}. Za radionice ili predavanja navedi datume i broj učesnika. Na mrežama: ${liveSocials}.`,
+    contact: () => `Najbolje je putem imejla: ${profile.email}, tako se zakazuju i konsultacije. Za radionice ili predavanja navedi datume i broj učesnika. Na mrežama: ${liveSocials}.`,
     about: () => `${fullName} — ${profile.role}, ${profile.location}. ${profile.stats.map((x) => `${x.value} ${x.label}`).join(", ")}. Pravi agente, RAG sisteme i AI proizvode i predaje kroz kurseve, grupne programe i korporativne obuke.`,
-    fallback: () => `Ja sam demo asistent sajta, pa znam osnove — kurseve, cene, događaje, intervjue, resurse i kontakt. Probaj neki od predloga ispod ili piši na ${profile.email}.`,
+    fallback: () => `Ja sam demo asistent sajta, pa znam osnove — kurseve, događaje, intervjue, resurse i kontakt. Probaj neki od predloga ispod ili piši na ${profile.email}.`,
   };
 
   const en: Record<Intent | "fallback", () => string> = {
     greet: () => `Hi! I can tell you about ${name}'s courses, upcoming events, interviews, free resources or how to get in touch. What are you curious about?`,
-    free: () => `Free courses: ${free.map((c) => `${c.title} (${c.duration}, ${c.level})`).join("; ")}. They're all in the Skool community: ${SKOOL_URL}`,
-    price: () => `Premium courses: ${premium.map((c) => `${c.title} — ${formatPrice(c.price ?? 0, locale)} (${c.duration})`).join("; ")}. Each includes live Q&As and feedback. Enroll on Skool: ${SKOOL_URL}`,
-    course: () => `New to AI? Start with "${free[0]?.title}" — it's free. For depth, "${premium[0]?.title}" is the flagship. Everything is on Skool: ${SKOOL_URL}`,
+    free: () => en.course(),
+    price: () => en.course(),
+    course: () => `The courses aren't open yet. Coming soon: ${courseList}. Prices and enrollment haven't been announced. For courses, training or working together, book a consultation by email: ${profile.email}`,
     event: () => {
       const e = upcoming[0];
       if (!e) return `There are no events scheduled right now. Check back soon, or email ${profile.email}.`;
@@ -84,10 +83,10 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     blog: () => `Latest article: "${posts[0]?.title}" (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `There are ${resources.length} free resources in the library — try "${resources[0].title}". Use the search in the ${s.resources} section to filter by topic.`,
     project: () => `Recent projects include ${projects.slice(0, 3).map((p) => p.title).join(", ")}. Scroll to ${s.projects} to see them all.`,
-    contact: () => `The best way is email: ${profile.email}. For workshops or speaking, include your dates and audience size. You can also find ${name} on ${liveSocials}.`,
+    contact: () => `The best way is email: ${profile.email}, which is also how to book a consultation. For workshops or speaking, include your dates and audience size. You can also find ${name} on ${liveSocials}.`,
     about: () =>
       `${fullName} is an ${profile.role} based in ${profile.location} — ${profile.stats.map((x) => `${x.value} ${x.label}`).join(", ")}. ${name} builds agents, RAG systems and AI products, and teaches through courses, cohorts and corporate trainings.`,
-    fallback: () => `I'm the site's demo assistant, so I know the basics — courses, prices, events, interviews, resources and contact. Try one of the suggestions below, or email ${profile.email}.`,
+    fallback: () => `I'm the site's demo assistant, so I know the basics — courses, events, interviews, resources and contact. Try one of the suggestions below, or email ${profile.email}.`,
   };
 
   const replies = { sr, en }[locale];

@@ -7,8 +7,9 @@ export const SITE_URL = (
 ).replace(/\/$/, "");
 
 /**
- * Skool community link used by every course / CTA button. NEXT_PUBLIC_ so the
- * same value is available to client components (navbar) and the server.
+ * Skool community link. Not used while courses are "coming soon": the nav and hero
+ * buttons point to #contact instead (see "Switch the buttons back to Skool" in
+ * docs/how-to-change.md). NEXT_PUBLIC_ so client components (navbar) can read it too.
  */
 export const SKOOL_URL = process.env.NEXT_PUBLIC_SKOOL_URL || profile.skoolUrl;
 
