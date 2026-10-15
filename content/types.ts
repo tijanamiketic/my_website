@@ -89,19 +89,20 @@ export type Resource = {
   url: string;
 };
 
+/** Leave out `date` to show the event as "coming soon": greyed out, with a disabled register button. */
 export type EventItem = {
   title: Text;
   /** ISO date, e.g. "2026-10-22". */
-  date: string;
+  date?: string;
   /** Local time range in CET, e.g. "18:00–19:30". */
-  time: string;
+  time?: string;
   /** Shown translated, via the `events.mode` labels in content/i18n. */
   mode: "Online" | "In person";
-  location: Text;
+  location?: Text;
   description: Text;
-  /** Seats left; null = open / unlimited. */
-  seats: number | null;
-  url: string;
+  /** Seats left; null or left out = open / unlimited. */
+  seats?: number | null;
+  url?: string;
 };
 
 /** Leave out `url` (and `handle`) to show the profile as "coming soon". */

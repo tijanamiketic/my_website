@@ -153,6 +153,8 @@ export const sr = {
     openToAll: "Otvoreno za sve",
     register: "Prijavi se",
     registerAria: (title: string) => `Prijava: ${title} (nova kartica)`,
+    soonDate: "Uskoro",
+    comingSoon: "Uskoro",
   },
   contact: {
     eyebrow: "Kontakt",

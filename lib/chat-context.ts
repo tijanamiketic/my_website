@@ -81,7 +81,13 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
   add(`<upcoming_events timezone="CET">`);
   if (upcoming.length === 0) add(`(none scheduled right now)`);
   for (const e of upcoming) {
-    add(`- ${e.title} | ${formatDate(e.date, locale)} ${e.time} CET | ${t.events.mode[e.mode]} · ${e.location} | ${e.seats ? t.events.seatsLeft(e.seats) : t.events.openToAll} | ${e.description} | register: ${link(e.url, `the ${t.events.register} button in the ${t.nav.sections.events} section`)}`);
+    if (!e.date) {
+      add(`- ${e.title}: ${e.description} | ${t.events.mode[e.mode]} | date to be announced (coming soon) | no time, venue or registration yet: never invent them, suggest emailing ${profile.email} for details`);
+      continue;
+    }
+    const when = [formatDate(e.date, locale), e.time && `${e.time} CET`].filter(Boolean).join(" ");
+    const where = [t.events.mode[e.mode], e.location].filter(Boolean).join(" · ");
+    add(`- ${e.title} | ${when} | ${where} | ${e.seats ? t.events.seatsLeft(e.seats) : t.events.openToAll} | ${e.description} | register: ${link(e.url ?? "", `the ${t.events.register} button in the ${t.nav.sections.events} section`)}`);
   }
   add(`</upcoming_events>`);
   add();

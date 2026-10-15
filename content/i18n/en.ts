@@ -149,6 +149,8 @@ export const en: Dictionary = {
     openToAll: "Open to all",
     register: "Register",
     registerAria: (title) => `Register for ${title} (new tab)`,
+    soonDate: "Soon",
+    comingSoon: "Coming soon",
   },
   contact: {
     eyebrow: "Contact",

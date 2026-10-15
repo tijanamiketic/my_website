@@ -582,12 +582,18 @@ dialog.doc[open] { animation: dialog-in .3s cubic-bezier(.2, .8, .2, 1) }
 .event .where { display: flex; flex-wrap: wrap; gap: .4rem }
 .event .side { display: flex; flex-direction: column; align-items: flex-end; gap: .5rem }
 .event .seats { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums }
+/* Undated event: shown as "coming soon". Opacity keeps the scroll-reveal fade (see [data-reveal]). */
+.event.soon { filter: grayscale(1); opacity: calc(.6 * (.2 + var(--p) * .8)) }
+.event.soon .date { display: grid; place-items: center; min-height: 5.4rem }
+.event.soon .date b { font-size: 1.05rem; letter-spacing: -.01em }
+.event.soon .btn { background: var(--chip); color: var(--muted); box-shadow: none; cursor: default; pointer-events: none }
 @media (max-width: 760px) {
   .timeline { padding-left: 24px }
   .timeline::before { left: 5px }
   .event::before { left: -25px }
   .event { grid-template-columns: 72px 1fr; gap: 1rem; padding: 1.1rem }
   .event .side { grid-column: 1/-1; flex-direction: row; justify-content: space-between; align-items: center }
+  .event.soon .side { justify-content: flex-end } /* no seats text, so keep the button where it was */
   .date b { font-size: 1.6rem }
   /* A long location (e.g. "Beograd · Naučno-tehnološki park") wraps instead of widening every card past the screen */
   .event .where .chip { white-space: normal; height: auto; min-height: 26px; padding-block: .3rem; line-height: 1.3 }

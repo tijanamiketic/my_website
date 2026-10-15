@@ -41,6 +41,8 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
   const liveSocials = socials.filter((x) => x.url).map((x) => x.name).join(", ");
   const ivDetails = (i: (typeof interviews)[number]) =>
     [d.interviews.format[i.format], i.duration, formatDate(i.date, locale)].filter(Boolean).join(", ");
+  const when = (e: (typeof upcoming)[number]) => [e.date && formatDate(e.date, locale), e.time && `${e.time} CET`].filter(Boolean).join(", ");
+  const where = (e: (typeof upcoming)[number]) => [d.events.mode[e.mode], e.location].filter(Boolean).join(" · ");
 
   const sr: Record<Intent | "fallback", () => string> = {
     greet: () => `Zdravo! Mogu da ti kažem nešto o kursevima, predstojećim događajima, intervjuima, besplatnim resursima ili kako da stupiš u kontakt. Šta te zanima?`,
@@ -50,8 +52,9 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     event: () => {
       const e = upcoming[0];
       if (!e) return `Trenutno nema zakazanih događaja. Navrati ponovo uskoro ili piši na ${profile.email}.`;
+      if (!e.date) return `Uskoro: ${e.title.toLowerCase()} „${e.description}“ (${d.events.mode[e.mode].toLowerCase()}). Datum će biti objavljen uskoro. Za detalje piši na ${profile.email}.`;
       const more = upcoming.length > 1 ? (realUrl(e.url) ? ` Ostali događaji su u odeljku ${s.events}.` : " Tamo su i ostali događaji.") : "";
-      return `Sledeći događaj: ${e.title}, ${formatDate(e.date, locale)}, ${e.time} CET (${d.events.mode[e.mode]} · ${e.location})${e.seats ? `, ${d.events.seatsLeft(e.seats).toLowerCase()}` : ""}. ${realUrl(e.url) ? `Prijava: ${e.url}` : `Prijava je u odeljku ${s.events}.`}${more}`;
+      return `Sledeći događaj: ${e.title}, ${when(e)} (${where(e)})${e.seats ? `, ${d.events.seatsLeft(e.seats).toLowerCase()}` : ""}. ${realUrl(e.url) ? `Prijava: ${e.url}` : `Prijava je u odeljku ${s.events}.`}${more}`;
     },
     interview: () => {
       const i = interviews.find((x) => x.featured) ?? interviews[0];
@@ -73,8 +76,9 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     event: () => {
       const e = upcoming[0];
       if (!e) return `There are no events scheduled right now. Check back soon, or email ${profile.email}.`;
+      if (!e.date) return `Coming up: the "${e.description}" ${e.title.toLowerCase()} (${d.events.mode[e.mode].toLowerCase()}). The date will be announced soon. For details, email ${profile.email}.`;
       const more = upcoming.length > 1 ? ` There are ${upcoming.length - 1} more in the ${s.events} section.` : "";
-      return `Next up: ${e.title} on ${formatDate(e.date, locale)}, ${e.time} CET (${d.events.mode[e.mode]} · ${e.location})${e.seats ? `, ${d.events.seatsLeft(e.seats)}` : ""}. ${realUrl(e.url) ? `Register: ${e.url}` : `Register in the ${s.events} section.`}${more}`;
+      return `Next up: ${e.title} on ${when(e)} (${where(e)})${e.seats ? `, ${d.events.seatsLeft(e.seats)}` : ""}. ${realUrl(e.url) ? `Register: ${e.url}` : `Register in the ${s.events} section.`}${more}`;
     },
     interview: () => {
       const i = interviews.find((x) => x.featured) ?? interviews[0];

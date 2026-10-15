@@ -183,7 +183,7 @@ See [ai.md](ai.md).
 - **Visible text typed into a component** shows in one language on both versions of the site. Put it in `content/i18n/sr.ts` and `en.ts`.
 - **Links written as plain paths** (`href="/blog/x"`) always open the Serbian page. Use `localePath(locale, "/blog/x")`.
 - **`proxy.ts` matcher:** URLs with a dot (files) and `/api/` skip the language routing. A new page whose URL contains a dot would not get a language.
-- **Dates** must be ISO strings like `"2026-10-22"`. An event with a past date disappears from the site and from the chat assistant.
+- **Dates** must be ISO strings like `"2026-10-22"`. An event with a past date disappears from the site and from the chat assistant. An event with no `date` is shown greyed out as "coming soon", with registration disabled.
 - **Placeholder links (`"#"`)** are hidden from visitors and the chat. Replace them with real URLs when ready.
 - **Portrait file name:** `public/images/portrait.png` is imported by name in several components. Renaming it breaks the build.
 - **`turbopack.root` in `next.config.ts`** must stay. There is a stray `package.json` / `package-lock.json` in the home folder (`C:\Users\Lenovo`), and without this setting Next.js picks the wrong project root.

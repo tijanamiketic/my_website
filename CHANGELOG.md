@@ -1,6 +1,10 @@
 # Changelog
 
 ## 2026-10-16
+- Changed: Upcoming Events shows a single card: "Radionica" / "Workshop", "Uvod u AI" / "Introduction to AI", "Uživo" / "In person". It has no date, time, seats or venue yet. The date block reads "Uskoro" / "Soon", and the register button is disabled and reads "Uskoro" / "Coming soon". The whole card is greyed out, with no tilt or glow on hover.
+- Removed: The other events ("AI u učionici", "Pravimo zajedno: RAG", "Masterclass: AI agenti", "AI Builders Meetup").
+- Changed: An event in `content/events.ts` may leave out `date`, `time`, `location`, `seats` and `url`. An event without a `date` is shown as coming soon and is never hidden as past.
+- Changed: The chat assistant says the only upcoming event is the in-person "Uvod u AI" / "Introduction to AI" workshop, date to be announced, and suggests emailing for details.
 - Removed: The footer line "Dizajnirano uz staklo, prelive i mnogo kafe." / "Designed with glass, gradients and a lot of coffee." The footer now shows only the copyright.
 - Changed: The navigation button (desktop and mobile menu) reads "Kontaktiraj me" / "Contact me" and the hero's second button reads "Zakaži konsultacije" / "Book a consultation". Both scroll to Contact instead of opening Skool.
 - Changed: The chat assistant describes the courses as coming soon, with no prices or Skool links, and suggests booking a consultation by email. Its quick replies "Besplatni kursevi" / "Free courses" and "Cene kurseva" / "Course prices" are now "Kursevi" / "Courses" and "Konsultacije" / "Book a consultation".
