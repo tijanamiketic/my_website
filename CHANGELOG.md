@@ -3,6 +3,8 @@
 ## 2026-10-16
 - Changed: Interviews & Press shows the real AK Academy article "Ovako sam ja počela" / "How I got started" (12 Mar 2026) instead of the mock interviews. The list beside it shows four questions from the article. The featured card, each list card and their buttons open the article in a new tab.
 - Removed: The format filter (Sve / Podkast / Video / Članak / Radio) in Interviews & Press.
+- Changed: The Interviews & Press intro reads "Razgovori i tekstovi u kojima delim svoje iskustvo sa veštačkom inteligencijom." / "Conversations and articles where I share my experience with AI."
+- Fixed: On narrow phones (e.g. 375px) the Serbian Events cards were 5px wider than the screen, because the location "Beograd · Naučno-tehnološki park" could not wrap. Long event chips now wrap onto two lines on screens 760px and narrower.
 
 ## 2026-10-15
 - Removed: The small "prevuci ili povuci prstom · pređi mišem za pauzu" / "drag or swipe · hover to pause" hint under the Projects heading.

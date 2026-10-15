@@ -586,6 +586,8 @@ dialog.doc[open] { animation: dialog-in .3s cubic-bezier(.2, .8, .2, 1) }
   .event { grid-template-columns: 72px 1fr; gap: 1rem; padding: 1.1rem }
   .event .side { grid-column: 1/-1; flex-direction: row; justify-content: space-between; align-items: center }
   .date b { font-size: 1.6rem }
+  /* A long location (e.g. "Beograd · Naučno-tehnološki park") wraps instead of widening every card past the screen */
+  .event .where .chip { white-space: normal; height: auto; min-height: 26px; padding-block: .3rem; line-height: 1.3 }
 }
 
 /* ============ CONTACT / FOOTER ============ */
