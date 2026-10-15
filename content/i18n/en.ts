@@ -80,12 +80,10 @@ export const en: Dictionary = {
     title: "In",
     accent: "conversation",
     lede: "Podcasts, video interviews and features where I talk about AI, education and building in public.",
-    verb: { Article: "Read feature", Video: "Watch interview", Podcast: "Listen now", Radio: "Listen now" },
+    verb: { Article: "Read", Video: "Watch interview", Podcast: "Listen now", Radio: "Listen now" },
     format: { Podcast: "Podcast", Video: "Video", Article: "Article", Radio: "Radio" },
     featuredIn: "AS FEATURED IN",
     outlets: "Outlets",
-    filter: "Filter interviews by format",
-    empty: "Nothing in this format yet.",
     openAria: (format, title) => `Open ${format.toLowerCase()}: ${title} (new tab)`,
   },
   news: {

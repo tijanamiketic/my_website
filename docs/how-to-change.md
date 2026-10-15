@@ -88,6 +88,8 @@ If you write a post in only one language, it still shows in the other, in its or
 
 Copy an existing entry in the matching `content/*.ts` file and change the values, in both languages. Leave `image` out to get a generated gradient cover. A `url` of `"#"` is treated as "no link yet" (resources show "Coming soon").
 
+For an interview, `duration` is optional. The featured interview's `questions` are shown as the list beside it, each linking to the same `url`. Other interviews are listed after them.
+
 For a downloadable resource, put the file in `public/resources/` and set `url: "/resources/<file>"`, or use an external URL.
 
 ### Replace an image

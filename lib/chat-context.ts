@@ -85,7 +85,12 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
   add(`</upcoming_events>`);
   add();
   add(`<interviews_and_press>`);
-  for (const i of interviews) add(`- "${i.title}" — ${i.outlet} (${t.interviews.format[i.format]}, ${i.duration}, ${formatDate(i.date, locale)}) ${link(i.url, "")}`);
+  for (const i of interviews) {
+    const details = [t.interviews.format[i.format], i.duration, formatDate(i.date, locale)].filter(Boolean).join(", ");
+    add(`- "${i.title}" — ${i.outlet} (${details}) ${link(i.url, "")}`);
+    if (i.quote) add(`  Quote: ${i.quote}`);
+    if (i.questions?.length) add(`  Questions answered: ${i.questions.join(" / ")}`);
+  }
   add(`</interviews_and_press>`);
   add();
   add(`<free_resources>`);

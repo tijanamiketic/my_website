@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-16
+- Changed: Interviews & Press shows the real AK Academy article "Ovako sam ja počela" / "How I got started" (12 Mar 2026) instead of the mock interviews. The list beside it shows four questions from the article. The featured card, each list card and their buttons open the article in a new tab.
+- Removed: The format filter (Sve / Podkast / Video / Članak / Radio) in Interviews & Press.
+
 ## 2026-10-15
 - Removed: The small "prevuci ili povuci prstom · pređi mišem za pauzu" / "drag or swipe · hover to pause" hint under the Projects heading.
 - Changed: The About heading reads "AI koji rešava probleme" / "AI that solves problems", and the bio has new text in both languages. The quote, signature and Build / Teach / Share cards are unchanged.

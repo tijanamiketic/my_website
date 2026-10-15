@@ -39,6 +39,8 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
   const premium = courses.filter((c) => c.tier === "premium");
   const name = profile.firstName;
   const s = d.nav.sections;
+  const ivDetails = (i: (typeof interviews)[number]) =>
+    [d.interviews.format[i.format], i.duration, formatDate(i.date, locale)].filter(Boolean).join(", ");
 
   const sr: Record<Intent | "fallback", () => string> = {
     greet: () => `Zdravo! Mogu da ti kažem nešto o kursevima, predstojećim događajima, intervjuima, besplatnim resursima ili kako da stupiš u kontakt. Šta te zanima?`,
@@ -53,7 +55,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     },
     interview: () => {
       const i = interviews.find((x) => x.featured) ?? interviews[0];
-      return `Najnovije gostovanje: „${i.title}“ — ${i.outlet} (${d.interviews.format[i.format]}, ${i.duration})${realUrl(i.url) ? ` — ${i.url}` : ""}. Sva gostovanja su u odeljku ${s.interviews}. Upiti za medije: ${profile.email}`;
+      return `Najnovije gostovanje: „${i.title}“ — ${i.outlet} (${ivDetails(i)})${realUrl(i.url) ? ` — ${i.url}` : ""}. ${interviews.length > 1 ? "Sva gostovanja su" : "Više je"} u odeljku ${s.interviews}. Upiti za medije: ${profile.email}`;
     },
     blog: () => `Najnoviji tekst: „${posts[0]?.title}“ (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `Broj besplatnih resursa u biblioteci: ${resources.length}. Probaj „${resources[0].title}“, a pretraga u odeljku ${s.resources} filtrira po temi.`,
@@ -76,7 +78,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     },
     interview: () => {
       const i = interviews.find((x) => x.featured) ?? interviews[0];
-      return `Latest feature: "${i.title}" on ${i.outlet} (${d.interviews.format[i.format]}, ${i.duration})${realUrl(i.url) ? ` — ${i.url}` : ""}. See all ${interviews.length} appearances in the ${s.interviews} section. Press requests: ${profile.email}`;
+      return `Latest feature: "${i.title}" on ${i.outlet} (${ivDetails(i)})${realUrl(i.url) ? ` — ${i.url}` : ""}. ${interviews.length > 1 ? `See all ${interviews.length} appearances` : "More"} in the ${s.interviews} section. Press requests: ${profile.email}`;
     },
     blog: () => `Latest article: "${posts[0]?.title}" (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `There are ${resources.length} free resources in the library — try "${resources[0].title}". Use the search in the ${s.resources} section to filter by topic.`,

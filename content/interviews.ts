@@ -1,50 +1,24 @@
 import type { Interview } from "./types";
 
 /**
- * MOCK interviews & press — replace with real appearances.
- * Mark one item `featured: true` to show it as the large card.
+ * Interviews & press. The chatbot reads this file too, so list real appearances only.
+ * Mark one item `featured: true` to show it as the large card; its `questions`
+ * are listed beside it, each linking to the same piece.
  */
 export const interviews: Interview[] = [
   {
-    title: { sr: "Kako podučavati AI ljude koji ga se plaše", en: "How to teach AI to people who are afraid of it" },
-    outlet: "The Build Podcast",
-    format: "Podcast",
-    date: "2026-09-12",
-    duration: { sr: "58 min", en: "58 min" },
-    quote: { sr: "„Samopouzdanje dolazi kad napraviš jednu malu stvar koja radi.“", en: "“Confidence comes from building one small thing that works.”" },
-    url: "#",
-    featured: true,
-  },
-  {
-    title: { sr: "Budućnost AI-ja u evropskim učionicama", en: "The future of AI in European classrooms" },
-    outlet: "EdTech Voices",
-    format: "Video",
-    date: "2026-08-26",
-    duration: { sr: "32 min", en: "32 min" },
-    url: "#",
-  },
-  {
-    title: { sr: "Od programiranja do podučavanja: karijera građena javno", en: "From developer to educator: a career built in public" },
-    outlet: "Adriatic Tech Weekly",
+    title: { sr: "Ovako sam ja počela", en: "How I got started" },
+    outlet: "AK Academy",
     format: "Article",
-    date: "2026-07-30",
-    duration: { sr: "8 min čitanja", en: "8 min read" },
-    url: "#",
-  },
-  {
-    title: { sr: "Agenti, hajp i ono što je zaista korisno", en: "Agents, hype and what's actually useful" },
-    outlet: "Signal Talks",
-    format: "Podcast",
-    date: "2026-06-18",
-    duration: { sr: "44 min", en: "44 min" },
-    url: "#",
-  },
-  {
-    title: { sr: "Jutarnji tehnološki segment: AI alati za mala preduzeća", en: "Morning tech segment: AI tools for small businesses" },
-    outlet: "City Radio 202",
-    format: "Radio",
-    date: "2026-05-09",
-    duration: { sr: "15 min", en: "15 min" },
-    url: "#",
+    date: "2026-03-12",
+    quote: { sr: "„AI treba da nam služi, a ne da odlučuje umesto nas.“", en: "“We can't let AI replace our judgment. We need to use AI well.”" },
+    questions: [
+      { sr: "Ko sam ja?", en: "Who am I?" },
+      { sr: "Na koje AI veštine početnici treba prvo da se fokusiraju?", en: "What AI skills should beginners focus on first?" },
+      { sr: "Može li AI potpuno da automatizuje moj posao?", en: "Can AI fully automate my work?" },
+      { sr: "Sa kojim izazovima sam se suočila na početku?", en: "What were some challenges I faced at the beginning?" },
+    ],
+    url: "https://ak-academy.ai/interviews/tijana-ai-automation-career",
+    featured: true,
   },
 ];

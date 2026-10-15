@@ -53,9 +53,12 @@ export type Interview = {
   format: InterviewFormat;
   /** ISO date, e.g. "2026-09-12". */
   date: string;
-  duration: Text;
+  /** e.g. "58 min"; leave out when it doesn't apply. */
+  duration?: Text;
   url: string;
   quote?: Text;
+  /** Questions answered in the piece, listed as separate items that all link to `url`. */
+  questions?: Text[];
   featured?: boolean;
   image?: string;
 };

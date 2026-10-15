@@ -4,6 +4,7 @@ import { interviews as interviewSource } from "@/content/interviews";
 import { formatDate } from "@/lib/format";
 import { localize } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
+import { FormatIcon } from "../icons";
 import { Cover, SectionHead } from "../ui";
 import InterviewList from "./InterviewList";
 
@@ -12,6 +13,8 @@ export default async function Interviews() {
   const interviews = localize(interviewSource, locale);
   const featured = interviews.find((i) => i.featured) ?? interviews[0];
   const rest = interviews.filter((i) => i !== featured);
+  // The featured piece's questions come first, each linking to that piece
+  const items = [...(featured.questions ?? []).map((q) => ({ ...featured, title: q })), ...rest];
   const outlets = [...new Set(interviews.map((i) => i.outlet))];
 
   return (
@@ -38,14 +41,20 @@ export default async function Interviews() {
               {t.interviews.format[featured.format]} · {featured.outlet}
             </span>
             <a className="play" href={featured.url} target="_blank" rel="noopener noreferrer">
-              <i aria-hidden="true">▶</i>
-              {t.interviews.verb[featured.format]} · {featured.duration}
+              <i aria-hidden="true">{featured.format === "Article" ? <FormatIcon format="Article" width={16} height={16} /> : "▶"}</i>
+              {t.interviews.verb[featured.format]}
+              {featured.duration && ` · ${featured.duration}`}
               <span className="sr-only">: {featured.title} {t.common.newTab}</span>
             </a>
           </div>
           <div className="body">
             {featured.quote && <blockquote>{featured.quote}</blockquote>}
-            <h3>{featured.title}</h3>
+            <h3>
+              <a className="stretched" href={featured.url} target="_blank" rel="noopener noreferrer">
+                {featured.title}
+                <span className="sr-only"> {t.common.newTab}</span>
+              </a>
+            </h3>
             <div className="iv-meta">
               <span className="chip">{featured.outlet}</span>
               <span className="chip mono">
@@ -54,7 +63,7 @@ export default async function Interviews() {
             </div>
           </div>
         </article>
-        <InterviewList items={rest} />
+        <InterviewList items={items} />
       </div>
       <div className="press" data-reveal>
         <span className="mono">{t.interviews.featuredIn}</span>

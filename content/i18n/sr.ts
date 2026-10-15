@@ -84,12 +84,10 @@ export const sr = {
     title: "U",
     accent: "razgovoru",
     lede: "Podkasti, video intervjui i članci u kojima pričam o AI-ju, obrazovanju i radu u javnosti.",
-    verb: { Article: "Pročitaj članak", Video: "Pogledaj intervju", Podcast: "Poslušaj", Radio: "Poslušaj" } satisfies Record<InterviewFormat, string>,
+    verb: { Article: "Pročitaj", Video: "Pogledaj intervju", Podcast: "Poslušaj", Radio: "Poslušaj" } satisfies Record<InterviewFormat, string>,
     format: { Podcast: "Podkast", Video: "Video", Article: "Članak", Radio: "Radio" } satisfies Record<InterviewFormat, string>,
     featuredIn: "GOSTOVANJA",
     outlets: "Mediji",
-    filter: "Filtriraj intervjue po formatu",
-    empty: "Još nema ničega u ovom formatu.",
     openAria: (format: string, title: string) => `Otvori (${format}): ${title} (nova kartica)`,
   },
   news: {
