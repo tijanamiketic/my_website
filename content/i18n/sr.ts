@@ -119,6 +119,7 @@ export const sr = {
     price: "Cena",
     enroll: "Upiši se na Skoolu",
     startFree: "Počni besplatno na Skoolu",
+    comingSoon: "Uskoro",
   },
   resources: {
     eyebrow: "Resursi",

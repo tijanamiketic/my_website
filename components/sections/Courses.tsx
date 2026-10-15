@@ -1,23 +1,21 @@
 import { courses as courseSource } from "@/content/courses";
 import type { Dictionary } from "@/content/i18n";
 import type { Course } from "@/content/types";
-import { SKOOL_URL } from "@/lib/config";
 import { formatPrice, localize, type Locale, type Localized } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { iconGradient } from "@/lib/cover";
-import { ArrowRight } from "../icons";
 import { SectionHead } from "../ui";
 
 function CourseCard({ c, i, locale, t }: { c: Localized<Course>; i: number; locale: Locale; t: Dictionary }) {
   const premium = c.tier === "premium";
   const price = premium ? formatPrice(c.price ?? 0, locale) : t.courses.free;
   return (
-    <article className={`course glass${premium ? " premium" : ""}`} data-reveal data-tilt data-stagger={i}>
+    <article className={`course glass soon${premium ? " premium" : ""}`} data-reveal data-tilt data-stagger={i}>
       <div className="top">
         <span className="ic" style={{ background: iconGradient(c.title) }} aria-hidden="true">
           {c.glyph}
         </span>
-        <span className={`badge ${premium ? "paid" : "free"}`}>{price}</span>
+        <span className="badge soon">{t.courses.comingSoon}</span>
       </div>
       <div>
         <h4>{c.title}</h4>
@@ -28,15 +26,9 @@ function CourseCard({ c, i, locale, t }: { c: Localized<Course>; i: number; loca
         <div><dt>{t.courses.length}</dt><dd>{c.duration}</dd></div>
         <div><dt>{t.courses.price}</dt><dd>{price}</dd></div>
       </dl>
-      <a
-        className={`btn ${premium ? "btn-primary" : "btn-glass"}`}
-        href={c.url ?? SKOOL_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {premium ? t.courses.enroll : t.courses.startFree} <ArrowRight />
-        <span className="sr-only">: {c.title} {t.common.newTab}</span>
-      </a>
+      <span className="btn btn-glass" aria-disabled="true">
+        {t.courses.comingSoon}
+      </span>
     </article>
   );
 }

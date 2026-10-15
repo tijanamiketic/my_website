@@ -115,6 +115,7 @@ export const en: Dictionary = {
     price: "Price",
     enroll: "Enroll on Skool",
     startFree: "Start free on Skool",
+    comingSoon: "Coming soon",
   },
   resources: {
     eyebrow: "Resources",
