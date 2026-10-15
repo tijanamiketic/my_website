@@ -600,27 +600,21 @@ dialog.doc[open] { animation: dialog-in .3s cubic-bezier(.2, .8, .2, 1) }
 .contact h2 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 750; letter-spacing: -.045em }
 .email-row { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: 1.4rem }
 .email { font-family: var(--mono); font-size: .95rem; padding: .7rem 1rem; border-radius: 14px; background: var(--chip); user-select: all; overflow-wrap: anywhere }
-.socials { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .6rem; margin: 1.6rem 0 0; padding: 0; list-style: none }
+.contact-links { align-self: center; min-width: 0 }
+.contact-links .email-row { margin-top: 0 }
+.socials { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin: 1.6rem 0 0; padding: 0; list-style: none }
 .social { display: flex; align-items: center; gap: .7rem; padding: .7rem .8rem; border-radius: 16px; background: var(--glass-strong); border: 1px solid var(--glass-border); transition: transform .2s ease }
-.social:hover { transform: translateY(-2px) }
+a.social:hover { transform: translateY(-2px) }
 .social .ic { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; color: #1b1c22; flex: none }
 .social .ic svg { width: 17px; height: 17px }
 .social b { display: block; font-size: .88rem }
 .social small { color: var(--muted); font-size: .74rem }
-.newsletter h3 { font-size: 1.3rem; font-weight: 650; margin-bottom: .4rem }
-.newsletter p { color: var(--muted); font-size: .92rem }
-.nl-form { display: flex; gap: .5rem; margin-top: 1.2rem; flex-wrap: wrap }
-.nl-form input { flex: 1 1 200px; min-width: 0; height: 50px; padding: 0 1.1rem; border-radius: 999px; border: 1px solid var(--glass-border); background: var(--glass-strong); outline: none }
-.nl-form input:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent) }
-.nl-form .btn { min-height: 50px }
-.nl-msg { margin-top: .8rem; font-size: .86rem; min-height: 1.3em }
-.nl-msg.ok { color: var(--ok) }
-.nl-msg.err { color: var(--danger) }
-.perks { display: grid; gap: .5rem; margin-top: 1.4rem; padding: 0; list-style: none; font-size: .9rem; color: var(--ink-2) }
-.perks li { display: flex; gap: .6rem; align-items: center }
-.perks li::before { content: ""; width: 18px; height: 18px; border-radius: 50%; flex: none; background: linear-gradient(135deg, var(--periwinkle), var(--blush)) }
+/* Profile not live yet: greyed out, not a link */
+.social.soon { color: var(--muted); opacity: .55; cursor: default }
+.social.soon .ic { filter: grayscale(1) }
 footer.foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-block: 28px calc(110px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: .84rem }
 @media (max-width: 860px) { .contact { grid-template-columns: 1fr } }
+@media (max-width: 480px) { .socials { grid-template-columns: 1fr } }
 
 /* ============ CHAT ============ */
 .chat-fab {

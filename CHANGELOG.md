@@ -1,6 +1,11 @@
 # Changelog
 
 ## 2026-10-16
+- Changed: The contact email is tijanamiketic.raz@gmail.com everywhere (Contact section, copy button, search data and chat assistant).
+- Changed: LinkedIn in Contact links to Tijana's real profile. YouTube, GitHub and Skool are greyed out with an "Uskoro" / "Coming soon" label and are not links yet.
+- Removed: Instagram from the social links.
+- Removed: The newsletter sign-up ("The Sunday Prompt") from Contact, and every mention of the newsletter in the Events section and the chat assistant. The Contact card now shows the heading on the left and the email and social profiles on the right.
+- Changed: All courses are greyed out with an "Uskoro" / "Coming soon" label instead of a price and an enroll button.
 - Changed: Interviews & Press shows the real AK Academy article "Ovako sam ja počela" / "How I got started" (12 Mar 2026) instead of the mock interviews. The list beside it shows four questions from the article. The featured card, each list card and their buttons open the article in a new tab.
 - Removed: The format filter (Sve / Podkast / Video / Članak / Radio) in Interviews & Press.
 - Changed: The Interviews & Press intro reads "Razgovori i tekstovi u kojima delim svoje iskustvo sa veštačkom inteligencijom." / "Conversations and articles where I share my experience with AI."

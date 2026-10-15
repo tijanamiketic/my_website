@@ -67,8 +67,8 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
   add(`What they do: ${profile.pillars.map((p) => `${p.title} — ${p.text}`).join(" ")}`);
   add(`Contact email: ${profile.email}`);
   add(`Skool community (all courses live here): ${SKOOL_URL}`);
-  add(`Socials: ${socials.map((s) => `${s.name} ${s.url}`).join("; ")}`);
-  add(`Newsletter: "${profile.newsletter.title}" — ${profile.newsletter.text} Sign-up form: ${t.nav.sections.contact} section.`);
+  add(`Socials: ${socials.filter((s) => s.url).map((s) => `${s.name} ${s.url}`).join("; ")}`);
+  add(`Coming soon (no link yet): ${socials.filter((s) => !s.url).map((s) => s.name).join(", ")}`);
   add(`</profile>`);
   add();
   add(`<courses>`);

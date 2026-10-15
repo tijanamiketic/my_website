@@ -1,12 +1,10 @@
 import { cacheLife } from "next/cache";
-import { profile as profileSource } from "@/content/profile";
+import { profile } from "@/content/profile";
 import { socials } from "@/content/socials";
 import { fullName } from "@/lib/config";
-import { localize } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { SocialIcon } from "../icons";
 import CopyEmail from "./CopyEmail";
-import NewsletterForm from "./NewsletterForm";
 
 async function currentYear() {
   "use cache";
@@ -16,8 +14,7 @@ async function currentYear() {
 
 export default async function Contact() {
   const year = await currentYear();
-  const { locale, t } = await getI18n();
-  const profile = localize(profileSource, locale);
+  const { t } = await getI18n();
   return (
     <section id="contact" className="section wrap" style={{ paddingBottom: 0 }} aria-labelledby="contact-title">
       <div className="contact glass" data-reveal>
@@ -29,31 +26,38 @@ export default async function Contact() {
           <p className="lede" style={{ marginTop: "1rem" }}>
             {t.contact.lede}
           </p>
+        </div>
+        <div className="contact-links">
           <CopyEmail email={profile.email} />
           <ul className="socials" aria-label={t.contact.socials}>
-            {socials.map((s) => (
-              <li key={s.name}>
-                <a className="social" href={s.url} target="_blank" rel="noopener noreferrer me">
-                  <span className="ic" style={{ background: s.color }} aria-hidden="true">
-                    <SocialIcon name={s.name} />
-                  </span>
-                  <span>
-                    <b>{s.name}</b>
-                    <small>{s.handle}</small>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="newsletter">
-          <h3>{profile.newsletter.title}</h3>
-          <p>{profile.newsletter.text}</p>
-          <NewsletterForm />
-          <ul className="perks">
-            {profile.newsletter.perks.map((p) => (
-              <li key={p}>{p}</li>
-            ))}
+            {socials.map((s) => {
+              const icon = (
+                <span className="ic" style={{ background: s.color }} aria-hidden="true">
+                  <SocialIcon name={s.name} />
+                </span>
+              );
+              return (
+                <li key={s.name}>
+                  {s.url ? (
+                    <a className="social" href={s.url} target="_blank" rel="noopener noreferrer">
+                      {icon}
+                      <span>
+                        <b>{s.name}</b>
+                        <small>{s.handle}</small>
+                      </span>
+                    </a>
+                  ) : (
+                    <span className="social soon" role="link" aria-disabled="true" aria-label={t.contact.socialSoon(s.name)}>
+                      {icon}
+                      <span>
+                        <b>{s.name}</b>
+                        <small className="mono">{t.contact.comingSoon}</small>
+                      </span>
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

@@ -12,7 +12,6 @@ app/                    routes and server code
     opengraph-image.tsx, not-found.tsx, [...rest]/ (unknown URLs → 404 in the right language)
   globals.css           all styles: color/radius/font tokens, components, animations
   api/chat/route.ts     chat assistant endpoint (see docs/ai.md)
-  actions/newsletter.ts newsletter sign-up (server action)
   sitemap.ts, robots.ts, icon.svg
 components/
   sections/             one file per home-page section (Hero, About, Projects, …)
@@ -42,8 +41,8 @@ Text that visitors read has a Serbian and an English value side by side: `title:
 
 | What | File |
 | --- | --- |
-| Name, role, tagline, status pill, stats, bio, pillars, email, newsletter text, SEO description | `content/profile.ts` |
-| Social links | `content/socials.ts` |
+| Name, role, tagline, status pill, stats, bio, pillars, email, SEO description | `content/profile.ts` |
+| Social links (a profile without `url` is shown greyed out as "coming soon") | `content/socials.ts` |
 | Projects carousel | `content/projects.ts` |
 | Interviews and press (`featured: true` highlights one) | `content/interviews.ts` |
 | Courses (free / premium, price in EUR) | `content/courses.ts` |
@@ -135,10 +134,10 @@ The rules come from the owner's Translation Standard. In short:
 - **Blog posts**: one file per language under `content/blog/sr/` and `content/blog/en/`, same file name.
 - **Plurals and inserted values** are functions in the dictionary (e.g. `seatsLeft: (n) => plural("sr", n, { one, few, other })`). Serbian has three plural forms: 1 mesto, 2 mesta, 5 mesta.
 - **Dates and prices** are formatted by `formatDate(iso, locale)` in `lib/format.ts` and `formatPrice(eur, locale)` in `lib/i18n/index.ts`. Don't write them by hand.
-- **Not translated:** product names, brand names, outlet names, tech tags, the newsletter name, and AI-news headlines (third-party).
+- **Not translated:** product names, brand names, outlet names, tech tags, and AI-news headlines (third-party).
 - **Serbian style:** Latin script, informal "ti", „quotes“, decimal comma. Avoid gendered forms when writing about the owner (see [decisions.md](decisions.md)).
 
-In code: Server Components call `await getI18n()` (`@/lib/i18n/server`); Client Components call `useI18n()` (`@/components/I18nProvider`); both return `{ locale, t }`. Content is turned into one language with `localize(data, locale)`. Internal links use `localePath(locale, path)`. Server Actions and Route Handlers can't read the language from the URL, so the page sends it: the newsletter form has a hidden `locale` field, the chat calls `/api/chat?lang=…`.
+In code: Server Components call `await getI18n()` (`@/lib/i18n/server`); Client Components call `useI18n()` (`@/components/I18nProvider`); both return `{ locale, t }`. Content is turned into one language with `localize(data, locale)`. Internal links use `localePath(locale, path)`. Server Actions and Route Handlers can't read the language from the URL, so the page sends it: the chat calls `/api/chat?lang=…`.
 
 #### Add a language
 
@@ -153,10 +152,6 @@ In code: Server Components call `await getI18n()` (`@/lib/i18n/server`); Client 
 
 Edit `newsSources` in `content/news-sources.ts`. Set `aiOnly: true` on general tech feeds to keep only AI headlines. Topics are assigned from headline keywords in `topicRules`. The feed is cached for 1 hour. If every feed fails, the `mockNews` items are shown.
 
-### Connect the newsletter
-
-Set `NEWSLETTER_WEBHOOK_URL` (see [README](../README.md#environment-variables)). To call a provider's API directly instead, replace the `TODO` block in `app/actions/newsletter.ts`.
-
 ### Change the chat assistant
 
 See [ai.md](ai.md).
@@ -168,7 +163,6 @@ See [ai.md](ai.md).
 - **Blog posts** are read from `content/blog/<lang>/` by `lib/blog.ts` and compiled from MDX to static HTML at build time.
 - **Theme** follows the system setting until the visitor uses the toggle. The choice is saved in `localStorage` and applied before first paint by a small script in `app/[lang]/layout.tsx`.
 - **Animations:** scroll reveals and background parallax are pure CSS scroll-driven animations. Cursor tilt, hero parallax and the carousel use `requestAnimationFrame` (`components/MotionEffects.tsx`, `components/sections/ProjectsCarousel.tsx`). All motion is off under `prefers-reduced-motion`.
-- **Newsletter:** `app/actions/newsletter.ts` validates the email, rejects bots with a hidden honeypot field (`company`), rate-limits per IP and posts to the webhook.
 - **SEO:** metadata in `app/[lang]/layout.tsx` and the post page, generated Open Graph image per language, `sitemap.xml` with both languages, `robots.txt`, and JSON-LD (`Person`, `BlogPosting`).
 
 ## Things that are easy to break

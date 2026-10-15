@@ -16,7 +16,7 @@ export const profile: Profile = {
     en: "I build practical AI products, explore the world of AI every day, and share knowledge, tips and lessons you can actually put to use.",
   },
   status: { sr: "Primam prijave za konsultacije", en: "Now booking consultations" },
-  email: "hello@yourdomain.com", // TODO: your real address
+  email: "tijanamiketic.raz@gmail.com",
   location: { sr: "Beograd, Srbija", en: "Belgrade, Serbia" },
   // Overridden by the NEXT_PUBLIC_SKOOL_URL env var if set.
   skoolUrl: "https://www.skool.com/your-community", // TODO
@@ -54,18 +54,6 @@ export const profile: Profile = {
       text: { sr: "Tekstovi svake nedelje, alati otvorenog koda i biblioteka besplatnih resursa.", en: "Weekly writing, open-source tools and a library of free resources." },
     },
   ],
-  newsletter: {
-    title: "The Sunday Prompt",
-    text: {
-      sr: "Jedan imejl nedeljno: AI vesti koje su važne, jedan praktičan tutorijal i prvi pristup novim kursevima.",
-      en: "One email a week: the AI news that matters, one hands-on tutorial, and first access to new courses.",
-    },
-    perks: [
-      { sr: "Besplatan paket promptova pri prijavi", en: "Free prompt pack on sign-up" },
-      { sr: "Bez spama, odjava u bilo kom trenutku", en: "No spam, unsubscribe anytime" },
-      { sr: "Čita ga 8.400+ ljudi koji grade uz AI", en: "Read by 8,400+ builders" },
-    ],
-  },
   seo: {
     description: {
       sr: "AI razvoj i edukacija — projekti, kursevi, resursi, intervjui i događaji uživo o radu sa jezičkim modelima.",

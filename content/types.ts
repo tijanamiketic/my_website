@@ -25,8 +25,6 @@ export type Profile = {
   stats: { value: string; label: Text }[];
   bio: { quote: Text; paragraphs: Text[] };
   pillars: { icon: "code" | "cap" | "spark"; title: Text; text: Text }[];
-  /** `title` is the newsletter's name and is not translated. */
-  newsletter: { title: string; text: Text; perks: Text[] };
   /** Used for SEO / JSON-LD. */
   seo: { description: Text; keywords: Text[] };
 };
@@ -106,12 +104,11 @@ export type EventItem = {
   url: string;
 };
 
+/** Leave out `url` (and `handle`) to show the profile as "coming soon". */
 export type Social = {
-  name: "LinkedIn" | "YouTube" | "Instagram" | "GitHub" | "Skool";
-  handle: string;
-  url: string;
+  name: "LinkedIn" | "YouTube" | "GitHub" | "Skool";
   color: string;
-};
+} & ({ url: string; handle: string } | { url?: undefined; handle?: undefined });
 
 export type NewsTopic = "Research" | "Policy" | "Industry" | "Open source" | "Education";
 export type NewsRegion = "Global" | "Europe" | "Americas" | "Asia" | "Africa";

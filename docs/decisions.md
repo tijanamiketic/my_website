@@ -4,6 +4,11 @@ Newest first. Entries are never rewritten. If a decision changes, add a new entr
 
 The entries dated 2026-10-10 were recorded when the documentation was created. They describe decisions already visible in the project; the actual decision dates are earlier.
 
+## 2026-10-16: No newsletter; unfinished social profiles shown as "coming soon"
+**Decision:** The newsletter sign-up is removed from the site, with its server action, texts and the `NEWSLETTER_WEBHOOK_URL` / `NEWSLETTER_API_KEY` variables. This replaces "Newsletter through a generic webhook" (2026-10-10) and the newsletter part of "In-memory rate limiting" (2026-10-10), and the newsletter name is no longer in the "not translated" list in "How Serbian is written". The contact email is tijanamiketic.raz@gmail.com. Instagram is removed from the social links. YouTube, GitHub and Skool are shown greyed out as "coming soon", with no link, until their profiles exist. Only LinkedIn links out.
+**Why:** Owner's request: there is no newsletter yet, and the placeholder profiles pointed to generic home pages.
+**Consequences:** The Contact card has two columns: heading and intro on the left, email and social profiles on the right. To make a profile live, add its `url` and `handle` in `content/socials.ts`. Bringing back a newsletter means adding a form and a provider again.
+
 ## 2026-10-14: Serbian by default, English as a second language
 **Decision:** The site is published in Serbian and English. Serbian is the default and lives at `/` with no prefix (`/blog/<slug>`); English lives under `/en` (`/en/blog/<slug>`). `/sr/...` redirects to the unprefixed URL. Every visitor who opens `/` gets Serbian: the browser language is not detected and the last choice is not remembered. The SR | EN switch in the navigation links to the same page and section in the other language.
 **Why:** The owner wants Serbian to be what every visitor sees first, with English one click away. Separate URLs per language let search engines index both versions and make every link predictable. Rejected: a cookie or client-side toggle (one URL showing two languages cannot be indexed and breaks static rendering); redirecting by browser language (visitors and search engines would get different pages for the same URL).

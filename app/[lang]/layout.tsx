@@ -76,7 +76,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
     image: `${SITE_URL}/images/portrait.png`,
     email: `mailto:${profile.email}`,
     address: { "@type": "PostalAddress", addressLocality: profile.location },
-    sameAs: socials.map((s) => s.url),
+    sameAs: socials.flatMap((s) => (s.url ? [s.url] : [])),
     knowsAbout: t.meta.knowsAbout,
   };
 

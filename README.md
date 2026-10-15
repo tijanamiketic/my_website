@@ -1,6 +1,6 @@
 # Tijana Miketić — personal website
 
-The personal website of Tijana Miketić, AI developer and educator. It is for potential students, workshop clients, journalists and other builders. It shows projects, blog posts, interviews, a live AI-news feed, courses (hosted on Skool), free resources, upcoming events and a newsletter sign-up, and has a chat assistant that answers questions about all of these.
+The personal website of Tijana Miketić, AI developer and educator. It is for potential students, workshop clients, journalists and other builders. It shows projects, blog posts, interviews, a live AI-news feed, courses (hosted on Skool), free resources, upcoming events and contact details, and has a chat assistant that answers questions about all of these.
 
 The site is in Serbian (Latin script) by default, at `/`, with an English version at `/en`. Visitors switch with the SR | EN control in the navigation.
 
@@ -28,8 +28,6 @@ All are optional. Set them in `.env.local` for local work, and in Vercel → Pro
 | `NEXT_PUBLIC_SKOOL_URL` | Skool community link used by every "Join / Enroll" button | `profile.skoolUrl` in `content/profile.ts` |
 | `ANTHROPIC_API_KEY` | Turns on the Claude-powered chat assistant | A built-in keyword responder answers instead |
 | `ANTHROPIC_MODEL` | Chat model override | `claude-opus-5` |
-| `NEWSLETTER_WEBHOOK_URL` | Endpoint that receives `POST { email, source }` (Zapier, Make, n8n, Kit…) | Demo mode: the form says "subscribed" but nothing is sent |
-| `NEWSLETTER_API_KEY` | Sent as `Authorization: Bearer <key>` to the webhook | No auth header |
 
 ## Run locally
 
