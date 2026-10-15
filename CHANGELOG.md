@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-10-15
+- Removed: The small "prevuci ili povuci prstom · pređi mišem za pauzu" / "drag or swipe · hover to pause" hint under the Projects heading.
 - Changed: The About heading reads "AI koji rešava probleme" / "AI that solves problems", and the bio has new text in both languages. The quote, signature and Build / Teach / Share cards are unchanged.
 
 ## 2026-10-14

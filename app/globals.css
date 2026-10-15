@@ -475,8 +475,6 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
 .project .row { display: flex; justify-content: space-between; align-items: center }
 .project .year { color: var(--muted) }
 .project img { pointer-events: none; -webkit-user-drag: none }
-.marquee-hint { display: flex; align-items: center; gap: .6rem; color: var(--muted); font-size: .82rem }
-.marquee-hint kbd { font-family: var(--mono); font-size: .72rem; padding: .15rem .5rem; border-radius: 8px; background: var(--chip) }
 .marquee-ctrl { display: flex; gap: .4rem }
 /* Reduced motion: no autoplay, just a native swipeable row with snap points. */
 .marquee.static { overflow-x: auto; cursor: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding-inline: clamp(16px, 4vw, 32px) }

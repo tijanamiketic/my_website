@@ -9,11 +9,7 @@ export default async function Projects() {
   return (
     <section id="projects" className="section" style={{ paddingBottom: "clamp(40px,6vw,70px)" }} aria-labelledby="projects-title">
       <div className="wrap">
-        <SectionHead id="projects-title" eyebrow={t.projects.eyebrow} title={t.projects.title} accent={t.projects.accent}>
-          <p className="marquee-hint">
-            <kbd>{t.projects.hintKey}</kbd> {t.projects.hintRest}
-          </p>
-        </SectionHead>
+        <SectionHead id="projects-title" eyebrow={t.projects.eyebrow} title={t.projects.title} accent={t.projects.accent} />
       </div>
       <ProjectsCarousel projects={localize(projects, locale)} />
     </section>

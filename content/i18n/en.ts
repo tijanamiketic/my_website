@@ -55,8 +55,6 @@ export const en: Dictionary = {
     eyebrow: "Projects",
     title: "Things I've",
     accent: "shipped",
-    hintKey: "drag",
-    hintRest: "or swipe · hover to pause",
     carousel: "Projects",
     previous: "Previous project",
     next: "Next project",

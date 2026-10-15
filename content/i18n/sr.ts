@@ -59,8 +59,6 @@ export const sr = {
     eyebrow: "Projekti",
     title: "Napravljeno i",
     accent: "pokrenuto",
-    hintKey: "prevuci",
-    hintRest: "ili povuci prstom · pređi mišem za pauzu",
     carousel: "Projekti",
     previous: "Prethodni projekat",
     next: "Sledeći projekat",
