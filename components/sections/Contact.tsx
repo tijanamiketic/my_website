@@ -65,7 +65,6 @@ export default async function Contact() {
         <span>
           © {year} {fullName}
         </span>
-        <span>{t.contact.footer}</span>
       </footer>
     </section>
   );

@@ -156,7 +156,6 @@ export const en: Dictionary = {
     accent: "with AI?",
     lede: "Speaking, workshops for teams, or a collaboration — write to me directly.",
     socials: "Social profiles",
-    footer: "Designed with glass, gradients and a lot of coffee.",
     copy: "Copy",
     copied: "Copied",
     selected: "Selected — press Ctrl/⌘+C",

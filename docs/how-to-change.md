@@ -50,7 +50,7 @@ Text that visitors read has a Serbian and an English value side by side: `title:
 | Events (times are CET; past events hide automatically) | `content/events.ts` |
 | AI-news feeds | `content/news-sources.ts` |
 | How many blog posts show on the home page | `content/posts.ts` |
-| Section headings, buttons, labels, form and error messages, footer line | `content/i18n/sr.ts` and `content/i18n/en.ts` (same key in both) |
+| Section headings, buttons, labels, form and error messages | `content/i18n/sr.ts` and `content/i18n/en.ts` (same key in both) |
 | Navigation labels | `nav.sections` in `content/i18n/*.ts` |
 | Chat quick-reply buttons and greeting | `chat.quick`, `chat.greeting` in `content/i18n/*.ts` |
 

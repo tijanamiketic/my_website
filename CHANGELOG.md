@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-10-16
+- Removed: The footer line "Dizajnirano uz staklo, prelive i mnogo kafe." / "Designed with glass, gradients and a lot of coffee." The footer now shows only the copyright.
 - Changed: The navigation button (desktop and mobile menu) reads "Kontaktiraj me" / "Contact me" and the hero's second button reads "Zakaži konsultacije" / "Book a consultation". Both scroll to Contact instead of opening Skool.
 - Changed: The chat assistant describes the courses as coming soon, with no prices or Skool links, and suggests booking a consultation by email. Its quick replies "Besplatni kursevi" / "Free courses" and "Cene kurseva" / "Course prices" are now "Kursevi" / "Courses" and "Konsultacije" / "Book a consultation".
 - Removed: The Skool link on the "Masterclass: AI agenti" event.

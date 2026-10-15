@@ -160,7 +160,6 @@ export const sr = {
     accent: "uz AI?",
     lede: "Predavanja, radionice za timove ili saradnja — piši mi direktno.",
     socials: "Profili na društvenim mrežama",
-    footer: "Dizajnirano uz staklo, prelive i mnogo kafe.",
     copy: "Kopiraj",
     copied: "Kopirano",
     selected: "Označeno — pritisni Ctrl/⌘+C",
