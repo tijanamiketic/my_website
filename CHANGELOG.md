@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-13
+- Fixed: Security: Next.js upgraded from 16.4.0 to 16.4.6, which fixes two critical remote-code-execution flaws (`use cache` with typed arrays; image optimization with SVG files) and a high-severity denial of service in Server Actions. Also updated: eslint-config-next 16.4.6, zod 4.6.7 (memory exhaustion fix, used by the Anthropic SDK) and fast-xml-parser 5.12.1 (CPU use fix, used by the news feed).
 - Changed: The Projects carousel shows eight service cards instead of the old projects: "AI Chatbot po meri" / "Custom AI Chatbot", "AI alat za kreiranje i editovanje sadržaja" / "AI Content Creation & Editing Tool", "Glasovni AI agent" / "AI Voice Agent", "Izrada web sajtova" / "Website Development", "Lični AI asistent na Telegramu" / "Personal AI Assistant on Telegram", "Automatizovano upravljanje bazom podataka" / "Automated Database Management", "Automatske poruke" / "Automated Messages" and "Projekat po vašoj ideji" / "Your Idea, Built for You". Titles, descriptions and tags are translated.
 - Removed: The old projects (Lumen Tutor, PromptLab, Agent Atlas, DocuMind, Voice → Lesson, ClassPulse) and the year in the corner of each card.
 - Changed: The card link reads "Kontakt →" / "Contact →" and scrolls to the Contact section. It used to read "Pogledaj projekat →" / "View project →" and led nowhere.
