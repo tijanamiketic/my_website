@@ -45,7 +45,7 @@ export const sr = {
     daysAgo: (d: number) => `pre ${d} d`,
   },
   hero: {
-    viewProjects: "Pogledaj projekte",
+    viewProjects: "Pogledaj usluge",
     bookConsultation: "Zakaži konsultacije",
     portraitAlt: (name: string) => `Portret: ${name}`,
   },

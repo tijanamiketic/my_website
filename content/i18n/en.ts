@@ -41,7 +41,7 @@ export const en: Dictionary = {
     daysAgo: (d) => `${d}d ago`,
   },
   hero: {
-    viewProjects: "View Projects",
+    viewProjects: "View services",
     bookConsultation: "Book a consultation",
     portraitAlt: (name) => `Portrait of ${name}`,
   },

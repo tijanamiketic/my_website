@@ -9,6 +9,7 @@
 - Fixed: Links on the cards in the auto-scrolling carousel could not be clicked. Cards that are tilted back caught no clicks, and the repeated cards that make the loop seamless ignored clicks entirely.
 - Changed: The chat assistant knows the services and sends visitors who ask about them to Contact or email.
 - Changed: The section is renamed "Usluge — Šta mogu da napravim za vas" / "Services — What I can build for you" (was "Projekti — Napravljeno i pokrenuto" / "Projects — Things I've shipped"). The navigation reads "Usluge" / "Services", and the carousel buttons say "Prethodna / Sledeća usluga" / "Previous / Next service".
+- Changed: The hero button reads "Pogledaj usluge" / "View services" (was "Pogledaj projekte" / "View Projects"). It still scrolls to the Services section.
 
 ## 2026-10-16
 - Changed: Upcoming Events shows a single card: "Radionica" / "Workshop", "Uvod u AI" / "Introduction to AI", "Uživo" / "In person". It has no date, time, seats or venue yet. The date block reads "Uskoro" / "Soon", and the register button is disabled and reads "Uskoro" / "Coming soon". The whole card is greyed out, with no tilt or glow on hover.
