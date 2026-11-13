@@ -1,6 +1,6 @@
 # Tijana Miketić — personal website
 
-The personal website of Tijana Miketić, AI developer and educator. It is for potential students, workshop clients, journalists and other builders. It shows projects, blog posts, interviews, a live AI-news feed, courses (coming soon, to be hosted on Skool), free resources, upcoming events and contact details, and has a chat assistant that answers questions about all of these.
+The personal website of Tijana Miketić, AI developer and educator. It is for potential students, workshop clients, journalists and other builders. It shows the services Tijana offers, blog posts, interviews, a live AI-news feed, courses (coming soon, to be hosted on Skool), free resources, upcoming events and contact details, and has a chat assistant that answers questions about all of these.
 
 The site is in Serbian (Latin script) by default, at `/`, with an English version at `/en`. Visitors switch with the SR | EN control in the navigation.
 

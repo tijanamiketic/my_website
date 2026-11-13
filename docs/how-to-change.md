@@ -43,7 +43,7 @@ Text that visitors read has a Serbian and an English value side by side: `title:
 | --- | --- |
 | Name, role, tagline, status pill, stats, bio, pillars, email, SEO description | `content/profile.ts` |
 | Social links (a profile without `url` is shown greyed out as "coming soon") | `content/socials.ts` |
-| Projects carousel | `content/projects.ts` |
+| Services carousel (section id `projects`; each card links to Contact) | `content/projects.ts` |
 | Interviews and press (`featured: true` highlights one) | `content/interviews.ts` |
 | Courses (free / premium, price in EUR) | `content/courses.ts` |
 | Resource library | `content/resources.ts` |
@@ -86,6 +86,8 @@ If you write a post in only one language, it still shows in the other, in its or
 ### Add a project, course, event, interview or resource
 
 Copy an existing entry in the matching `content/*.ts` file and change the values, in both languages. Leave `image` out to get a generated gradient cover. A `url` of `"#"` is treated as "no link yet" (resources show "Coming soon").
+
+A service card in `content/projects.ts` has no URL: its link always scrolls to Contact. Write a tag as a plain string when it is the same in both languages (`"LLM"`), or as `{ sr: "…", en: "…" }`.
 
 For an interview, `duration` is optional. The featured interview's `questions` are shown as the list beside it, each linking to the same `url`. Other interviews are listed after them.
 

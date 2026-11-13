@@ -4,6 +4,11 @@ Newest first. Entries are never rewritten. If a decision changes, add a new entr
 
 The entries dated 2026-10-10 were recorded when the documentation was created. They describe decisions already visible in the project; the actual decision dates are earlier.
 
+## 2026-11-13: The Projects section becomes Services
+**Decision:** The Projects carousel shows eight services Tijana offers (custom chatbot, content tool, voice agent, websites, Telegram assistant, database automation, automated messages, custom idea) instead of past projects. Each card has a translated title, description and tags, and no year. Its "Kontakt" / "Contact" link scrolls to the Contact section on the same page. The service texts address the visitor formally ("vi") in Serbian. They are the owner's own wording, unlike the rest of the site, which uses "ti" (see "How Serbian is written"). The section is renamed "Usluge — Šta mogu da napravim za vas" / "Services — What I can build for you", and its nav label is "Usluge" / "Services". The section id stays `projects`, so existing `#projects` links keep working.
+**Why:** Owner's request: visitors should see what they can order and get in touch directly. None of the old projects had a page or a live link.
+**Consequences:** The chat assistant lists these as `<services>` and sends visitors to Contact. Cover gradients are picked by card position (`seed` in `Cover`), so neighbouring cards differ and each card keeps its gradient in both languages. The "ti" / "vi" question in "How Serbian is written" is still open, and the services now differ from the rest of the site.
+
 ## 2026-10-16: Nothing links to Skool until courses open
 **Decision:** No button or chat reply links to Skool while the courses are "coming soon" and the Skool URL is a placeholder. The nav button reads "Kontaktiraj me" / "Contact me" and the hero's second button reads "Zakaži konsultacije" / "Book a consultation"; both scroll to the Contact section. The chat assistant describes courses as coming soon, with no prices or links, and suggests booking a consultation by email. This puts "Courses hosted on Skool" (2026-10-10) on hold; `SKOOL_URL` stays in `lib/config.ts`.
 **Why:** Owner's decision: a button must not lead to a placeholder page.

@@ -12,23 +12,24 @@ const DECAY = 0.04; // fraction of momentum left after 1s
 const K = -Math.log(DECAY); // so a velocity v glides v / K px in total
 const noopSubscribe = () => () => {};
 
-function ProjectCard({ p, clone }: { p: Localized<Project>; clone?: boolean }) {
+function ProjectCard({ p, index, clone }: { p: Localized<Project>; index: number; clone?: boolean }) {
   const { t } = useI18n();
   return (
-    <article className="project glass" data-tilt aria-hidden={clone || undefined} inert={clone || undefined}>
-      <Cover title={p.title} image={p.image} glyph={p.glyph} sizes="370px" />
+    // Clones are hidden from screen readers and the tab order, but their link still works with a mouse or finger.
+    <article className="project glass" data-tilt aria-hidden={clone || undefined}>
+      {/* Seeded by position, so neighbouring cards get different gradients in every language. */}
+      <Cover title={p.title} seed={`project-${index}`} image={p.image} glyph={p.glyph} sizes="370px" />
       <div className="body">
         <h3>{p.title}</h3>
         <p>{p.description}</p>
-        <ul className="chips" aria-label={t.projects.techStack}>
+        <ul className="chips" aria-label={t.projects.tags}>
           {p.tags.map((t) => (
             <li key={t} className="chip">{t}</li>
           ))}
         </ul>
         <div className="row">
-          <span className="mono year">{p.year}</span>
-          <a className="link-arrow" href={p.url} aria-label={t.projects.viewAria(p.title)}>
-            {t.projects.view} <ArrowRight />
+          <a className="link-arrow" href="#contact" tabIndex={clone ? -1 : undefined} aria-label={t.projects.contactAria(p.title)}>
+            {t.projects.contact} <ArrowRight />
           </a>
         </div>
       </div>
@@ -244,10 +245,10 @@ export default function ProjectsCarousel({ projects }: { projects: Localized<Pro
       )}
       <div ref={vpRef} className={`marquee${reduced ? " static" : ""}`}>
         <div ref={trackRef} className="track">
-          {projects.map((p) => (
-            <ProjectCard key={p.title} p={p} />
+          {projects.map((p, i) => (
+            <ProjectCard key={p.title} p={p} index={i} />
           ))}
-          {hydrated && !reduced && projects.map((p) => <ProjectCard key={`${p.title}-clone`} p={p} clone />)}
+          {hydrated && !reduced && projects.map((p, i) => <ProjectCard key={`${p.title}-clone`} p={p} index={i} clone />)}
         </div>
       </div>
     </div>

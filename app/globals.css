@@ -465,15 +465,16 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
 }
 .marquee.dragging { cursor: grabbing }
 .marquee.dragging a { pointer-events: none }
-.track { display: flex; gap: 20px; width: max-content; transform-style: preserve-3d; padding-inline: 10px }
+/* Cards are pushed back (translateZ < 0) behind the track plane: let clicks pass through the track to them. */
+.track { display: flex; gap: 20px; width: max-content; transform-style: preserve-3d; padding-inline: 10px; pointer-events: none }
+.track > * { pointer-events: auto }
 .motion-on .track { will-change: transform }
-.project { width: clamp(280px, 32vw, 370px); flex: none; padding: 10px 10px 20px; user-select: none; -webkit-user-select: none; border-radius: var(--r-lg) }
-.project .body { padding: 16px 10px 0 }
+.project { width: clamp(280px, 32vw, 370px); flex: none; display: flex; flex-direction: column; padding: 10px 10px 20px; user-select: none; -webkit-user-select: none; border-radius: var(--r-lg) }
+.project .body { flex: 1; display: flex; flex-direction: column; padding: 16px 10px 0 }
 .project h3 { font-size: 1.2rem; font-weight: 650; margin-bottom: .4rem }
 .project p { font-size: .9rem; color: var(--muted); min-height: 3.2em }
 .project .chips { margin: 1rem 0 1.1rem }
-.project .row { display: flex; justify-content: space-between; align-items: center }
-.project .year { color: var(--muted) }
+.project .row { display: flex; justify-content: flex-end; align-items: center; margin-top: auto }
 .project img { pointer-events: none; -webkit-user-drag: none }
 .marquee-ctrl { display: flex; gap: .4rem }
 /* Reduced motion: no autoplay, just a native swipeable row with snap points. */

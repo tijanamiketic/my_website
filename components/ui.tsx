@@ -36,12 +36,15 @@ export function Cover({
   title,
   image,
   glyph,
+  seed = title,
   sizes = "(max-width: 640px) 100vw, 400px",
   className = "",
 }: {
   title: string;
   image?: string;
   glyph?: string;
+  /** Picks the gradient; defaults to the title. */
+  seed?: string;
   sizes?: string;
   className?: string;
 }) {
@@ -54,7 +57,7 @@ export function Cover({
   }
   return (
     <div className={`cover ${className}`} aria-hidden="true">
-      <div className="gen" style={{ background: coverGradient(title) }} />
+      <div className="gen" style={{ background: coverGradient(seed) }} />
       <div className="gridlines" />
       <div className="glyph">{glyph ?? "✦"}</div>
     </div>

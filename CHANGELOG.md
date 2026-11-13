@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-13
+- Changed: The Projects carousel shows eight service cards instead of the old projects: "AI Chatbot po meri" / "Custom AI Chatbot", "AI alat za kreiranje i editovanje sadržaja" / "AI Content Creation & Editing Tool", "Glasovni AI agent" / "AI Voice Agent", "Izrada web sajtova" / "Website Development", "Lični AI asistent na Telegramu" / "Personal AI Assistant on Telegram", "Automatizovano upravljanje bazom podataka" / "Automated Database Management", "Automatske poruke" / "Automated Messages" and "Projekat po vašoj ideji" / "Your Idea, Built for You". Titles, descriptions and tags are translated.
+- Removed: The old projects (Lumen Tutor, PromptLab, Agent Atlas, DocuMind, Voice → Lesson, ClassPulse) and the year in the corner of each card.
+- Changed: The card link reads "Kontakt →" / "Contact →" and scrolls to the Contact section. It used to read "Pogledaj projekat →" / "View project →" and led nowhere.
+- Changed: All cards in the carousel are the same height, and the link always sits in the bottom-right corner, even under longer descriptions.
+- Fixed: Links on the cards in the auto-scrolling carousel could not be clicked. Cards that are tilted back caught no clicks, and the repeated cards that make the loop seamless ignored clicks entirely.
+- Changed: The chat assistant knows the services and sends visitors who ask about them to Contact or email.
+- Changed: The section is renamed "Usluge — Šta mogu da napravim za vas" / "Services — What I can build for you" (was "Projekti — Napravljeno i pokrenuto" / "Projects — Things I've shipped"). The navigation reads "Usluge" / "Services", and the carousel buttons say "Prethodna / Sledeća usluga" / "Previous / Next service".
+
 ## 2026-10-16
 - Changed: Upcoming Events shows a single card: "Radionica" / "Workshop", "Uvod u AI" / "Introduction to AI", "Uživo" / "In person". It has no date, time, seats or venue yet. The date block reads "Uskoro" / "Soon", and the register button is disabled and reads "Uskoro" / "Coming soon". The whole card is greyed out, with no tilt or glow on hover.
 - Removed: The other events ("AI u učionici", "Pravimo zajedno: RAG", "Masterclass: AI agenti", "AI Builders Meetup").

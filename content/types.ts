@@ -29,13 +29,12 @@ export type Profile = {
   seo: { description: Text; keywords: Text[] };
 };
 
+/** A service card in the Projects carousel. Its link always scrolls to Contact. */
 export type Project = {
-  /** Product name: not translated. */
-  title: string;
+  title: Text;
   description: Text;
-  tags: string[];
-  year: string;
-  url: string;
+  /** A plain string when the tag is the same in every language (e.g. "LLM"). */
+  tags: (string | Text)[];
   /** Path under /public or a remote URL. Leave undefined for a generated gradient cover. */
   image?: string;
   /** Short symbol drawn on the generated cover. */

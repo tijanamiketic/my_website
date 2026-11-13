@@ -21,7 +21,7 @@ const INTENTS: { intent: Intent; k: RegExp }[] = [
   { intent: "interview", k: /(interview|podcast|press|media|featured|radio|video|intervju|podkast|gostovanj|medij)/ },
   { intent: "blog", k: /(blog|article|post|write|writing|read|tekst|član|clan)/ },
   { intent: "resource", k: /(resource|pdf|template|guide|download|doc|checklist|notebook|resurs|šablon|sablon|vodič|vodic|preuz)/ },
-  { intent: "project", k: /(project|built|portfolio|work|app|projek|aplikacij)/ },
+  { intent: "project", k: /(project|built|portfolio|work|app|service|chatbot|projek|aplikacij|uslug|četbot)/ },
   { intent: "contact", k: /(contact|email|mail|hire|collab|speak|reach|book|consult|kontakt|konsult|imejl|mejl|saradnj|angaž|angaz)/ },
   { intent: "about", k: /(who|about|background|experience|bio|ko je|biografij|iskustv)/ },
 ];
@@ -62,7 +62,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     },
     blog: () => `Najnoviji tekst: „${posts[0]?.title}“ (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `Broj besplatnih resursa u biblioteci: ${resources.length}. Probaj „${resources[0].title}“, a pretraga u odeljku ${s.resources} filtrira po temi.`,
-    project: () => `Neki od skorašnjih projekata: ${projects.slice(0, 3).map((p) => p.title).join(", ")}. Svi su u odeljku ${s.projects}.`,
+    project: () => `${name} nudi usluge kao što su: ${projects.slice(0, 3).map((p) => p.title).join(", ")}. Sve su u odeljku ${s.projects}, a za saradnju piši na ${profile.email}.`,
     contact: () => `Najbolje je putem imejla: ${profile.email}, tako se zakazuju i konsultacije. Za radionice ili predavanja navedi datume i broj učesnika. Na mrežama: ${liveSocials}.`,
     about: () => `${fullName} — ${profile.role}, ${profile.location}. ${profile.stats.map((x) => `${x.value} ${x.label}`).join(", ")}. Pravi agente, RAG sisteme i AI proizvode i predaje kroz kurseve, grupne programe i korporativne obuke.`,
     fallback: () => `Ja sam demo asistent sajta, pa znam osnove — kurseve, događaje, intervjue, resurse i kontakt. Probaj neki od predloga ispod ili piši na ${profile.email}.`,
@@ -86,7 +86,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     },
     blog: () => `Latest article: "${posts[0]?.title}" (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `There are ${resources.length} free resources in the library — try "${resources[0].title}". Use the search in the ${s.resources} section to filter by topic.`,
-    project: () => `Recent projects include ${projects.slice(0, 3).map((p) => p.title).join(", ")}. Scroll to ${s.projects} to see them all.`,
+    project: () => `${name} offers services such as ${projects.slice(0, 3).map((p) => p.title).join(", ")}. See them all in the ${s.projects} section, or email ${profile.email} to work together.`,
     contact: () => `The best way is email: ${profile.email}, which is also how to book a consultation. For workshops or speaking, include your dates and audience size. You can also find ${name} on ${liveSocials}.`,
     about: () =>
       `${fullName} is an ${profile.role} based in ${profile.location} — ${profile.stats.map((x) => `${x.value} ${x.label}`).join(", ")}. ${name} builds agents, RAG systems and AI products, and teaches through courses, cohorts and corporate trainings.`,

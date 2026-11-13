@@ -1,6 +1,6 @@
 # AI: the chat assistant
 
-The site has a chat widget (bottom corner) that answers visitors' questions about courses, events, interviews, resources, projects, blog posts and how to get in touch.
+The site has a chat widget (bottom corner) that answers visitors' questions about courses, events, interviews, resources, services, blog posts and how to get in touch.
 
 Request flow: `components/chat/ChatWindow.tsx` → `POST /api/chat` (`app/api/chat/route.ts`) → Claude, streamed back as plain text. If there is no API key or the API fails, `lib/mock-chat.ts` answers instead. The response header `X-Chat-Mode` says which one answered (`ai` or `mock`).
 
@@ -11,7 +11,7 @@ There is one prompt: the system prompt, built by `buildSystemPrompt(locale)` in 
 It has two parts:
 
 1. **Instructions:** keep replies to 1–4 sentences, plain text only (the widget does not render markdown, but turns bare URLs and emails into links), answer only from the facts given, never invent courses, prices, dates or links, say "I don't know" and point to the contact email when unsure, speak about Tijana in the third person, reply in the page language (Serbian in Latin script, or English) unless the visitor writes in another language, use the section names visitors see, and decline unrelated tasks.
-2. **Facts:** sections in XML-style tags (`<profile>`, `<courses>`, `<upcoming_events>`, `<interviews_and_press>`, `<free_resources>`, `<projects>`, `<blog_posts>`), built from `content/` and the blog folder.
+2. **Facts:** sections in XML-style tags (`<profile>`, `<courses>`, `<upcoming_events>`, `<interviews_and_press>`, `<free_resources>`, `<services>`, `<blog_posts>`), built from `content/` and the blog folder.
 
 Why it is written this way:
 

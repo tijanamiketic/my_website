@@ -105,9 +105,10 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
   add(`Visitors can search and open all resources in the ${t.nav.sections.resources} section of the site.`);
   add(`</free_resources>`);
   add();
-  add(`<projects>`);
-  for (const p of projects) add(`- ${p.title} (${p.year}): ${p.description} [${p.tags.join(", ")}]`);
-  add(`</projects>`);
+  add(`<services>`);
+  add(`Services ${profile.firstName} offers, shown as cards in the ${t.nav.sections.projects} section. To order one or ask about it, visitors use the ${t.nav.sections.contact} section or email ${profile.email}.`);
+  for (const p of projects) add(`- ${p.title}: ${p.description} [${p.tags.join(", ")}]`);
+  add(`</services>`);
   add();
   add(`<blog_posts>`);
   for (const p of posts) add(`- "${p.title}" (${formatDate(p.date, locale)}, ${p.readingTime} min) ${postUrl(p.slug)}`);
