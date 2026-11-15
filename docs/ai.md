@@ -54,7 +54,7 @@ Manual check, after changing the prompt, model or content:
 
 ## Limitations
 
-- Knows only what is in `content/` and the titles of blog posts and news articles. It does not read their bodies.
+- Knows only what is in `content/` and the titles and excerpts (`excerpt` in the frontmatter) of blog posts and news articles. It does not read their bodies.
 - The fallback responder is keyword-based: it misses rephrased questions and always picks the first matching topic.
 - Rate limits are per server instance, not global (see [decisions.md](decisions.md)).
 - Chat history is kept per browser tab in `sessionStorage` and is never stored on the server. It carries over when the visitor switches language; earlier answers stay in the language they were given in.

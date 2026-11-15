@@ -2,10 +2,11 @@
 
 ## 2026-11-16
 - Added: Five AI news articles in Serbian and English: "Claude Fable 5.2 i Mythos 5.2: Anthropic ponovo podiže letvicu" / "Claude Fable 5.2 and Mythos 5.2: Anthropic raises the bar again" (9 Nov), "Gemini 4 Hydrogen: Googleov novi model za svaki dan" / "Gemini 4 Hydrogen: Google's new everyday model" (12 Nov), "SpaceX gradi AI infrastrukturu u razmerama raketa" / "SpaceX is building AI infrastructure at rocket scale" (12 Nov), "Tvoj AI sada može da kupuje, ali samo uz tvoje odobrenje" / "Your AI can now shop, but only with your approval" (13 Nov) and "Od demo-verzije do otkrića: AI ulazi u laboratoriju" / "From demo to discovery: AI enters the lab" (11 Nov). Each has its own page at `/news/<slug>` (`/en/news/<slug>`), with a "Sve vesti" / "All news" link back to the section.
-- Changed: The "AI vesti" / "AI News" section shows these articles as cards in the blog style, newest first, instead of third-party headlines. The intro reads "Najvažnije AI vesti, ukratko: šta se desilo i zašto je bitno, uz izvore." / "The AI news that matters, in brief: what happened and why it's important, with sources."
+- Changed: The "AI vesti" / "AI News" section shows these articles as cards in the blog style, newest first, instead of third-party headlines. The intro reads "Kratki pregledi najvažnijih događaja iz sveta veštačke inteligencije, sa proverenim izvorima." / "Short takes on the biggest events in AI, with sources you can check."
 - Removed: The live RSS headline feed in AI News, with its topic filter, "Uživo" / "Live feed" label and demo headlines, and the fast-xml-parser dependency.
 - Changed: News article pages are listed in the sitemap.
 - Changed: The section heading reads "AI vesti: šta se desilo i zašto je bitno" / "AI news: what happened and why it matters" (was "Ove nedelje u svetu AI-ja" / "This week in AI").
+- Changed: The chat assistant knows the short description (excerpt) of every blog post and news article, in the page language.
 - Changed: The chat assistant knows the news articles (title, date, reading time, link) and can recommend them with a link to `/news/<slug>` or `/en/news/<slug>`. Without an API key, the demo assistant answers questions about news ("vesti", "news") with the latest article.
 
 ## 2026-11-13

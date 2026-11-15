@@ -114,12 +114,12 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
   add(`</services>`);
   add();
   add(`<blog_posts>`);
-  for (const p of posts) add(`- "${p.title}" (${formatDate(p.date, locale)}, ${p.readingTime} min) ${postUrl(p.slug)}`);
+  for (const p of posts) add(`- "${p.title}" (${formatDate(p.date, locale)}, ${p.readingTime} min) ${postUrl(p.slug)}${p.excerpt ? ` | ${p.excerpt}` : ""}`);
   add(`</blog_posts>`);
   add();
   add(`<ai_news_articles>`);
   add(`Short write-ups by ${profile.firstName} on recent AI news, newest first, in the ${t.nav.sections.news} section.`);
-  for (const n of news) add(`- "${n.title}" (${formatDate(n.date, locale)}, ${n.readingTime} min) ${newsUrl(n.slug)}`);
+  for (const n of news) add(`- "${n.title}" (${formatDate(n.date, locale)}, ${n.readingTime} min) ${newsUrl(n.slug)}${n.excerpt ? ` | ${n.excerpt}` : ""}`);
   add(`</ai_news_articles>`);
   return lines.join("\n");
 }
