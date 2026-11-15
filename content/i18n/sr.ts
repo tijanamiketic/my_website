@@ -87,8 +87,8 @@ export const sr = {
   },
   news: {
     eyebrow: "AI vesti",
-    title: "Ove nedelje u svetu",
-    accent: "AI-ja",
+    title: "AI vesti:",
+    accent: "šta se desilo i zašto je bitno",
     lede: "Najvažnije AI vesti, ukratko: šta se desilo i zašto je bitno, uz izvore.",
     allNews: "Sve vesti",
     notTranslated: "Ova vest još nije prevedena na srpski, pa je prikazana na engleskom.",

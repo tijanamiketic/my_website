@@ -1,6 +1,6 @@
 # AI: the chat assistant
 
-The site has a chat widget (bottom corner) that answers visitors' questions about courses, events, interviews, resources, services, blog posts and how to get in touch.
+The site has a chat widget (bottom corner) that answers visitors' questions about courses, events, interviews, resources, services, blog posts, AI news articles and how to get in touch.
 
 Request flow: `components/chat/ChatWindow.tsx` → `POST /api/chat` (`app/api/chat/route.ts`) → Claude, streamed back as plain text. If there is no API key or the API fails, `lib/mock-chat.ts` answers instead. The response header `X-Chat-Mode` says which one answered (`ai` or `mock`).
 
@@ -11,14 +11,14 @@ There is one prompt: the system prompt, built by `buildSystemPrompt(locale)` in 
 It has two parts:
 
 1. **Instructions:** keep replies to 1–4 sentences, plain text only (the widget does not render markdown, but turns bare URLs and emails into links), answer only from the facts given, never invent courses, prices, dates or links, say "I don't know" and point to the contact email when unsure, speak about Tijana in the third person, reply in the page language (Serbian in Latin script, or English) unless the visitor writes in another language, use the section names visitors see, and decline unrelated tasks.
-2. **Facts:** sections in XML-style tags (`<profile>`, `<courses>`, `<upcoming_events>`, `<interviews_and_press>`, `<free_resources>`, `<services>`, `<blog_posts>`), built from `content/` and the blog folder.
+2. **Facts:** sections in XML-style tags (`<profile>`, `<courses>`, `<upcoming_events>`, `<interviews_and_press>`, `<free_resources>`, `<services>`, `<blog_posts>`, `<ai_news_articles>`), built from `content/` and the blog and news folders.
 
 Why it is written this way:
 
 - **Generated from content:** the assistant always knows the current courses, prices and events, and there is no second copy of the facts to keep in sync.
 - **Strict "only from the facts" rules:** the assistant speaks for a real person, so a made-up price or date is worse than "I don't know".
 - **Byte-stable:** the prompt contains no timestamps or random values, so Anthropic prompt caching can reuse it across visitors (`cache_control: ephemeral`). There is one cached prompt per language. The list of upcoming events only changes when the hourly cache in `lib/events.ts` refreshes.
-- **Facts in the page language:** prices, dates and blog links in the prompt match what the visitor sees on the page, so the assistant quotes them the same way.
+- **Facts in the page language:** prices, dates, blog links and news links in the prompt match what the visitor sees on the page, so the assistant quotes them the same way.
 - **Courses are "coming soon":** the `<courses>` block has no prices or links, and a rule tells the assistant to suggest booking a consultation by email for anything about courses or working together. The fallback responder does the same.
 - **Social profiles without a link** (`content/socials.ts`) are listed as "coming soon" with no URL, so the assistant never links to an empty profile.
 - **Placeholder links (`"#"`)** are replaced with hints like "the Register button in the Events section", so the assistant never gives out a dead link.
@@ -54,7 +54,7 @@ Manual check, after changing the prompt, model or content:
 
 ## Limitations
 
-- Knows only what is in `content/` and the blog post titles. It does not read the bodies of blog posts.
+- Knows only what is in `content/` and the titles of blog posts and news articles. It does not read their bodies.
 - The fallback responder is keyword-based: it misses rephrased questions and always picks the first matching topic.
 - Rate limits are per server instance, not global (see [decisions.md](decisions.md)).
 - Chat history is kept per browser tab in `sessionStorage` and is never stored on the server. It carries over when the visitor switches language; earlier answers stay in the language they were given in.

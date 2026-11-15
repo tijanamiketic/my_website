@@ -5,6 +5,8 @@
 - Changed: The "AI vesti" / "AI News" section shows these articles as cards in the blog style, newest first, instead of third-party headlines. The intro reads "Najvažnije AI vesti, ukratko: šta se desilo i zašto je bitno, uz izvore." / "The AI news that matters, in brief: what happened and why it's important, with sources."
 - Removed: The live RSS headline feed in AI News, with its topic filter, "Uživo" / "Live feed" label and demo headlines, and the fast-xml-parser dependency.
 - Changed: News article pages are listed in the sitemap.
+- Changed: The section heading reads "AI vesti: šta se desilo i zašto je bitno" / "AI news: what happened and why it matters" (was "Ove nedelje u svetu AI-ja" / "This week in AI").
+- Changed: The chat assistant knows the news articles (title, date, reading time, link) and can recommend them with a link to `/news/<slug>` or `/en/news/<slug>`. Without an API key, the demo assistant answers questions about news ("vesti", "news") with the latest article.
 
 ## 2026-11-13
 - Fixed: Security: Next.js upgraded from 16.4.0 to 16.4.6, which fixes two critical remote-code-execution flaws (`use cache` with typed arrays; image optimization with SVG files) and a high-severity denial of service in Server Actions. Also updated: eslint-config-next 16.4.6, zod 4.6.7 (memory exhaustion fix, used by the Anthropic SDK) and fast-xml-parser 5.12.1 (CPU use fix, used by the news feed).

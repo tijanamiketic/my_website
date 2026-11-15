@@ -83,8 +83,8 @@ export const en: Dictionary = {
   },
   news: {
     eyebrow: "AI News",
-    title: "This week in",
-    accent: "AI",
+    title: "AI news:",
+    accent: "what happened and why it matters",
     lede: "The AI news that matters, in brief: what happened and why it's important, with sources.",
     allNews: "All news",
     notTranslated: "This article is not available in English yet, so it is shown in Serbian.",
