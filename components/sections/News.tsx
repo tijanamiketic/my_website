@@ -1,11 +1,13 @@
-import { getNews } from "@/lib/news";
+import { newsOnHome } from "@/content/posts";
+import { news } from "@/lib/news";
 import { getI18n } from "@/lib/i18n/server";
+import PostGrid from "../PostGrid";
 import { SectionHead } from "../ui";
-import NewsFeed from "./NewsFeed";
 
+/** AI news articles from content/news/<lang>/, newest first. */
 export default async function News() {
-  const feed = await getNews();
-  const { t } = await getI18n();
+  const { locale, t } = await getI18n();
+  const items = news.getAll(locale).slice(0, newsOnHome);
   return (
     <section id="news" className="section wrap" aria-labelledby="news-title">
       <SectionHead
@@ -15,7 +17,7 @@ export default async function News() {
         accent={t.news.accent}
         lede={t.news.lede}
       />
-      <NewsFeed items={feed.items} live={feed.live} fetchedAt={feed.fetchedAt} />
+      <PostGrid items={items} collection="news" />
     </section>
   );
 }

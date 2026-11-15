@@ -13,6 +13,10 @@
  * featured: true                  # optional — first featured post gets the double-width card
  * ---
  *
- * This file only controls how many posts show on the home page.
+ * AI news articles work the same way in /content/news/sr/ and /content/news/en/, with the
+ * same frontmatter. They are always sorted newest first; `featured` is ignored.
+ *
+ * This file only controls how many blog posts and news articles show on the home page.
  */
 export const postsOnHome = 5;
+export const newsOnHome = 6;

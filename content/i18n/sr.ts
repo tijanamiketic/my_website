@@ -1,5 +1,5 @@
 import { plural } from "@/lib/i18n";
-import type { EventItem, InterviewFormat, NewsRegion, NewsTopic, ResourceType } from "../types";
+import type { EventItem, InterviewFormat, ResourceType } from "../types";
 
 /**
  * Interface text in Serbian (Latin script), the source language of the site.
@@ -39,10 +39,6 @@ export const sr = {
     all: "Sve",
     details: "Detalji",
     newTab: "(otvara se u novoj kartici)",
-  },
-  time: {
-    hoursAgo: (h: number) => `pre ${h} h`,
-    daysAgo: (d: number) => `pre ${d} d`,
   },
   hero: {
     viewProjects: "Pogledaj usluge",
@@ -93,15 +89,10 @@ export const sr = {
     eyebrow: "AI vesti",
     title: "Ove nedelje u svetu",
     accent: "AI-ja",
-    lede: "Odabrane vesti o istraživanjima, regulativi i industriji iz celog sveta. Naslovi su na jeziku izvora.",
-    filter: "Filtriraj vesti po temi",
-    live: (ago: string) => `Uživo · ažurirano ${ago}`,
-    demo: "Demo · probni podaci",
-    tags: "Oznake",
-    read: "Pročitaj",
-    readAria: (title: string, source: string) => `Pročitaj: ${title} (${source}, nova kartica)`,
-    topic: { Research: "Istraživanja", Policy: "Regulativa", Industry: "Industrija", "Open source": "Otvoreni kod", Education: "Obrazovanje" } satisfies Record<NewsTopic, string>,
-    region: { Global: "Svet", Europe: "Evropa", Americas: "Amerike", Asia: "Azija", Africa: "Afrika" } satisfies Record<NewsRegion, string>,
+    lede: "Najvažnije AI vesti, ukratko: šta se desilo i zašto je bitno, uz izvore.",
+    allNews: "Sve vesti",
+    notTranslated: "Ova vest još nije prevedena na srpski, pa je prikazana na engleskom.",
+    notFoundTitle: "Vest nije pronađena",
   },
   courses: {
     eyebrow: "Kursevi i obuke",
