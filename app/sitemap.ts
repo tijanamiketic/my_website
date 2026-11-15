@@ -1,23 +1,17 @@
 import type { MetadataRoute } from "next";
-import { getAllPosts, hasTranslation } from "@/lib/blog";
+import type { ArticleCollection } from "@/lib/articles";
+import { blog } from "@/lib/blog";
+import { news } from "@/lib/news";
 import { SITE_URL } from "@/lib/config";
 import { defaultLocale, languageAlternates, localePath, locales } from "@/lib/i18n";
 
 const abs = (links: Record<string, string>) => Object.fromEntries(Object.entries(links).map(([k, v]) => [k, `${SITE_URL}${v}`]));
 
-/** Every page in every language it is translated into, with hreflang links between them. */
-export default function sitemap(): MetadataRoute.Sitemap {
-  const posts = getAllPosts(defaultLocale);
-  const home = locales.map((locale) => ({
-    url: `${SITE_URL}${localePath(locale, "/")}`,
-    changeFrequency: "weekly" as const,
-    priority: 1,
-    lastModified: posts[0]?.date,
-    alternates: { languages: abs(languageAlternates("/")) },
-  }));
-  const articles = posts.flatMap((p) => {
-    const path = `/blog/${p.slug}`;
-    const available = locales.filter((l) => hasTranslation(p.slug, l));
+/** Every article in a collection, in every language it is translated into. */
+function articleEntries(items: ArticleCollection): MetadataRoute.Sitemap {
+  return items.getAll(defaultLocale).flatMap((p) => {
+    const path = `/${items.collection}/${p.slug}`;
+    const available = locales.filter((l) => items.hasTranslation(p.slug, l));
     return available.map((locale) => ({
       url: `${SITE_URL}${localePath(locale, path)}`,
       lastModified: p.date,
@@ -26,5 +20,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: { languages: abs(languageAlternates(path, available)) },
     }));
   });
+}
+
+/** Every page in every language it is translated into, with hreflang links between them. */
+export default function sitemap(): MetadataRoute.Sitemap {
+  const articles = [...articleEntries(blog), ...articleEntries(news)];
+  const latest = articles.map((a) => String(a.lastModified)).sort().at(-1);
+  const home = locales.map((locale) => ({
+    url: `${SITE_URL}${localePath(locale, "/")}`,
+    changeFrequency: "weekly" as const,
+    priority: 1,
+    lastModified: latest,
+    alternates: { languages: abs(languageAlternates("/")) },
+  }));
   return [...home, ...articles];
 }

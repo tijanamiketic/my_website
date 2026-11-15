@@ -8,6 +8,7 @@ import { projects as projectSource } from "@/content/projects";
 import { socials } from "@/content/socials";
 import { dictionaries } from "@/content/i18n";
 import { getAllPosts } from "./blog";
+import { news as newsSource } from "./news";
 import { upcomingEvents } from "./events";
 import { SITE_URL, fullName } from "./config";
 import { formatDate } from "./format";
@@ -27,6 +28,8 @@ export async function getChatKnowledge(locale: Locale) {
     projects: localize(projectSource, locale),
     posts: getAllPosts(locale),
     postUrl: (slug: string) => `${SITE_URL}${localePath(locale, `/blog/${slug}`)}`,
+    news: newsSource.getAll(locale),
+    newsUrl: (slug: string) => `${SITE_URL}${localePath(locale, `/news/${slug}`)}`,
   };
 }
 
@@ -40,13 +43,13 @@ const REPLY_LANGUAGE: Record<Locale, string> = {
  * Kept byte-stable between requests (no timestamps) so prompt caching hits: one cached prompt per language.
  */
 export async function buildSystemPrompt(locale: Locale): Promise<string> {
-  const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl } = await getChatKnowledge(locale);
+  const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl, news, newsUrl } = await getChatKnowledge(locale);
   const t = dictionaries[locale];
   const lines: string[] = [];
   const add = (s = "") => lines.push(s);
 
   add(`You are the friendly website assistant for ${fullName}, ${profile.role}, on their personal site (${SITE_URL}${localePath(locale, "/")}).`);
-  add(`Visitors are potential students, workshop clients, journalists and fellow builders. Help them find courses, events, resources, interviews and ways to get in touch.`);
+  add(`Visitors are potential students, workshop clients, journalists and fellow builders. Help them find courses, events, resources, interviews, blog posts, AI news articles and ways to get in touch.`);
   add();
   add(`How to answer:`);
   add(`- Keep replies short: 1–4 sentences or a compact list. Plain text only — no markdown headings, tables or bold. Bare URLs are fine; the chat widget makes them clickable.`);
@@ -111,7 +114,12 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
   add(`</services>`);
   add();
   add(`<blog_posts>`);
-  for (const p of posts) add(`- "${p.title}" (${formatDate(p.date, locale)}, ${p.readingTime} min) ${postUrl(p.slug)}`);
+  for (const p of posts) add(`- "${p.title}" (${formatDate(p.date, locale)}, ${p.readingTime} min) ${postUrl(p.slug)}${p.excerpt ? ` | ${p.excerpt}` : ""}`);
   add(`</blog_posts>`);
+  add();
+  add(`<ai_news_articles>`);
+  add(`Short write-ups by ${profile.firstName} on recent AI news, newest first, in the ${t.nav.sections.news} section.`);
+  for (const n of news) add(`- "${n.title}" (${formatDate(n.date, locale)}, ${n.readingTime} min) ${newsUrl(n.slug)}${n.excerpt ? ` | ${n.excerpt}` : ""}`);
+  add(`</ai_news_articles>`);
   return lines.join("\n");
 }

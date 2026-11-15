@@ -9,7 +9,7 @@ import type { Locale } from "./i18n";
 /** Placeholder links ("#") in the content files shouldn't be shown to visitors. */
 const realUrl = (u?: string) => !!u && u !== "#";
 
-type Intent = "greet" | "free" | "price" | "course" | "event" | "interview" | "blog" | "resource" | "project" | "contact" | "about";
+type Intent = "greet" | "free" | "price" | "course" | "event" | "interview" | "news" | "blog" | "resource" | "project" | "contact" | "about";
 
 /** Keywords in English and Serbian; the first matching intent wins. The answer is in the page language. */
 const INTENTS: { intent: Intent; k: RegExp }[] = [
@@ -19,6 +19,7 @@ const INTENTS: { intent: Intent; k: RegExp }[] = [
   { intent: "course", k: /(course|learn|class|training|skool|beginner|start|kurs|obuk|uč|nauč)/ },
   { intent: "event", k: /(event|workshop|meetup|live|webinar|when|next|događaj|dogadjaj|radionic|kada|sledeć|sledec)/ },
   { intent: "interview", k: /(interview|podcast|press|media|featured|radio|video|intervju|podkast|gostovanj|medij)/ },
+  { intent: "news", k: /(\bnews|\bvest|novost)/ },
   { intent: "blog", k: /(blog|article|post|write|writing|read|tekst|član|clan)/ },
   { intent: "resource", k: /(resource|pdf|template|guide|download|doc|checklist|notebook|resurs|šablon|sablon|vodič|vodic|preuz)/ },
   { intent: "project", k: /(project|built|portfolio|work|app|service|chatbot|projek|aplikacij|uslug|četbot)/ },
@@ -33,7 +34,7 @@ const INTENTS: { intent: Intent; k: RegExp }[] = [
 export async function mockReply(text: string, locale: Locale): Promise<string> {
   const t = text.toLowerCase();
   const k = await getChatKnowledge(locale);
-  const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl } = k;
+  const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl, news, newsUrl } = k;
   const d = dictionaries[locale];
   const courseList = courses.map((c) => c.title).join(", ");
   const name = profile.firstName;
@@ -60,6 +61,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
       const i = interviews.find((x) => x.featured) ?? interviews[0];
       return `Najnovije gostovanje: „${i.title}“ — ${i.outlet} (${ivDetails(i)})${realUrl(i.url) ? ` — ${i.url}` : ""}. ${interviews.length > 1 ? "Sva gostovanja su" : "Više je"} u odeljku ${s.interviews}. Upiti za medije: ${profile.email}`;
     },
+    news: () => (news[0] ? `Najnovija vest: „${news[0].title}“ (${d.blog.minRead(news[0].readingTime)}) — ${newsUrl(news[0].slug)}. Sve vesti su u odeljku ${s.news}.` : sr.blog()),
     blog: () => `Najnoviji tekst: „${posts[0]?.title}“ (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `Broj besplatnih resursa u biblioteci: ${resources.length}. Probaj „${resources[0].title}“, a pretraga u odeljku ${s.resources} filtrira po temi.`,
     project: () => `${name} nudi usluge kao što su: ${projects.slice(0, 3).map((p) => p.title).join(", ")}. Sve su u odeljku ${s.projects}, a za saradnju piši na ${profile.email}.`,
@@ -84,6 +86,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
       const i = interviews.find((x) => x.featured) ?? interviews[0];
       return `Latest feature: "${i.title}" on ${i.outlet} (${ivDetails(i)})${realUrl(i.url) ? ` — ${i.url}` : ""}. ${interviews.length > 1 ? `See all ${interviews.length} appearances` : "More"} in the ${s.interviews} section. Press requests: ${profile.email}`;
     },
+    news: () => (news[0] ? `Latest AI news: "${news[0].title}" (${d.blog.minRead(news[0].readingTime)}) — ${newsUrl(news[0].slug)}. All news articles are in the ${s.news} section.` : en.blog()),
     blog: () => `Latest article: "${posts[0]?.title}" (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
     resource: () => `There are ${resources.length} free resources in the library — try "${resources[0].title}". Use the search in the ${s.resources} section to filter by topic.`,
     project: () => `${name} offers services such as ${projects.slice(0, 3).map((p) => p.title).join(", ")}. See them all in the ${s.projects} section, or email ${profile.email} to work together.`,

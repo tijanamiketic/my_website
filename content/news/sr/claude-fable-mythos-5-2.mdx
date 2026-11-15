@@ -1,0 +1,58 @@
+---
+title: "Claude Fable 5.2 i Mythos 5.2: Anthropic ponovo podiže letvicu"
+date: "2026-11-09"
+readingTime: 3
+excerpt: "Anthropic je predstavio Claude Fable 5.2 i Claude Mythos 5.2, nove verzije svojih najjačih modela za najteže tehničke zadatke. Na prvi pogled to je „samo“ verzija .2, ali je skok veći nego što naziv govori."
+glyph: "◈"
+---
+
+Anthropic je 9. novembra predstavio Claude Fable 5.2 i Claude Mythos 5.2, nove verzije svojih najjačih modela, napravljene za najteže tehničke zadatke. Na prvi pogled to je „samo“ verzija .2. Ali kad pogledate brojke i primere iz internog testiranja, vidi se da je skok veći nego što naziv govori.
+
+## Jedan model, dva lica
+
+Najvažnije za razumevanje: **Fable i Mythos su isti model**. Razlikuju se po zaštitama i po tome ko može da ih koristi.
+
+- **Claude Fable 5.2** je dostupan svima: u Claude aplikacijama, preko API-ja (`claude-fable-5-2`) i na velikim cloud platformama (AWS, Google Cloud, Microsoft Azure). Ima pojačane bezbednosne mehanizme za oblasti sajber-bezbednosti i biologije.
+- **Claude Mythos 5.2** ima manje tih ograničenja, ali je zato zatvoren. Dobijaju ga samo proverene organizacije, preko Anthropicovih programa verifikacije za sajber-bezbednost i nauke o životu (life sciences).
+
+Dobra vest za svakodnevne korisnike je da su zaštite kod Fable modela postale preciznije. Prema Anthropicu, Fable 5.2 ima oko 55% manje nepotrebnih odbijanja nego prethodna verzija. Model, dakle, ređe odbija bezazlene zahteve.
+
+## Šta je konkretno bolje
+
+- **Brzina:** odgovori stižu do 30% brže nego kod verzija 5.1.
+- **Cena:** 8 dolara na milion ulaznih i 40 dolara na milion izlaznih tokena, niže nego ranije. Postoji i opcioni „fast mode“ po duplo višoj ceni.
+- **Sposobnosti:** Anthropic navodi da su novi modeli korak iznad Claude Opus 5.5 u gotovo svim oblastima koje su testirali (kodiranje, rezonovanje, rad sa slikama). Mythos 5.2 je na internom testu ponovnog pronalaženja poznatih bezbednosnih propusta (CVE Rediscovery) postigao 89,6%.
+
+Važna napomena: ovo su rezultati koje je objavila sama kompanija. Nezavisne provere tek predstoje.
+
+## Fermatova teorema za 30 sati
+
+Najzanimljiviji primer dolazi iz matematike. U septembru je Anthropic objavio prvi potpuni računarski provereni dokaz Fermatove poslednje teoreme, zapisan u jeziku Lean. Taj posao je trajao 11 dana, uz namenski pravljen sistem i pomoć istraživača.
+
+Sa Fable 5.2 je tim od 1.000 agenata isti zadatak završio za **oko 30 sati**, uz minimalnu ljudsku intervenciju. Agenti su sami osmislili kako da podele posao i koordinišu se.
+
+Da budemo precizni: ovo nije nov dokaz. To je prevođenje postojećeg dokaza Endrjua Vajlsa u oblik koji računar može da proveri korak po korak. Upravo zato je dobar test, jer zahteva dugotrajan, precizan rad bez greške.
+
+Iz internog testiranja Anthropic navodi i to da je model uz više od 1.000 agenata napravio operativni sistem koji radi za osam dana, dizajnirao tri elektronska uređaja koja rade i pomogao u rešavanju dva otvorena problema iz fizike crnih rupa.
+
+## Zašto je tajming zanimljiv
+
+Prema pisanju CNBC-a, Anthropic se priprema za mogući izlazak na berzu (IPO). Objaviti jasno jači model baš u tom periodu je snažna poruka: mogućnosti i dalje brzo rastu, cene padaju, a kompanija pokušava da bezbednost drži u koraku sa napretkom.
+
+## Šta to znači za tebe
+
+Zanimljivo je da ni sam Anthropic ne preporučuje Fable za sve. Za većinu svakodnevnog kodiranja i rada sa znanjem i dalje predlaže **Opus 5.5**. Na Fable treba preći kad je zadatak veliki, dugačak i otvoren, kad model treba da radi satima ili da koordiniše više agenata.
+
+Šira slika: razmak između „veoma dobrog“ i „najboljeg što postoji“ ponovo se smanjio, a najjači model je ovog puta i jeftiniji od prethodnog.
+
+---
+
+**Izvori:**
+
+- [SD Times: Anthropic introduces Claude Fable 5.2, Mythos 5.2](https://sdtimes.com/ai/anthropic-introduces-claude-fable-5-2-mythos-5-2/)
+- [Let's Data Science: Anthropic releases Claude Fable 5.2 and Mythos 5.2](https://letsdatascience.com/news/anthropic-releases-claude-fable-52-and-mythos-52-models-06ebb34e)
+- [TestingCatalog: Anthropic launches Claude Fable 5.2 and Mythos 5.2](https://www.testingcatalog.com/anthropic-launches-claude-fable-5-2-and-mythos-5-2/)
+- [AI Weekly: 1,000 Fable 5.2 agents formalize Fermat in 30 hours](https://aiweekly.co/alerts/anthropics-1000-fable-52-agents-formalize-fermat-in-30-hours)
+- [Anthropic: Formalizing Fermat's Last Theorem (septembar 2026)](https://anthropic.com/research/formalizing-fermats-last-theorem)
+- [Startup Researcher: manje nepotrebnih blokiranja](https://www.startupresearcher.com/news/anthropic-releases-claude-fable-5-2-and-claude-mythos-5-2)
+- [tbreak: IPO kontekst (CNBC)](https://tbreak.com/claude-fable-5-2-mythos-5-2-launch/)

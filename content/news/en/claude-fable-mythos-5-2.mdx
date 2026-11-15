@@ -1,0 +1,58 @@
+---
+title: "Claude Fable 5.2 and Mythos 5.2: Anthropic raises the bar again"
+date: "2026-11-09"
+readingTime: 3
+excerpt: "Anthropic has introduced Claude Fable 5.2 and Claude Mythos 5.2, new versions of its most powerful models, built for the hardest technical work. At first glance it's \"just\" a .2 release, but the jump is bigger than the name suggests."
+glyph: "◈"
+---
+
+On November 9, Anthropic introduced Claude Fable 5.2 and Claude Mythos 5.2, new versions of its most powerful models, built for the hardest technical tasks. At first glance it's "just" a .2 release. But look at the numbers and the examples from internal testing, and it's clear the jump is bigger than the name suggests.
+
+## One model, two faces
+
+The most important thing to understand: **Fable and Mythos are the same model**. They differ in their safeguards and in who can use them.
+
+- **Claude Fable 5.2** is available to everyone: in the Claude apps, through the API (`claude-fable-5-2`) and on the major cloud platforms (AWS, Google Cloud, Microsoft Azure). It has stronger safety mechanisms for cybersecurity and biology.
+- **Claude Mythos 5.2** has fewer of those restrictions, which is why access is closed. Only vetted organizations get it, through Anthropic's verification programs for cybersecurity and the life sciences.
+
+The good news for everyday users is that Fable's safeguards have become more precise. According to Anthropic, Fable 5.2 has about 55% fewer unnecessary refusals than the previous version. In other words, the model turns down harmless requests less often.
+
+## What's actually better
+
+- **Speed:** responses arrive up to 30% faster than with the 5.1 versions.
+- **Price:** $8 per million input tokens and $40 per million output tokens, lower than before. There's also an optional "fast mode" at twice the price.
+- **Capabilities:** Anthropic says the new models are a step above Claude Opus 5.5 in almost every area it tested (coding, reasoning, working with images). On an internal test of rediscovering known security vulnerabilities (CVE Rediscovery), Mythos 5.2 scored 89.6%.
+
+An important caveat: these are results published by the company itself. Independent checks are still to come.
+
+## Fermat's theorem in 30 hours
+
+The most interesting example comes from mathematics. In September, Anthropic published the first complete computer-verified proof of Fermat's Last Theorem, written in the Lean language. That work took 11 days, with a purpose-built system and help from researchers.
+
+With Fable 5.2, a team of 1,000 agents finished the same task in **about 30 hours**, with minimal human intervention. The agents worked out on their own how to split up the work and coordinate.
+
+To be precise: this isn't a new proof. It's a translation of Andrew Wiles's existing proof into a form a computer can check step by step. That's exactly why it's a good test: it demands long, precise, error-free work.
+
+From internal testing, Anthropic also reports that the model, working with more than 1,000 agents, built a working operating system in eight days, designed three electronic devices that work, and helped solve two open problems in black hole physics.
+
+## Why the timing is interesting
+
+According to CNBC, Anthropic is preparing for a possible stock market listing (IPO). Releasing a clearly stronger model right in that period sends a strong message: capabilities are still growing fast, prices are falling, and the company is trying to keep safety in step with progress.
+
+## What this means for you
+
+Interestingly, not even Anthropic recommends Fable for everything. For most everyday coding and knowledge work, it still suggests **Opus 5.5**. Switch to Fable when the task is big, long and open-ended, when the model needs to work for hours or coordinate several agents.
+
+The bigger picture: the gap between "very good" and "the best there is" has narrowed again, and this time the strongest model is also cheaper than its predecessor.
+
+---
+
+**Sources:**
+
+- [SD Times: Anthropic introduces Claude Fable 5.2, Mythos 5.2](https://sdtimes.com/ai/anthropic-introduces-claude-fable-5-2-mythos-5-2/)
+- [Let's Data Science: Anthropic releases Claude Fable 5.2 and Mythos 5.2](https://letsdatascience.com/news/anthropic-releases-claude-fable-52-and-mythos-52-models-06ebb34e)
+- [TestingCatalog: Anthropic launches Claude Fable 5.2 and Mythos 5.2](https://www.testingcatalog.com/anthropic-launches-claude-fable-5-2-and-mythos-5-2/)
+- [AI Weekly: 1,000 Fable 5.2 agents formalize Fermat in 30 hours](https://aiweekly.co/alerts/anthropics-1000-fable-52-agents-formalize-fermat-in-30-hours)
+- [Anthropic: Formalizing Fermat's Last Theorem (September 2026)](https://anthropic.com/research/formalizing-fermats-last-theorem)
+- [Startup Researcher: fewer unnecessary refusals](https://www.startupresearcher.com/news/anthropic-releases-claude-fable-5-2-and-claude-mythos-5-2)
+- [tbreak: IPO context (CNBC)](https://tbreak.com/claude-fable-5-2-mythos-5-2-launch/)

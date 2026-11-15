@@ -110,26 +110,3 @@ export type Social = {
   color: string;
 } & ({ url: string; handle: string } | { url?: undefined; handle?: undefined });
 
-export type NewsTopic = "Research" | "Policy" | "Industry" | "Open source" | "Education";
-export type NewsRegion = "Global" | "Europe" | "Americas" | "Asia" | "Africa";
-
-/** Headlines come from third-party feeds and stay in their original language. */
-export type NewsItem = {
-  source: string;
-  region: NewsRegion;
-  topic: NewsTopic;
-  /** ISO date-time. */
-  date: string;
-  title: string;
-  url: string;
-};
-
-export type NewsSource = {
-  name: string;
-  url: string;
-  region: NewsRegion;
-  /** Default topic for this feed when an item can't be classified from its title. */
-  topic: NewsTopic;
-  /** For general tech feeds: keep only headlines that mention AI (see `aiKeywords`). */
-  aiOnly?: boolean;
-};

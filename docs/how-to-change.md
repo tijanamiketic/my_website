@@ -9,6 +9,7 @@ app/                    routes and server code
     page.tsx            home page: the list of sections, in order
     layout.tsx          shared shell: fonts, <html lang>, SEO metadata, nav, chat widget, theme script
     blog/[slug]/page.tsx  one blog post page (renders the MDX file)
+    news/[slug]/page.tsx  one AI news article page (same layout as a blog post)
     opengraph-image.tsx, not-found.tsx, [...rest]/ (unknown URLs → 404 in the right language)
   globals.css           all styles: color/radius/font tokens, components, animations
   api/chat/route.ts     chat assistant endpoint (see docs/ai.md)
@@ -16,13 +17,17 @@ app/                    routes and server code
 components/
   sections/             one file per home-page section (Hero, About, Projects, …)
   chat/                 chat button and chat window
+  ArticlePage.tsx       shared article page for blog posts and AI news
+  PostGrid.tsx          shared card grid for the Blog and AI News sections
   Nav.tsx, LanguageSwitch.tsx, I18nProvider.tsx, ThemeToggle.tsx, MotionEffects.tsx, Ambient.tsx, ui.tsx, icons.tsx
-content/                everything you normally edit: typed data files + blog posts
+content/                everything you normally edit: typed data files + blog posts + news articles
   types.ts              the shape of every content file
   i18n/sr.ts, i18n/en.ts  interface text (buttons, headings, labels, messages) per language
   blog/sr/<slug>.mdx    blog posts in Serbian
   blog/en/<slug>.mdx    the same posts in English (same file name)
-lib/                    helpers: languages (i18n/), blog loader, news feed, chat prompt + fallback, rate limiter, config
+  news/sr/<slug>.mdx    AI news articles in Serbian
+  news/en/<slug>.mdx    the same articles in English (same file name)
+lib/                    helpers: languages (i18n/), article loader (articles.ts, used by blog.ts and news.ts), chat prompt + fallback, rate limiter, config
 public/                 static files: portrait, downloadable resources
 reference/              the original single-file design (portfolio.html); not used by the site
 ```
@@ -48,8 +53,7 @@ Text that visitors read has a Serbian and an English value side by side: `title:
 | Courses (free / premium, price in EUR) | `content/courses.ts` |
 | Resource library | `content/resources.ts` |
 | Events (times are CET; past events hide automatically) | `content/events.ts` |
-| AI-news feeds | `content/news-sources.ts` |
-| How many blog posts show on the home page | `content/posts.ts` |
+| How many blog posts and news articles show on the home page | `content/posts.ts` |
 | Section headings, buttons, labels, form and error messages | `content/i18n/sr.ts` and `content/i18n/en.ts` (same key in both) |
 | Navigation labels | `nav.sections` in `content/i18n/*.ts` |
 | Chat quick-reply buttons and greeting | `chat.quick`, `chat.greeting` in `content/i18n/*.ts` |
@@ -133,10 +137,10 @@ The rules come from the owner's Translation Standard. In short:
 
 - **Interface text** (headings, buttons, labels, messages, `aria-label`s): `content/i18n/sr.ts` is the source. `content/i18n/en.ts` must have exactly the same keys; TypeScript fails the build if one is missing. Never type visible text directly in a component.
 - **Content text**: `{ sr, en }` pairs in `content/*.ts`. Prices, dates, links and names are stored once.
-- **Blog posts**: one file per language under `content/blog/sr/` and `content/blog/en/`, same file name.
+- **Blog posts and news articles**: one file per language under `content/blog/sr/` and `content/blog/en/` (news: `content/news/…`), same file name.
 - **Plurals and inserted values** are functions in the dictionary (e.g. `seatsLeft: (n) => plural("sr", n, { one, few, other })`). Serbian has three plural forms: 1 mesto, 2 mesta, 5 mesta.
 - **Dates and prices** are formatted by `formatDate(iso, locale)` in `lib/format.ts` and `formatPrice(eur, locale)` in `lib/i18n/index.ts`. Don't write them by hand.
-- **Not translated:** product names, brand names, outlet names, tech tags, and AI-news headlines (third-party).
+- **Not translated:** product names, brand names, outlet names and tech tags. Link titles in an article's sources list stay in the outlet's language.
 - **Serbian style:** Latin script, informal "ti", „quotes“, decimal comma. Avoid gendered forms when writing about the owner (see [decisions.md](decisions.md)).
 
 In code: Server Components call `await getI18n()` (`@/lib/i18n/server`); Client Components call `useI18n()` (`@/components/I18nProvider`); both return `{ locale, t }`. Content is turned into one language with `localize(data, locale)`. Internal links use `localePath(locale, path)`. Server Actions and Route Handlers can't read the language from the URL, so the page sends it: the chat calls `/api/chat?lang=…`.
@@ -161,9 +165,13 @@ While courses are "coming soon", nothing links to Skool: the nav button ("Kontak
 5. Chat assistant: in `lib/chat-context.ts` put prices and `c.url ?? SKOOL_URL` back in the `<courses>` block and remove the "coming soon" rules; in `lib/mock-chat.ts` rewrite the `free`, `price` and `course` replies in both languages.
 6. Check the nav at 1440px in both languages: a longer button text can push the links onto two lines.
 
-### Add or remove an AI-news feed
+### Add an AI news article
 
-Edit `newsSources` in `content/news-sources.ts`. Set `aiOnly: true` on general tech feeds to keep only AI headlines. Topics are assigned from headline keywords in `topicRules`. The feed is cached for 1 hour. If every feed fails, the `mockNews` items are shown.
+1. Create `content/news/sr/<slug>.mdx` and `content/news/en/<slug>.mdx` with the same file name (short English kebab-case slug).
+2. Use the same frontmatter as a blog post (see `content/posts.ts`): `title`, `date` (the event date, `"YYYY-MM-DD"`), `readingTime`, `excerpt`, `glyph`. `featured` is ignored: news is always newest first.
+3. End the article with a `---` line and the sources list (**Izvori:** / **Sources:**).
+
+The article appears in the AI News section on the home page (the newest `newsOnHome` from `content/posts.ts`) and at `/news/<slug>` (`/en/news/<slug>`), and is added to the sitemap. A full listing page can later use `news.getAll(locale)` from `lib/news.ts`.
 
 ### Change the chat assistant
 
@@ -172,16 +180,16 @@ See [ai.md](ai.md).
 ## How the parts work
 
 - **Languages:** `proxy.ts` serves every unprefixed URL from the Serbian route (`/blog/x` → `app/[lang]/blog/x` with `lang = "sr"`), passes `/en/…` through, and redirects `/sr/…` to the unprefixed URL. Every visit to `/` is Serbian; the browser language is ignored and the choice is not remembered. The SR | EN switch (`components/LanguageSwitch.tsx`) links to the same page and keeps the `#section`. Each page lists both versions as `hreflang` alternates, and so does the sitemap.
-- **Home page** is prerendered as static HTML (once per language) and refreshed hourly, so past events and new news items update without a redeploy (`"use cache"` + `cacheLife` in `lib/events.ts` and `lib/news.ts`).
-- **Blog posts** are read from `content/blog/<lang>/` by `lib/blog.ts` and compiled from MDX to static HTML at build time.
+- **Home page** is prerendered as static HTML (once per language) and refreshed hourly, so past events update without a redeploy (`"use cache"` + `cacheLife` in `lib/events.ts`). New blog posts and news articles need a redeploy.
+- **Blog posts and news articles** are read from `content/blog/<lang>/` and `content/news/<lang>/` by `lib/articles.ts` (through `lib/blog.ts` and `lib/news.ts`) and compiled from MDX to static HTML at build time.
 - **Theme** follows the system setting until the visitor uses the toggle. The choice is saved in `localStorage` and applied before first paint by a small script in `app/[lang]/layout.tsx`.
 - **Animations:** scroll reveals and background parallax are pure CSS scroll-driven animations. Cursor tilt, hero parallax and the carousel use `requestAnimationFrame` (`components/MotionEffects.tsx`, `components/sections/ProjectsCarousel.tsx`). All motion is off under `prefers-reduced-motion`.
-- **SEO:** metadata in `app/[lang]/layout.tsx` and the post page, generated Open Graph image per language, `sitemap.xml` with both languages, `robots.txt`, and JSON-LD (`Person`, `BlogPosting`).
+- **SEO:** metadata in `app/[lang]/layout.tsx` and the post page, generated Open Graph image per language, `sitemap.xml` with both languages, `robots.txt`, and JSON-LD (`Person`, `BlogPosting`, `NewsArticle`).
 
 ## Things that are easy to break
 
 - **Dark mode colors live in two blocks** in `app/globals.css`. Changing only one makes dark mode look different depending on whether it came from the system or the toggle.
-- **Blog file names** with spaces, dots or other symbols return "not found" (`getPost` in `lib/blog.ts` only accepts letters, numbers and hyphens). A translation with a different file name than the original becomes a separate post.
+- **Blog and news file names** with spaces, dots or other symbols return "not found" (`get` in `lib/articles.ts` only accepts letters, numbers and hyphens). A translation with a different file name than the original becomes a separate post.
 - **Visible text typed into a component** shows in one language on both versions of the site. Put it in `content/i18n/sr.ts` and `en.ts`.
 - **Links written as plain paths** (`href="/blog/x"`) always open the Serbian page. Use `localePath(locale, "/blog/x")`.
 - **`proxy.ts` matcher:** URLs with a dot (files) and `/api/` skip the language routing. A new page whose URL contains a dot would not get a language.
