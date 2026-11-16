@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-16
+- Changed: The hero status reads "Otvorene prijave za konsultacije" / "Consultation bookings open" (was "Primam prijave za konsultacije" / "Now booking consultations").
 - Added: The "Documentation Standard" (in English) in the "Resursi" / "Resources" section, with its own page at `/resources/documentation-standard` (`/en/resources/documentation-standard`) showing the full document with headings, lists, tables and code blocks, a "Svi resursi" / "All resources" link back, and a "Preuzmi .md" / "Download .md" button on the card and the page that downloads the original note as `documentation-standard.md`. The Serbian page notes that the document is only available in English for now.
 - Changed: The Resources filters are "Sve" / "All" and "Dokumentacija" / "Documentation". Each card is one compact row, the same size as the old cards: icon, title, one line with category, "Markdown", the date and a small language badge, and the "Pročitaj" / "Read" and download buttons on the right (below the title on narrow phones). The description is shown on the document page. The search box reads "Pretraži resurse…" / "Search resources…".
 - Removed: The ten placeholder resources (Prompt Patterns Handbook, Agent Design Canvas and the rest), their filters (Promptovanje, Agenti, RAG, Nastava, Produktivnost), the preview window and the sample file `prompt-patterns-sample.md`.

@@ -15,7 +15,7 @@ export const profile: Profile = {
     sr: "Pravim praktične AI proizvode, svakodnevno istražujem svet veštačke inteligencije i delim znanje, savete i iskustva koja zaista možeš da primeniš.",
     en: "I build practical AI products, explore the world of AI every day, and share knowledge, tips and lessons you can actually put to use.",
   },
-  status: { sr: "Primam prijave za konsultacije", en: "Now booking consultations" },
+  status: { sr: "Otvorene prijave za konsultacije", en: "Consultation bookings open" },
   email: "tijanamiketic.raz@gmail.com",
   location: { sr: "Beograd, Srbija", en: "Belgrade, Serbia" },
   // Overridden by the NEXT_PUBLIC_SKOOL_URL env var if set.
