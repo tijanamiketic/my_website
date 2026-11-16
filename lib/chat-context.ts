@@ -3,16 +3,17 @@ import { profile as profileSource } from "@/content/profile";
 import { courses as courseSource } from "@/content/courses";
 import { events as eventSource } from "@/content/events";
 import { interviews as interviewSource } from "@/content/interviews";
-import { resources as resourceSource } from "@/content/resources";
+import { resourceCategories } from "@/content/resources";
 import { projects as projectSource } from "@/content/projects";
 import { socials } from "@/content/socials";
 import { dictionaries } from "@/content/i18n";
 import { getAllPosts } from "./blog";
 import { news as newsSource } from "./news";
+import { getResources } from "./resources";
 import { upcomingEvents } from "./events";
 import { SITE_URL, fullName } from "./config";
 import { formatDate } from "./format";
-import { localePath, localize, type Locale } from "./i18n";
+import { localeInfo, localePath, localize, type Locale } from "./i18n";
 
 /** Placeholder links ("#") in the content files are replaced with a hint. */
 const link = (url: string, fallback: string) => (url && url !== "#" ? url : fallback);
@@ -24,7 +25,8 @@ export async function getChatKnowledge(locale: Locale) {
     courses: localize(courseSource, locale),
     upcoming: localize(await upcomingEvents(eventSource), locale),
     interviews: localize(interviewSource, locale),
-    resources: localize(resourceSource, locale),
+    resources: getResources().map((r) => ({ ...r, category: resourceCategories[r.category][locale] })),
+    resourceUrl: (slug: string) => `${SITE_URL}${localePath(locale, `/resources/${slug}`)}`,
     projects: localize(projectSource, locale),
     posts: getAllPosts(locale),
     postUrl: (slug: string) => `${SITE_URL}${localePath(locale, `/blog/${slug}`)}`,
@@ -43,7 +45,7 @@ const REPLY_LANGUAGE: Record<Locale, string> = {
  * Kept byte-stable between requests (no timestamps) so prompt caching hits: one cached prompt per language.
  */
 export async function buildSystemPrompt(locale: Locale): Promise<string> {
-  const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl, news, newsUrl } = await getChatKnowledge(locale);
+  const { profile, courses, upcoming, interviews, resources, resourceUrl, projects, posts, postUrl, news, newsUrl } = await getChatKnowledge(locale);
   const t = dictionaries[locale];
   const lines: string[] = [];
   const add = (s = "") => lines.push(s);
@@ -104,8 +106,8 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
   add(`</interviews_and_press>`);
   add();
   add(`<free_resources>`);
-  for (const r of resources) add(`- ${r.title} | ${t.resources.type[r.type]} · ${r.category} · ${r.size} | ${r.description}`);
-  add(`Visitors can search and open all resources in the ${t.nav.sections.resources} section of the site.`);
+  add(`Documents by ${profile.firstName}, free to read on the site and to download as Markdown (.md) files, in the ${t.nav.sections.resources} section. Each is written in one language and shown as is on both language versions of the site.`);
+  for (const r of resources) add(`- "${r.title}" (${r.category}, written in ${localeInfo[r.lang].name}, updated ${formatDate(r.updated, locale)}) ${resourceUrl(r.slug)} | ${r.description}`);
   add(`</free_resources>`);
   add();
   add(`<services>`);

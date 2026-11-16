@@ -11,7 +11,7 @@ There is one prompt: the system prompt, built by `buildSystemPrompt(locale)` in 
 It has two parts:
 
 1. **Instructions:** keep replies to 1–4 sentences, plain text only (the widget does not render markdown, but turns bare URLs and emails into links), answer only from the facts given, never invent courses, prices, dates or links, say "I don't know" and point to the contact email when unsure, speak about Tijana in the third person, reply in the page language (Serbian in Latin script, or English) unless the visitor writes in another language, use the section names visitors see, and decline unrelated tasks.
-2. **Facts:** sections in XML-style tags (`<profile>`, `<courses>`, `<upcoming_events>`, `<interviews_and_press>`, `<free_resources>`, `<services>`, `<blog_posts>`, `<ai_news_articles>`), built from `content/` and the blog and news folders.
+2. **Facts:** sections in XML-style tags (`<profile>`, `<courses>`, `<upcoming_events>`, `<interviews_and_press>`, `<free_resources>`, `<services>`, `<blog_posts>`, `<ai_news_articles>`), built from `content/`, the blog and news folders and the resource documents in `public/resources/`.
 
 Why it is written this way:
 

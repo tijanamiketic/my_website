@@ -10,6 +10,7 @@ app/                    routes and server code
     layout.tsx          shared shell: fonts, <html lang>, SEO metadata, nav, chat widget, theme script
     blog/[slug]/page.tsx  one blog post page (renders the MDX file)
     news/[slug]/page.tsx  one AI news article page (same layout as a blog post)
+    resources/[slug]/page.tsx  one resource document page (renders the .md file, with a download button)
     opengraph-image.tsx, not-found.tsx, [...rest]/ (unknown URLs → 404 in the right language)
   globals.css           all styles: color/radius/font tokens, components, animations
   api/chat/route.ts     chat assistant endpoint (see docs/ai.md)
@@ -18,6 +19,7 @@ components/
   sections/             one file per home-page section (Hero, About, Projects, …)
   chat/                 chat button and chat window
   ArticlePage.tsx       shared article page for blog posts and AI news
+  ResourcePage.tsx      page for one resource document (same layout as an article)
   PostGrid.tsx          shared card grid for the Blog and AI News sections
   Nav.tsx, LanguageSwitch.tsx, I18nProvider.tsx, ThemeToggle.tsx, MotionEffects.tsx, Ambient.tsx, ui.tsx, icons.tsx
 content/                everything you normally edit: typed data files + blog posts + news articles
@@ -28,7 +30,7 @@ content/                everything you normally edit: typed data files + blog po
   news/sr/<slug>.mdx    AI news articles in Serbian
   news/en/<slug>.mdx    the same articles in English (same file name)
 lib/                    helpers: languages (i18n/), article loader (articles.ts, used by blog.ts and news.ts), chat prompt + fallback, rate limiter, config
-public/                 static files: portrait, downloadable resources
+public/                 static files: portrait; resources/<slug>.md = resource documents (original Obsidian notes)
 reference/              the original single-file design (portfolio.html); not used by the site
 ```
 
@@ -51,7 +53,7 @@ Text that visitors read has a Serbian and an English value side by side: `title:
 | Services carousel (section id `projects`; each card links to Contact) | `content/projects.ts` |
 | Interviews and press (`featured: true` highlights one) | `content/interviews.ts` |
 | Courses (free / premium, price in EUR) | `content/courses.ts` |
-| Resource library | `content/resources.ts` |
+| Resources: which documents are listed, their categories (filters) | `content/resources.ts` (documents themselves: `public/resources/<slug>.md`) |
 | Events (times are CET; past events hide automatically) | `content/events.ts` |
 | How many blog posts and news articles show on the home page | `content/posts.ts` |
 | Section headings, buttons, labels, form and error messages | `content/i18n/sr.ts` and `content/i18n/en.ts` (same key in both) |
@@ -87,15 +89,25 @@ The chat assistant reads these same files, so it picks up content edits automati
 
 If you write a post in only one language, it still shows in the other, in its original language, with a note saying it isn't translated yet. Add the translation later under the same file name.
 
-### Add a project, course, event, interview or resource
+### Add a project, course, event or interview
 
-Copy an existing entry in the matching `content/*.ts` file and change the values, in both languages. Leave `image` out to get a generated gradient cover. A `url` of `"#"` is treated as "no link yet" (resources show "Coming soon").
+Copy an existing entry in the matching `content/*.ts` file and change the values, in both languages. Leave `image` out to get a generated gradient cover. A `url` of `"#"` is treated as "no link yet".
 
 A service card in `content/projects.ts` has no URL: its link always scrolls to Contact. Write a tag as a plain string when it is the same in both languages (`"LLM"`), or as `{ sr: "…", en: "…" }`.
 
 For an interview, `duration` is optional. The featured interview's `questions` are shown as the list beside it, each linking to the same `url`. Other interviews are listed after them.
 
-For a downloadable resource, put the file in `public/resources/` and set `url: "/resources/<file>"`, or use an external URL.
+### Add a resource (a document from Obsidian)
+
+1. Copy the note **unchanged** to `public/resources/<slug>.md` (short English kebab-case name, e.g. `documentation-standard.md`). Copy the file itself (Explorer, `cp`); don't paste its text into an editor, which may change line endings or add a final newline. Visitors download exactly this file.
+2. Add an entry to `resources` in `content/resources.ts`: `{ slug, category, lang, updated }`. `lang` is the language the note is written in; `updated` is the date of its last change (`"YYYY-MM-DD"`).
+3. For a new category, add it to `resourceCategories` in the same file with both labels: `myCategory: { sr: "…", en: "…" }`. Its filter appears when at least one resource uses it.
+
+No component changes are needed. The card title and description come from the note: frontmatter `title` / `description` if present, otherwise the first `# ` heading and the first paragraph after it. The page is `/resources/<slug>` (`/en/resources/<slug>`), shown in the note's language on both versions of the site (the other version shows a "only available in …" note and points search engines to the original). It is added to the sitemap and the chat assistant's knowledge.
+
+Obsidian syntax is converted for display only (`lib/obsidian.ts`): `[[wikilinks]]` become plain text, `![[embeds]]` and `%%comments%%` are removed, callouts become quotes with a bold title, `==highlights==` become plain text, tags stay as text. Images are not supported yet. Markdown tables, lists and code blocks render as usual.
+
+To update a document, copy the new version over the old file and change `updated`.
 
 ### Replace an image
 
@@ -195,6 +207,7 @@ See [ai.md](ai.md).
 - **`proxy.ts` matcher:** URLs with a dot (files) and `/api/` skip the language routing. A new page whose URL contains a dot would not get a language.
 - **Dates** must be ISO strings like `"2026-10-22"`. An event with a past date disappears from the site and from the chat assistant. An event with no `date` is shown greyed out as "coming soon", with registration disabled.
 - **Placeholder links (`"#"`)** are hidden from visitors and the chat. Replace them with real URLs when ready.
+- **Resource files are served byte for byte.** `.gitattributes` turns off line-ending conversion for `public/resources/`, so Git on Windows doesn't change the downloaded file. `next.config.ts` (`headers`) makes every `/resources/*.md` file download instead of opening in the browser. A resource `slug` must match its file name exactly.
 - **Portrait file name:** `public/images/portrait.png` is imported by name in several components. Renaming it breaks the build.
 - **`turbopack.root` in `next.config.ts`** must stay. There is a stray `package.json` / `package-lock.json` in the home folder (`C:\Users\Lenovo`), and without this setting Next.js picks the wrong project root.
 - **Chat system prompt must stay byte-stable:** do not add timestamps or random values to `lib/chat-context.ts`. See [ai.md](ai.md).

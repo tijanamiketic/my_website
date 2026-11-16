@@ -19,6 +19,9 @@ export const Moon = (p: P) => (
 export const Close = (p: P) => (
   <svg {...base} strokeWidth={2} {...p}><path d="M6 6l12 12M18 6 6 18" /></svg>
 );
+export const Download = (p: P) => (
+  <svg {...base} strokeWidth={2} {...p}><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
+);
 export const Search = (p: P) => (
   <svg {...base} strokeWidth={2} {...p}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
 );

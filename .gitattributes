@@ -1,0 +1,2 @@
+# Downloadable resources are served byte for byte: never convert their line endings.
+public/resources/** -text
