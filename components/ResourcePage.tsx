@@ -99,7 +99,7 @@ async function ResourceView({ params }: { params: Params }) {
         </h1>
         <div style={{ marginTop: "1.4rem" }}>{download}</div>
       </header>
-      <div className="prose doc-prose" lang={docLang} style={{ marginTop: "2.2rem" }}>
+      <div className="prose" lang={docLang} style={{ marginTop: "2.2rem" }}>
         <Content components={components} />
       </div>
       <hr className="resource-end" />

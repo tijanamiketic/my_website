@@ -54,9 +54,6 @@ export default function ResourceLibrary({ resources, categories }: { resources: 
                 <h3 lang={docLang}>
                   <Link href={r.href}>{r.title}</Link>
                 </h3>
-                <p className="desc" lang={docLang}>
-                  {r.description}
-                </p>
                 <div className="sub">
                   <span>{r.categoryLabel}</span>
                   <span>{t.resources.format}</span>
@@ -71,7 +68,7 @@ export default function ResourceLibrary({ resources, categories }: { resources: 
                   {t.resources.read}
                 </Link>
                 <a className="btn btn-primary btn-sm" href={r.file} download={`${r.slug}.md`} aria-label={t.resources.downloadAria(r.title)}>
-                  <Download width={15} height={15} /> {t.resources.download}
+                  <Download /> {t.resources.download}
                 </a>
               </div>
             </li>
