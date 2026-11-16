@@ -4,7 +4,8 @@ import { dictionaries } from "@/content/i18n";
 import { getChatKnowledge } from "./chat-context";
 import { fullName } from "./config";
 import { formatDate } from "./format";
-import type { Locale } from "./i18n";
+import { eventAction, eventDates } from "./events";
+import { localePath, type Locale } from "./i18n";
 
 /** Placeholder links ("#") in the content files shouldn't be shown to visitors. */
 const realUrl = (u?: string) => !!u && u !== "#";
@@ -42,7 +43,15 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
   const liveSocials = socials.filter((x) => x.url).map((x) => x.name).join(", ");
   const ivDetails = (i: (typeof interviews)[number]) =>
     [d.interviews.format[i.format], i.duration, formatDate(i.date, locale)].filter(Boolean).join(", ");
-  const when = (e: (typeof upcoming)[number]) => [e.date && formatDate(e.date, locale), e.time && `${e.time} CET`].filter(Boolean).join(", ");
+  const when = (e: (typeof upcoming)[number]) => [eventDates(e, locale), e.time && `${e.time} CET`].filter(Boolean).join(", ");
+  // Events I don't run (attending, speaking at someone else's conference) link to my notes or the official site, not to registration.
+  const otherLink = (e: (typeof upcoming)[number]) => {
+    const a = eventAction(e);
+    if (a?.kind === "notes") return `${d.events.readNotes}: ${a.url.startsWith("/") ? localePath(locale, a.url) : a.url}`;
+    if (a?.kind === "website") return `${d.events.website}: ${a.url}`;
+    if (!a && e.category !== "workshops" && e.category !== "meetups") return ""; // someone else's event, link not added yet
+    return undefined;
+  };
   const where = (e: (typeof upcoming)[number]) => [d.events.mode[e.mode], e.location].filter(Boolean).join(" · ");
 
   const sr: Record<Intent | "fallback", () => string> = {
@@ -54,6 +63,8 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
       const e = upcoming[0];
       if (!e) return `Trenutno nema zakazanih događaja. Navrati ponovo uskoro ili piši na ${profile.email}.`;
       if (!e.date) return `Uskoro: ${e.title.toLowerCase()} „${e.description}“ (${d.events.mode[e.mode].toLowerCase()}). Datum će biti objavljen uskoro. Za detalje piši na ${profile.email}.`;
+      const other = otherLink(e);
+      if (other !== undefined) return `Sledeći događaj: ${e.title}, ${when(e)} (${where(e)}). ${e.description} ${other}${upcoming.length > 1 ? ` Ostali događaji su u odeljku ${s.events}.` : ""}`;
       const more = upcoming.length > 1 ? (realUrl(e.url) ? ` Ostali događaji su u odeljku ${s.events}.` : " Tamo su i ostali događaji.") : "";
       return `Sledeći događaj: ${e.title}, ${when(e)} (${where(e)})${e.seats ? `, ${d.events.seatsLeft(e.seats).toLowerCase()}` : ""}. ${realUrl(e.url) ? `Prijava: ${e.url}` : `Prijava je u odeljku ${s.events}.`}${more}`;
     },
@@ -80,6 +91,8 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
       if (!e) return `There are no events scheduled right now. Check back soon, or email ${profile.email}.`;
       if (!e.date) return `Coming up: the "${e.description}" ${e.title.toLowerCase()} (${d.events.mode[e.mode].toLowerCase()}). The date will be announced soon. For details, email ${profile.email}.`;
       const more = upcoming.length > 1 ? ` There are ${upcoming.length - 1} more in the ${s.events} section.` : "";
+      const other = otherLink(e);
+      if (other !== undefined) return `Next up: ${e.title} on ${when(e)} (${where(e)}). ${e.description} ${other}${more}`;
       return `Next up: ${e.title} on ${when(e)} (${where(e)})${e.seats ? `, ${d.events.seatsLeft(e.seats)}` : ""}. ${realUrl(e.url) ? `Register: ${e.url}` : `Register in the ${s.events} section.`}${more}`;
     },
     interview: () => {

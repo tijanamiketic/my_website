@@ -562,6 +562,9 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
 .event .where { display: flex; flex-wrap: wrap; gap: .4rem }
 .event .side { display: flex; flex-direction: column; align-items: flex-end; gap: .5rem }
 .event .seats { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums }
+.event .note { font-size: .8rem; margin-top: .5rem; opacity: .85 }
+/* Multi-day event: "02–03" needs a smaller number to fit the tile. */
+.date.range b { font-size: 1.45rem; letter-spacing: -.03em }
 /* Undated event: shown as "coming soon". Opacity keeps the scroll-reveal fade (see [data-reveal]). */
 .event.soon { filter: grayscale(1); opacity: calc(.6 * (.2 + var(--p) * .8)) }
 .event.soon .date { display: grid; place-items: center; min-height: 5.4rem }
@@ -573,8 +576,9 @@ section { scroll-margin-top: calc(var(--nav-h) + 24px) }
   .event::before { left: -25px }
   .event { grid-template-columns: 72px 1fr; gap: 1rem; padding: 1.1rem }
   .event .side { grid-column: 1/-1; flex-direction: row; justify-content: space-between; align-items: center }
-  .event.soon .side { justify-content: flex-end } /* no seats text, so keep the button where it was */
+  .event .side:not(:has(.seats)) { justify-content: flex-end } /* no seats text, so keep the button on the right */
   .date b { font-size: 1.6rem }
+  .date.range b { font-size: 1.15rem }
   /* A long location (e.g. "Beograd · Naučno-tehnološki park") wraps instead of widening every card past the screen */
   .event .where .chip { white-space: normal; height: auto; min-height: 26px; padding-block: .3rem; line-height: 1.3 }
 }

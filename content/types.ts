@@ -90,20 +90,31 @@ export type Resource<Category extends string = string> = {
   updated: string;
 };
 
-/** Leave out `date` to show the event as "coming soon": greyed out, with a disabled register button. */
-export type EventItem = {
+/** Leave out `date` to show the event as "coming soon": greyed out, with a disabled button. */
+export type EventItem<Category extends string = string> = {
   title: Text;
-  /** ISO date, e.g. "2026-10-22". */
+  /** A key of `eventCategories` in content/events.ts: sets the filter and the role badge. */
+  category: Category;
+  /** ISO date, e.g. "2026-10-22". For a multi-day event, the first day. */
   date?: string;
+  /** Last day of a multi-day event, e.g. "2026-12-03". The event stays listed until this day is over. */
+  endDate?: string;
   /** Local time range in CET, e.g. "18:00–19:30". */
   time?: string;
   /** Shown translated, via the `events.mode` labels in content/i18n. */
   mode: "Online" | "In person";
   location?: Text;
   description: Text;
-  /** Seats left; null or left out = open / unlimited. */
+  /** Small muted note under the description, e.g. a disclaimer. */
+  note?: Text;
+  /** Seats left; null or left out = open / unlimited. Shown only for events with registration (`url`). */
   seats?: number | null;
+  /** Registration link ("Prijavi se" / "Register"). */
   url?: string;
+  /** The event's official site ("Zvanični sajt" / "Official website"), for events I don't run. Takes priority over `url`. */
+  website?: string;
+  /** My notes post, e.g. "/blog/<slug>" or a full URL ("Pročitaj beleške" / "Read my notes"). Takes priority over everything. */
+  notes?: string;
 };
 
 /** Leave out `url` (and `handle`) to show the profile as "coming soon". */

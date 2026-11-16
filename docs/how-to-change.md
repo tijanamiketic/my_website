@@ -54,7 +54,7 @@ Text that visitors read has a Serbian and an English value side by side: `title:
 | Interviews and press (`featured: true` highlights one) | `content/interviews.ts` |
 | Courses (free / premium, price in EUR) | `content/courses.ts` |
 | Resources: which documents are listed, their categories (filters) | `content/resources.ts` (documents themselves: `public/resources/<slug>.md`) |
-| Events (times are CET; past events hide automatically) | `content/events.ts` |
+| Events and their categories (filters, role badges); times are CET; past events hide automatically | `content/events.ts` |
 | How many blog posts and news articles show on the home page | `content/posts.ts` |
 | Section headings, buttons, labels, form and error messages | `content/i18n/sr.ts` and `content/i18n/en.ts` (same key in both) |
 | Navigation labels | `nav.sections` in `content/i18n/*.ts` |
@@ -96,6 +96,17 @@ Copy an existing entry in the matching `content/*.ts` file and change the values
 A service card in `content/projects.ts` has no URL: its link always scrolls to Contact. Write a tag as a plain string when it is the same in both languages (`"LLM"`), or as `{ sr: "…", en: "…" }`.
 
 For an interview, `duration` is optional. The featured interview's `questions` are shown as the list beside it, each linking to the same `url`. Other interviews are listed after them.
+
+### Add an event or an event category
+
+Add an entry to `events` in `content/events.ts`. Order doesn't matter: dated events are sorted soonest first, undated ("coming soon") ones go last.
+
+- `category`: `workshops`, `meetups`, `speaking` (I'm a speaker) or `attending` (I'm a guest). It sets the filter and the small role badge on the card.
+- `date` (and `endDate` for a multi-day event, shown as "02–03" in the date tile). Leave `date` out for a greyed-out "coming soon" card.
+- `note`: optional small muted text under the description (e.g. a disclaimer).
+- The button: `url` = "Prijavi se" / "Register" (with seats), `website` = "Zvanični sajt" / "Official website", `notes` = "Pročitaj beleške" / "Read my notes". If more than one is set, `notes` wins, then `website`. A notes path like `"/blog/<slug>"` opens the post in the visitor's language.
+
+For a new category, add a line to `eventCategories` in the same file with the filter `label` and the card `badge`, both in two languages. Every category's filter is always shown; an empty one says "Uskoro novi događaji u ovoj kategoriji" / "New events coming soon". No component changes are needed.
 
 ### Add a resource (a document from Obsidian)
 
