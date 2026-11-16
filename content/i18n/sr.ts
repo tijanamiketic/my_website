@@ -1,5 +1,5 @@
 import { plural } from "@/lib/i18n";
-import type { EventItem, InterviewFormat, ResourceType } from "../types";
+import type { EventItem, InterviewFormat } from "../types";
 
 /**
  * Interface text in Serbian (Latin script), the source language of the site.
@@ -117,21 +117,19 @@ export const sr = {
     accent: "biblioteka",
     lede: "Vodiči, šabloni i podsetnici koje koristim u svom radu i na časovima. Slobodno ih otvori i prilagodi.",
     searchLabel: "Pretraži resurse",
-    searchPlaceholder: "Pretraži vodiče, šablone, PDF-ove…",
+    searchPlaceholder: "Pretraži resurse…",
     filter: "Filtriraj resurse po kategoriji",
     count: (n: number, total: number) => `Prikazano: ${n} od ${total}`,
     updated: "Ažurirano",
-    open: "Otvori",
-    openAria: (title: string) => `Otvori: ${title}`,
     empty: (query: string) => `Nijedan resurs ne odgovara upitu „${query}“. Probaj drugu reč ili kategoriju.`,
-    closePreview: "Zatvori pregled",
-    preview: (type: string) => `Pregled: ${type}`,
-    openDocument: "Otvori dokument",
-    externalNewTab: " (spoljni sajt, nova kartica)",
-    newTab: " (nova kartica)",
-    comingSoon: "Uskoro",
-    close: "Zatvori",
-    type: { PDF: "PDF", Template: "Šablon", Checklist: "Kontrolna lista", Notebook: "Notebook", Guide: "Vodič" } satisfies Record<ResourceType, string>,
+    format: "Markdown",
+    read: "Pročitaj",
+    readAria: (title: string) => `Pročitaj: ${title}`,
+    download: "Preuzmi .md",
+    downloadAria: (title: string) => `Preuzmi Markdown fajl: ${title}`,
+    allResources: "Svi resursi",
+    notTranslated: "Ovaj dokument je za sada dostupan samo na engleskom.",
+    notFoundTitle: "Resurs nije pronađen",
   },
   events: {
     eyebrow: "Predstojeći događaji",

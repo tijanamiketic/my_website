@@ -34,7 +34,7 @@ const INTENTS: { intent: Intent; k: RegExp }[] = [
 export async function mockReply(text: string, locale: Locale): Promise<string> {
   const t = text.toLowerCase();
   const k = await getChatKnowledge(locale);
-  const { profile, courses, upcoming, interviews, resources, projects, posts, postUrl, news, newsUrl } = k;
+  const { profile, courses, upcoming, interviews, resources, resourceUrl, projects, posts, postUrl, news, newsUrl } = k;
   const d = dictionaries[locale];
   const courseList = courses.map((c) => c.title).join(", ");
   const name = profile.firstName;
@@ -63,7 +63,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     },
     news: () => (news[0] ? `Najnovija vest: „${news[0].title}“ (${d.blog.minRead(news[0].readingTime)}) — ${newsUrl(news[0].slug)}. Sve vesti su u odeljku ${s.news}.` : sr.blog()),
     blog: () => `Najnoviji tekst: „${posts[0]?.title}“ (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
-    resource: () => `Broj besplatnih resursa u biblioteci: ${resources.length}. Probaj „${resources[0].title}“, a pretraga u odeljku ${s.resources} filtrira po temi.`,
+    resource: () => `U odeljku ${s.resources} su dokumenti koje možeš da pročitaš na sajtu ili preuzmeš kao .md fajl (ukupno: ${resources.length}). Probaj „${resources[0].title}“: ${resourceUrl(resources[0].slug)}`,
     project: () => `${name} nudi usluge kao što su: ${projects.slice(0, 3).map((p) => p.title).join(", ")}. Sve su u odeljku ${s.projects}, a za saradnju piši na ${profile.email}.`,
     contact: () => `Najbolje je putem imejla: ${profile.email}, tako se zakazuju i konsultacije. Za radionice ili predavanja navedi datume i broj učesnika. Na mrežama: ${liveSocials}.`,
     about: () => `${fullName} — ${profile.role}, ${profile.location}. ${profile.stats.map((x) => `${x.value} ${x.label}`).join(", ")}. Pravi agente, RAG sisteme i AI proizvode i predaje kroz kurseve, grupne programe i korporativne obuke.`,
@@ -88,7 +88,7 @@ export async function mockReply(text: string, locale: Locale): Promise<string> {
     },
     news: () => (news[0] ? `Latest AI news: "${news[0].title}" (${d.blog.minRead(news[0].readingTime)}) — ${newsUrl(news[0].slug)}. All news articles are in the ${s.news} section.` : en.blog()),
     blog: () => `Latest article: "${posts[0]?.title}" (${d.blog.minRead(posts[0]?.readingTime ?? 0)}) — ${postUrl(posts[0]?.slug ?? "")}`,
-    resource: () => `There are ${resources.length} free resources in the library — try "${resources[0].title}". Use the search in the ${s.resources} section to filter by topic.`,
+    resource: () => `The ${s.resources} section has documents you can read on the site or download as .md files (${resources.length} so far). Try "${resources[0].title}": ${resourceUrl(resources[0].slug)}`,
     project: () => `${name} offers services such as ${projects.slice(0, 3).map((p) => p.title).join(", ")}. See them all in the ${s.projects} section, or email ${profile.email} to work together.`,
     contact: () => `The best way is email: ${profile.email}, which is also how to book a consultation. For workshops or speaking, include your dates and audience size. You can also find ${name} on ${liveSocials}.`,
     about: () =>

@@ -1,4 +1,4 @@
-import type { Text } from "@/lib/i18n";
+import type { Locale, Text } from "@/lib/i18n";
 
 /**
  * Shared content types. Every file in /content is typed against these, so
@@ -73,19 +73,21 @@ export type Course = {
   url?: string;
 };
 
-export type ResourceType = "PDF" | "Template" | "Checklist" | "Notebook" | "Guide";
-
-export type Resource = {
-  title: Text;
-  /** Shown translated, via the `resources.type` labels in content/i18n. */
-  type: ResourceType;
-  category: Text;
-  size: Text;
-  /** ISO date. */
+/**
+ * A Markdown document in the Resources section. The file lives at public/resources/<slug>.md
+ * (a byte-for-byte copy of the original note); it is downloaded as is and rendered at
+ * /resources/<slug>. Title and description come from the file: frontmatter `title` and
+ * `description` if present, otherwise the first "# " heading and the first paragraph after it.
+ */
+export type Resource<Category extends string = string> = {
+  /** File name without ".md"; also the page URL. Letters, numbers and hyphens only. */
+  slug: string;
+  /** A key of `resourceCategories` in content/resources.ts. */
+  category: Category;
+  /** Language the document is written in. It is shown as is on every language version of the site. */
+  lang: Locale;
+  /** ISO date of the last change to the document. */
   updated: string;
-  description: Text;
-  /** File in /public/resources (e.g. "/resources/prompt-patterns.pdf") or an external URL. */
-  url: string;
 };
 
 /** Leave out `date` to show the event as "coming soon": greyed out, with a disabled register button. */

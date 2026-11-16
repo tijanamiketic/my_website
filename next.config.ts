@@ -17,6 +17,19 @@ const nextConfig: NextConfig = {
       })),
     );
   },
+  // Resource files (public/resources/*.md) always download instead of opening in the browser.
+  async headers() {
+    return [
+      {
+        source: "/resources/:file([^/]+\\.md)",
+        headers: [
+          { key: "Content-Type", value: "text/markdown; charset=utf-8" },
+          { key: "Content-Disposition", value: "attachment" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+        ],
+      },
+    ];
+  },
   experimental: {
     // ~13 KB of CSS for a mostly single-page site: inlining removes the render-blocking request.
     inlineCss: true,
