@@ -32,8 +32,8 @@ export const events: EventItem<EventCategory>[] = [
     mode: "In person",
     location: { sr: "Barselona, Španija", en: "Barcelona, Spain" },
     description: {
-      sr: "Idem kao posetilac. Posle konferencije ovde delim svoje beleške, zaključke i lično mišljenje o onome što sam čula i naučila.",
-      en: "I'm attending as a guest. After the conference I'll share my own notes, takeaways and personal opinion on what I heard and learned here.",
+      sr: "Na Tech Spirit-u sam među publikom. Posle konferencije ovde delim svoje beleške, zaključke i lično mišljenje o onome što sam čula i naučila.",
+      en: "I'll be in the audience at Tech Spirit. After the conference I'll share my notes, takeaways and personal opinion on what I heard and learned here.",
     },
     note: {
       sr: "Nisam deo organizacije niti predavač na ovom događaju. Beleške su moje lično viđenje, a ne zvanični materijal konferencije.",
