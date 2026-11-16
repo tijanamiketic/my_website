@@ -53,7 +53,9 @@ export default function Nav() {
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const a = (e.target as Element).closest?.<HTMLAnchorElement>('a[href^="#"], a[href^="/#"]');
-      if (!a) return;
+      // Only links to this same page. "/#news" clicked on "/en" is the Serbian home page
+      // (the language switch), not a section here, so the browser must follow it.
+      if (!a || a.pathname !== location.pathname) return;
       const id = a.getAttribute("href")!.split("#")[1];
       if (id && goTo(id, !matchMedia("(prefers-reduced-motion: reduce)").matches)) {
         e.preventDefault();
