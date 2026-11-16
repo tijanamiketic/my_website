@@ -1,46 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { useDeferredValue, useState } from "react";
 import { hash, pick } from "@/lib/cover";
 import { formatDate } from "@/lib/format";
 import { localeInfo } from "@/lib/i18n";
 import type { ResourceDoc } from "@/lib/resources";
 import { useI18n } from "../I18nProvider";
-import { Download, Search } from "../icons";
-import FilterBar from "../FilterBar";
+import { Download } from "../icons";
+import FilterPanel, { ALL, useFilteredList } from "../FilterPanel";
 
 type Item = ResourceDoc & { categoryLabel: string; href: string };
-
-const ALL = "all";
 
 /** Search + category filter over the resource cards. Each card links to /resources/<slug> and downloads the original .md. */
 export default function ResourceLibrary({ resources, categories }: { resources: Item[]; categories: { value: string; label: string }[] }) {
   const { locale, t } = useI18n();
-  const [cat, setCat] = useState(ALL);
-  const [query, setQuery] = useState("");
-  const q = useDeferredValue(query).trim().toLowerCase();
-
-  const options = [{ value: ALL, label: t.common.all }, ...categories];
-  const list = resources.filter(
-    (r) =>
-      (cat === ALL || r.category === cat) &&
-      (!q || [r.title, r.description, r.categoryLabel].join(" ").toLowerCase().includes(q)),
+  const { cat, setCat, query, setQuery, list } = useFilteredList(
+    resources,
+    (r) => r.category,
+    (r) => [r.title, r.description, r.categoryLabel].join(" "),
   );
 
   return (
-    <div className="res-panel glass" data-reveal>
-      <div className="res-tools">
-        <label className="search">
-          <Search />
-          <span className="sr-only">{t.resources.searchLabel}</span>
-          <input type="search" placeholder={t.resources.searchPlaceholder} autoComplete="off" value={query} onChange={(e) => setQuery(e.target.value)} />
-        </label>
-        <FilterBar label={t.resources.filter} options={options} value={cat} onChange={setCat} />
-      </div>
-      <p className="res-count" aria-live="polite">
-        {t.resources.count(list.length, resources.length)}
-      </p>
+    <FilterPanel
+      searchLabel={t.resources.searchLabel}
+      searchPlaceholder={t.resources.searchPlaceholder}
+      filterLabel={t.resources.filter}
+      options={[{ value: ALL, label: t.common.all }, ...categories]}
+      cat={cat}
+      onCat={setCat}
+      query={query}
+      onQuery={setQuery}
+      count={t.resources.count(list.length, resources.length)}
+    >
       <ul className="res-list">
         {list.map((r) => {
           // A document written in another language is shown as is, marked with its language.
@@ -76,6 +67,6 @@ export default function ResourceLibrary({ resources, categories }: { resources: 
         })}
         {list.length === 0 && <li className="empty">{t.resources.empty(query)}</li>}
       </ul>
-    </div>
+    </FilterPanel>
   );
 }

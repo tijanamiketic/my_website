@@ -1,7 +1,7 @@
 import "server-only";
 import { profile as profileSource } from "@/content/profile";
 import { courses as courseSource } from "@/content/courses";
-import { events as eventSource } from "@/content/events";
+import { eventCategories, events as eventSource } from "@/content/events";
 import { interviews as interviewSource } from "@/content/interviews";
 import { resourceCategories } from "@/content/resources";
 import { projects as projectSource } from "@/content/projects";
@@ -10,7 +10,7 @@ import { dictionaries } from "@/content/i18n";
 import { getAllPosts } from "./blog";
 import { news as newsSource } from "./news";
 import { getResources } from "./resources";
-import { upcomingEvents } from "./events";
+import { eventAction, eventDates, upcomingEvents } from "./events";
 import { SITE_URL, fullName } from "./config";
 import { formatDate } from "./format";
 import { localeInfo, localePath, localize, type Locale } from "./i18n";
@@ -90,9 +90,19 @@ export async function buildSystemPrompt(locale: Locale): Promise<string> {
       add(`- ${e.title}: ${e.description} | ${t.events.mode[e.mode]} | date to be announced (coming soon) | no time, venue or registration yet: never invent them, suggest emailing ${profile.email} for details`);
       continue;
     }
-    const when = [formatDate(e.date, locale), e.time && `${e.time} CET`].filter(Boolean).join(" ");
+    const when = [eventDates(e, locale), e.time && `${e.time} CET`].filter(Boolean).join(" ");
     const where = [t.events.mode[e.mode], e.location].filter(Boolean).join(" · ");
-    add(`- ${e.title} | ${when} | ${where} | ${e.seats ? t.events.seatsLeft(e.seats) : t.events.openToAll} | ${e.description} | register: ${link(e.url ?? "", `the ${t.events.register} button in the ${t.nav.sections.events} section`)}`);
+    const role = eventCategories[e.category].badge[locale];
+    const action = eventAction(e);
+    const button =
+      action?.kind === "notes"
+        ? `my notes from the event: ${action.url.startsWith("/") ? localePath(locale, action.url) : action.url}`
+        : action?.kind === "website"
+          ? `official event website: ${action.url} (not run by me; registration and tickets are on that site)`
+          : action?.kind === "register"
+            ? `${e.seats ? t.events.seatsLeft(e.seats) : t.events.openToAll} | register: ${link(e.url ?? "", `the ${t.events.register} button in the ${t.nav.sections.events} section`)}`
+            : `no link yet: never invent one, suggest checking the ${t.nav.sections.events} section later`;
+    add(`- ${e.title} | role: ${role} | ${when} | ${where} | ${e.description}${e.note ? ` ${e.note}` : ""} | ${button}`);
   }
   add(`</upcoming_events>`);
   add();

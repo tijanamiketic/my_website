@@ -1,14 +1,64 @@
-import { events } from "@/content/events";
+import { eventCategories, events } from "@/content/events";
+import { eventAction, eventDates, upcomingEvents } from "@/lib/events";
 import { formatDate } from "@/lib/format";
-import { localize } from "@/lib/i18n";
+import { localePath, localize } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
-import { ArrowRight } from "../icons";
 import { SectionHead } from "../ui";
-import { upcomingEvents } from "@/lib/events";
+import EventList, { type EventCard } from "./EventList";
 
 export default async function Events() {
   const { locale, t } = await getI18n();
-  const list = localize(await upcomingEvents(events), locale);
+  const upcoming = await upcomingEvents(events);
+  const list = localize(upcoming, locale);
+
+  // Every category gets a filter, even with no events yet, in the order of content/events.ts.
+  const categories = Object.entries(eventCategories).map(([id, c]) => ({ value: id, label: c.label[locale] }));
+
+  const cards: EventCard[] = list.map((ev, i) => {
+    const { date, endDate } = ev;
+    const fmt = (iso: string, o: Intl.DateTimeFormatOptions) => formatDate(iso, locale, o);
+    // Multi-day event: "DEC / 02–03 / sre–čet" (both months when it spans two).
+    const span = (o: Intl.DateTimeFormatOptions) => {
+      const a = fmt(date!, o);
+      const b = endDate && endDate !== date ? fmt(endDate, o) : a;
+      return a === b ? a : `${a}–${b}`;
+    };
+    const action = eventAction(upcoming[i]);
+    const external = action ? !action.url.startsWith("/") : false;
+    return {
+      key: ev.title + (date ?? ""),
+      category: ev.category,
+      badge: eventCategories[upcoming[i].category].badge[locale],
+      title: ev.title,
+      description: ev.description,
+      note: ev.note,
+      modeLabel: t.events.mode[ev.mode],
+      online: ev.mode === "Online",
+      location: ev.location,
+      time: ev.time,
+      tile: date
+        ? {
+            iso: date,
+            month: span({ month: "short" }),
+            day: span({ day: "2-digit" }),
+            weekday: span({ weekday: "short" }),
+            range: endDate && endDate !== date ? eventDates(ev, locale) : undefined,
+          }
+        : null,
+      // Seats only make sense for events with registration.
+      seats: date && action?.kind === "register" ? (ev.seats ? t.events.seatsLeft(ev.seats) : t.events.openToAll) : undefined,
+      action:
+        date && action
+          ? {
+              href: external ? action.url : localePath(locale, action.url),
+              external,
+              label: action.kind === "notes" ? t.events.readNotes : action.kind === "website" ? t.events.website : t.events.register,
+              aria: (action.kind === "notes" ? t.events.readNotesAria : action.kind === "website" ? t.events.websiteAria : t.events.registerAria)(ev.title),
+            }
+          : null,
+    };
+  });
+
   return (
     <section id="events" className="section wrap" aria-labelledby="events-title">
       <SectionHead
@@ -18,59 +68,7 @@ export default async function Events() {
         accent={t.events.accent}
         lede={t.events.lede}
       />
-      {list.length === 0 ? (
-        <p className="glass empty">{t.events.empty}</p>
-      ) : (
-        <ol className="timeline">
-          {list.map((ev, i) => {
-            const { date } = ev;
-            const fmt = (o: Intl.DateTimeFormatOptions) => formatDate(date!, locale, o);
-            return (
-              // No date yet = "coming soon": greyed out, no tilt/glow, no time, seats or registration.
-              <li
-                key={ev.title + (date ?? "")}
-                className={`event glass${date ? "" : " soon"}`}
-                data-reveal
-                data-tilt={date ? "" : undefined}
-                style={{ "--dir": i % 2 ? 1 : -1 } as React.CSSProperties}
-              >
-                {date ? (
-                  <time className="date" dateTime={date}>
-                    <small>{fmt({ month: "short" })}</small>
-                    <b>{fmt({ day: "2-digit" })}</b>
-                    <small>{fmt({ weekday: "short" })}</small>
-                  </time>
-                ) : (
-                  <span className="date">
-                    <b>{t.events.soonDate}</b>
-                  </span>
-                )}
-                <div>
-                  <ul className="where chips" aria-label={t.common.details}>
-                    <li className="chip">{ev.mode === "Online" ? "● " : "◆ "}{t.events.mode[ev.mode]}</li>
-                    {ev.location && <li className="chip">{ev.location}</li>}
-                    {ev.time && <li className="chip mono">{ev.time} CET</li>}
-                  </ul>
-                  <h3>{ev.title}</h3>
-                  <p>{ev.description}</p>
-                </div>
-                <div className="side">
-                  {date && <span className="seats">{ev.seats ? t.events.seatsLeft(ev.seats) : t.events.openToAll}</span>}
-                  {date && ev.url ? (
-                    <a className="btn btn-primary btn-sm" href={ev.url} target="_blank" rel="noopener noreferrer" aria-label={t.events.registerAria(ev.title)}>
-                      {t.events.register} <ArrowRight />
-                    </a>
-                  ) : (
-                    <span className="btn btn-primary btn-sm" aria-disabled="true">
-                      {t.events.comingSoon}
-                    </span>
-                  )}
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-      )}
+      <EventList events={cards} categories={categories} />
     </section>
   );
 }
